@@ -199,7 +199,7 @@ pub fn versions(ext_dir: &Path) -> Vec<(Manifest, PathBuf)> {
         .filter(|e| e.path().is_dir())
         .filter_map(|e| Manifest::load(&e.path()).ok().map(|m| (m, e.path())))
         .collect();
-    found.sort_by(|a, b| b.0.version().cmp(&a.0.version()));
+    found.sort_by_key(|a| std::cmp::Reverse(a.0.version()));
     found
 }
 

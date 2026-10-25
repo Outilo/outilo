@@ -172,7 +172,7 @@ pub fn processes(sys: &mut System) -> Vec<ProcessInfo> {
             start_time: p.start_time(),
         })
         .collect();
-    list.sort_by(|a, b| b.memory.cmp(&a.memory));
+    list.sort_by_key(|a| std::cmp::Reverse(a.memory));
     list
 }
 
