@@ -1,0 +1,495 @@
+{
+  "schema": 1,
+  "generated": "2026-10-25T23:34:26.297Z",
+  "extensions": {
+    "outilo.cleaner": {
+      "name": {
+        "fr": "Nettoyeur",
+        "en": "Cleaner"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/cleaner-v1.0.0/outilo.cleaner-1.0.0.outilo",
+          "sha256": "a2f9a0a25cd32823cd5455b546851ae31c9626d583942fcce78267ac471e6940",
+          "signature": "qEL3r6R/RWRUb6QRhNr98Hc9aukkcbhoPCz8IW2uSnHYd3I2e9bjRX/S/ajzUP5mRugkRpAqalZp4+KOvP6CAw==",
+          "permissions": [
+            "files.scoped"
+          ],
+          "size": 4263
+        }
+      },
+      "description": {
+        "fr": "Fichiers temporaires, caches des navigateurs et des outils de développement, corbeille",
+        "en": "Temporary files, browser and developer tool caches, Recycle Bin"
+      },
+      "categories": [
+        "systeme"
+      ]
+    },
+    "outilo.colors": {
+      "name": {
+        "fr": "Couleurs",
+        "en": "Colors"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/colors-v1.0.0/outilo.colors-1.0.0.outilo",
+          "sha256": "b52802680070dca61bcfb6069d4d77388acbc82aefc524bc3d6a12ea653bde45",
+          "signature": "PloeR+AtA/nwuxo0TYBU8orgoEkCCt0ta41nsew3lnFEAARmWyPcTsqTXUcRwi+cfUus1nOF+itXDQEUFRvhAA==",
+          "permissions": [
+            "clipboard",
+            "storage"
+          ],
+          "size": 7231
+        }
+      },
+      "description": {
+        "fr": "HEX, RGB, HSL, OKLCH, contraste WCAG, palettes, pipette",
+        "en": "HEX, RGB, HSL, OKLCH, WCAG contrast, palettes, eyedropper"
+      },
+      "categories": [
+        "design"
+      ]
+    },
+    "outilo.cron": {
+      "name": {
+        "fr": "Cron",
+        "en": "Cron"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/cron-v1.0.0/outilo.cron-1.0.0.outilo",
+          "sha256": "c1cd7c7bd720e9fa4fcb8088e104bfef066d53a9e56a6bd098f8a4f38f11dc4f",
+          "signature": "a67sSxQnMPIsXWuK7NJABEerpgcPWufaP/9m02CH4PKwsssf5fwb3MPCqOFOZfWxzQfyDXDiU7TLqpvIBz0UAA==",
+          "permissions": [
+            "clipboard",
+            "storage"
+          ],
+          "size": 6136
+        }
+      },
+      "description": {
+        "fr": "Expression cron ⇄ description lisible, prochaines exécutions",
+        "en": "Cron expression ⇄ readable description, next runs"
+      },
+      "categories": [
+        "code",
+        "systeme"
+      ]
+    },
+    "outilo.encoders": {
+      "name": {
+        "fr": "Encodeurs",
+        "en": "Encoders"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/encoders-v1.0.0/outilo.encoders-1.0.0.outilo",
+          "sha256": "a6ae8e2b36ba9dc6338933e5d6db1d6805918a2330901802cae6c099dda6865f",
+          "signature": "JazIA3X5m9YVwOryNaCr1wzZ2LOawpkum25fal/CTZoy3Se5hox8jluU/XCsNx5eoUUonWCASCGrQE0eJAeNBg==",
+          "permissions": [
+            "clipboard",
+            "storage"
+          ],
+          "size": 4732
+        }
+      },
+      "description": {
+        "fr": "Base64 (texte et fichier), URL, entités HTML, hexadécimal, Unicode",
+        "en": "Base64 (text and file), URL, HTML entities, hexadecimal, Unicode"
+      },
+      "categories": [
+        "code",
+        "texte"
+      ]
+    },
+    "outilo.fake-user": {
+      "name": {
+        "fr": "Utilisateurs fictifs",
+        "en": "Fake users"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/fake-user-v1.0.0/outilo.fake-user-1.0.0.outilo",
+          "sha256": "8b6592fdbcd20a061cf2d31248b4ab70e1c0c72e938adae9569ebb5d2bb07d2f",
+          "signature": "DUycooIDhPBIJWVb+VWjIthqjbascBIPG0D6CC60IWqEQSH7bstN++wg5auimSj28aLp6GLxmd6z1qbntDSeCw==",
+          "permissions": [
+            "clipboard",
+            "files.save",
+            "storage"
+          ],
+          "size": 7534
+        }
+      },
+      "description": {
+        "fr": "Profils réalistes FR/EN, graine reproductible, export JSON/CSV/SQL",
+        "en": "Realistic FR/EN profiles, reproducible seed, JSON/CSV/SQL export"
+      },
+      "categories": [
+        "donnees",
+        "generateur"
+      ]
+    },
+    "outilo.hash": {
+      "name": {
+        "fr": "Hash",
+        "en": "Hash"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/hash-v1.0.0/outilo.hash-1.0.0.outilo",
+          "sha256": "a3c891ff7ad65fa22afedd5e08340630db2a1e352de6fb14ef7c38657216fb48",
+          "signature": "3aDl0mnobpUa+8ytqgZlds60UKM3A3al4VBikHRi4OMCqo2HX1Z2jj2zlpxFx+LTbT0eUpCmYX0im3HQeSj3Bg==",
+          "permissions": [
+            "clipboard"
+          ],
+          "size": 17180
+        }
+      },
+      "description": {
+        "fr": "MD5, SHA-1/256/384/512, HMAC et bcrypt ; texte ou fichier, avec vérification",
+        "en": "MD5, SHA-1/256/384/512, HMAC and bcrypt; text or file, with verification"
+      },
+      "categories": [
+        "securite",
+        "code"
+      ]
+    },
+    "outilo.json": {
+      "name": {
+        "fr": "JSON",
+        "en": "JSON"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/json-v1.0.0/outilo.json-1.0.0.outilo",
+          "sha256": "015a41a05ccc82a91e12fb27366503071cf023c48d871d6049ad9654005151a1",
+          "signature": "EyY7963KaeimvaATg55fi+QpdHKRZnRmF/+aDYUQwUYQ7pFL95GceQ415IrMmsdwRHcfjx/wAIu6b/uW8tX1Ag==",
+          "permissions": [
+            "clipboard",
+            "files.save",
+            "storage"
+          ],
+          "size": 19593
+        }
+      },
+      "description": {
+        "fr": "Formater, minifier, valider, trier les clés, convertir JSON ⇄ YAML",
+        "en": "Format, minify, validate, sort keys, convert JSON ⇄ YAML"
+      },
+      "categories": [
+        "code",
+        "donnees"
+      ]
+    },
+    "outilo.jwt": {
+      "name": {
+        "fr": "JWT & Base64",
+        "en": "JWT & Base64"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/jwt-v1.0.0/outilo.jwt-1.0.0.outilo",
+          "sha256": "86706b64a686eac19512601a516b7a19dec95a7b30f860851403856351ab0f16",
+          "signature": "qErBMSehzpDyY73Pd2+9YYJZ5X/Fu3wMZBNYPUnJo35D16I5KYe9eWL8LNLd9wEbRb4h1+6GFGwQfEHO7QtmCA==",
+          "permissions": [
+            "clipboard"
+          ],
+          "size": 5626
+        }
+      },
+      "description": {
+        "fr": "Décoder et vérifier un JWT (HS256/384/512), encoder et décoder du Base64",
+        "en": "Decode and verify JWTs (HS256/384/512), encode and decode Base64"
+      },
+      "categories": [
+        "code",
+        "securite"
+      ]
+    },
+    "outilo.lorem": {
+      "name": {
+        "fr": "Lorem ipsum",
+        "en": "Lorem ipsum"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/lorem-v1.0.0/outilo.lorem-1.0.0.outilo",
+          "sha256": "09719bd0ba257b4585c1a4f6832227e89032e1d62f584ba8f4fb2f1da7e518a0",
+          "signature": "o14eEIvzoUAbkCjZZnh/GBC3jPuZ6QdnVTPmXi15Z9r4kSBtKAL22uT1a9zDn1Ew9sgTvpEi1aiqWB8wgG9ADA==",
+          "permissions": [
+            "clipboard"
+          ],
+          "size": 4862
+        }
+      },
+      "description": {
+        "fr": "Texte de remplissage en latin, français ou anglais ; texte, HTML ou Markdown",
+        "en": "Placeholder text in Latin, French or English; text, HTML or Markdown"
+      },
+      "categories": [
+        "design",
+        "texte",
+        "generateur"
+      ]
+    },
+    "outilo.network": {
+      "name": {
+        "fr": "Réseau",
+        "en": "Network"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/network-v1.0.0/outilo.network-1.0.0.outilo",
+          "sha256": "d41fe449f26eed8cf822b7100f46a729ae5b421bf7471a08e977dbe79f40facd",
+          "signature": "fa9cm5qZwBBQaLp+C6KhSVw7A/S8LIccrEwGC+OXi9naY4vmDT+aqIQkfYwSJhCIDYLmAnYKuBpSflcyv7dvDA==",
+          "permissions": [
+            "clipboard",
+            "network",
+            "shell.safe"
+          ],
+          "size": 5052
+        }
+      },
+      "description": {
+        "fr": "IP locale et publique, ping, DNS, test de port, vider le cache DNS",
+        "en": "Local and public IP, ping, DNS, port test, flush DNS cache"
+      },
+      "categories": [
+        "reseau",
+        "systeme"
+      ]
+    },
+    "outilo.password": {
+      "name": {
+        "fr": "Mots de passe",
+        "en": "Passwords"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/password-v1.0.0/outilo.password-1.0.0.outilo",
+          "sha256": "bfab52e1acf5670c7600868dcd12c8064eb9adf3662365b81337983df57be558",
+          "signature": "rxmSGA5WhS6INJL4CBjci1zeyr75yISgguJoUf3kvUIHF6C4Clk550WmRn73euiz/c4n665jsL+14WAJp5Y+BA==",
+          "permissions": [
+            "clipboard",
+            "storage"
+          ],
+          "size": 6732
+        }
+      },
+      "description": {
+        "fr": "Mots de passe et phrases de passe robustes, entropie en direct",
+        "en": "Strong passwords and passphrases with live entropy"
+      },
+      "categories": [
+        "securite",
+        "generateur"
+      ]
+    },
+    "outilo.ports": {
+      "name": {
+        "fr": "Ports & processus",
+        "en": "Ports & processes"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/ports-v1.0.0/outilo.ports-1.0.0.outilo",
+          "sha256": "82c48b97e5fd7d37039b8ca3ff9a2787787244fee34783ce8d527b5dd6f17a44",
+          "signature": "7ZCJAPJ/gpAbngNDErerzLsSmUqPtHqakDLccV218vmr9Uk9+VuqHz6ODpN1ZOWaC/TZdLqHY5dGrvhE8xxiAQ==",
+          "permissions": [
+            "process"
+          ],
+          "size": 4789
+        }
+      },
+      "description": {
+        "fr": "Qui utilise un port, liste des processus, arrêt d'un processus avec confirmation",
+        "en": "Who uses a port, process list, stop a process with confirmation"
+      },
+      "categories": [
+        "systeme",
+        "reseau"
+      ]
+    },
+    "outilo.qr": {
+      "name": {
+        "fr": "QR code",
+        "en": "QR code"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/qr-v1.0.0/outilo.qr-1.0.0.outilo",
+          "sha256": "4930ab958a14aa02975bc428d69dc63c06b67cb85650f8b193c07ae40b0a691a",
+          "signature": "jeOuJgOhPUdG4PNP00k/pL9lKD43VhrmgK/MR64YM0xzvAHv70CSPExcpLomgWvZu+TJ7hENMjf/Zx1V9Y2UCg==",
+          "permissions": [
+            "clipboard",
+            "files.save"
+          ],
+          "size": 17234
+        }
+      },
+      "description": {
+        "fr": "Générer un QR code (lien, texte, Wi-Fi, e-mail) ; export PNG ou SVG",
+        "en": "Generate a QR code (link, text, Wi-Fi, email); PNG or SVG export"
+      },
+      "categories": [
+        "design",
+        "generateur"
+      ]
+    },
+    "outilo.regex": {
+      "name": {
+        "fr": "Regex",
+        "en": "Regex"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/regex-v1.0.0/outilo.regex-1.0.0.outilo",
+          "sha256": "68964bab0f00aa9d530680aafcaec7ced3f58541361e18f9601b5f0b991b0291",
+          "signature": "d/EZzL2/7xLbt+32kCD1uu3EWrqDKzWCPoEbQWnjVS0UP7SBgAedIYCo1YBWenHE9RWIk46CfTo9167Qm1o2CA==",
+          "permissions": [
+            "clipboard",
+            "storage"
+          ],
+          "size": 6111
+        }
+      },
+      "description": {
+        "fr": "Testeur d'expressions régulières : surlignage, groupes, remplacement, bibliothèque",
+        "en": "Regular expression tester: highlighting, groups, replacement, library"
+      },
+      "categories": [
+        "code",
+        "texte"
+      ]
+    },
+    "outilo.sysinfo": {
+      "name": {
+        "fr": "Infos système",
+        "en": "System info"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/sysinfo-v1.0.0/outilo.sysinfo-1.0.0.outilo",
+          "sha256": "ef44a7a0c757f1075bb4f811ebf4073a36db3d569d8813359a31f981f457653d",
+          "signature": "sOHff2onptLj+s7/8hDIEas5A57f5kA9J25X8+dbD/NDgK2Y2GEe0Mhrtln1aNo8xyHMv7qarhad9Jx+Re9UBA==",
+          "permissions": [
+            "clipboard",
+            "files.save",
+            "system.info"
+          ],
+          "size": 4611
+        }
+      },
+      "description": {
+        "fr": "OS, processeur, mémoire, disques, carte graphique ; résumé pour un ticket de support",
+        "en": "OS, processor, memory, disks, graphics card; summary for a support ticket"
+      },
+      "categories": [
+        "systeme"
+      ]
+    },
+    "outilo.timestamps": {
+      "name": {
+        "fr": "Timestamps",
+        "en": "Timestamps"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/timestamps-v1.0.0/outilo.timestamps-1.0.0.outilo",
+          "sha256": "a72cc58d4f39ac43ee2c9cc5012a47dd133d396b728449be48ba73d884c429d3",
+          "signature": "g3lBwrn1fQGHF1bim4nxEFX9LvyoR0ZwhU+ExCFHZd9mdDWT3WBd/ian/jVHlAy0Y9s1aeEAWodjbTjlVuASAw==",
+          "permissions": [
+            "clipboard"
+          ],
+          "size": 5098
+        }
+      },
+      "description": {
+        "fr": "Unix ⇄ date, ISO 8601, RFC 2822, semaine ISO, fuseaux horaires",
+        "en": "Unix ⇄ date, ISO 8601, RFC 2822, ISO week, time zones"
+      },
+      "categories": [
+        "code",
+        "donnees"
+      ]
+    },
+    "outilo.uuid": {
+      "name": {
+        "fr": "UUID & identifiants",
+        "en": "UUID & IDs"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/uuid-v1.0.0/outilo.uuid-1.0.0.outilo",
+          "sha256": "c141dbacc5a641d74e8670e136844825cbdd5d1d413e67c8c844b20fe565d40a",
+          "signature": "18HE7GMqJE7d3KCm1RCuDs+jnmtOVLbZaGXdRHBXuOgFK43Mp1zPEvdaDJrrBPO/2vwWW91leYZDd/nF/ec8Bg==",
+          "permissions": [
+            "clipboard"
+          ],
+          "size": 4496
+        }
+      },
+      "description": {
+        "fr": "UUID v4 / v7, ULID et NanoID, à l'unité ou en lot",
+        "en": "UUID v4 / v7, ULID and NanoID, single or in bulk"
+      },
+      "categories": [
+        "code",
+        "generateur"
+      ]
+    }
+  },
+  "packs": {
+    "dev": [
+      "outilo.password",
+      "outilo.fake-user",
+      "outilo.json",
+      "outilo.jwt",
+      "outilo.encoders",
+      "outilo.hash",
+      "outilo.uuid",
+      "outilo.regex",
+      "outilo.timestamps",
+      "outilo.ports"
+    ],
+    "design": [
+      "outilo.colors",
+      "outilo.qr",
+      "outilo.lorem",
+      "outilo.fake-user",
+      "outilo.password"
+    ],
+    "ops": [
+      "outilo.ports",
+      "outilo.network",
+      "outilo.hash",
+      "outilo.cron",
+      "outilo.sysinfo",
+      "outilo.cleaner"
+    ],
+    "daily": [
+      "outilo.cleaner",
+      "outilo.password",
+      "outilo.qr",
+      "outilo.sysinfo"
+    ]
+  }
+}
