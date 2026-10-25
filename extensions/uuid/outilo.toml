@@ -1,0 +1,24 @@
+[extension]
+id = "outilo.uuid"
+name = { fr = "UUID & identifiants", en = "UUID & IDs" }
+description = { fr = "UUID v4 / v7, ULID et NanoID, à l'unité ou en lot", en = "UUID v4 / v7, ULID and NanoID, single or in bulk" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["code", "generateur"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[[commands]]
+id = "copy-v4"
+title = { fr = "Copier un UUID v4", en = "Copy a UUID v4" }
+
+[[commands]]
+id = "copy-v7"
+title = { fr = "Copier un UUID v7", en = "Copy a UUID v7" }
+
+[permissions]
+clipboard = true

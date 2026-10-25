@@ -1,0 +1,20 @@
+[extension]
+id = "outilo.jwt"
+name = { fr = "JWT & Base64", en = "JWT & Base64" }
+description = { fr = "Décoder et vérifier un JWT (HS256/384/512), encoder et décoder du Base64", en = "Decode and verify JWTs (HS256/384/512), encode and decode Base64" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["code", "securite"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[[commands]]
+id = "base64"
+title = { fr = "Encoder / décoder du Base64", en = "Encode / decode Base64" }
+
+[permissions]
+clipboard = true

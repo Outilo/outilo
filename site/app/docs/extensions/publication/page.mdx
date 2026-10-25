@@ -1,0 +1,33 @@
+---
+title: Publication & mises à jour
+---
+
+# Publication & mises à jour
+
+Objectif : **mettre à jour une extension sans reconstruire ni retélécharger l'application ou les autres
+extensions.**
+
+## Dépôts de l'organisation `outilo`
+
+| Dépôt | Rôle |
+| --- | --- |
+| `outilo` | L'application (Tauri) et ce site |
+| `extensions` | Monorepo des extensions officielles, une version par dossier |
+| `registry` | Index JSON de toutes les extensions, publié sur GitHub Pages |
+| `extension-template` | Modèle de départ |
+
+## Cycle de publication
+
+1. Modifier `extensions/password/` et augmenter `version` dans `outilo.toml`.
+2. Merger sur `main` : la CI détecte que **seul** `password` a changé.
+3. La CI construit `password-1.2.0.outilo`, calcule son SHA-256 et le signe (ed25519).
+4. Elle crée la Release `password-v1.2.0` et met à jour l'index du `registry`.
+
+## Côté application
+
+1. Au démarrage puis toutes les 24 h, Outilo lit l'index (réponse `304` si rien n'a changé).
+2. Pour chaque extension installée plus ancienne et compatible (`api`), il télécharge **uniquement** ce paquet.
+3. Il vérifie hash, signature et permissions, installe à côté de l'ancienne version puis bascule.
+4. L'onglet se recharge ; la version précédente reste disponible pour un retour arrière.
+
+L'application a son propre canal de mise à jour : elle n'est republiée que si le shell ou l'API changent.

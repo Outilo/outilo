@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .wrap { max-height: calc(100vh - 330px); min-height: 160px; }
+    .o-input.seed { width: 180px; }
+    .o-input.table { width: 110px; }
+    td.ui { font-family: var(--o-font-ui); }
+    .more { color: var(--o-muted); font-size: 12px; padding: 10px; }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Utilisateurs fictifs</h1>
+    <p class="o-sub" data-i18n="subtitle">Données de test réalistes. E-mails et numéros réservés à la fiction.</p>
+  </div>
+
+  <div class="o-stack">
+    <div class="o-panel o-stack" style="gap:14px">
+      <div class="o-row">
+        <label class="o-check"><span data-i18n="count">Nombre</span>
+          <select class="o-select" id="count"><option>1</option><option selected>10</option><option>50</option><option>100</option><option>1000</option></select>
+        </label>
+        <label class="o-check"><span data-i18n="locale">Région</span>
+          <select class="o-select" id="lang"><option value="fr">Français (France)</option><option value="en">English (US)</option></select>
+        </label>
+        <label class="o-check"><span data-i18n="seed">Graine</span>
+          <input class="o-input seed" id="seed" data-i18n-placeholder="seedHint" placeholder="aléatoire">
+        </label>
+        <span class="o-spacer"></span>
+        <button class="o-btn o-btn--primary" id="gen" data-i18n="generate">Générer</button>
+      </div>
+      <div>
+        <span class="o-label" data-i18n="fields">Champs</span>
+        <div class="o-row" id="fields"></div>
+      </div>
+      <div class="o-row">
+        <button class="o-btn o-btn--sm" id="copyJson" data-i18n="copyJson">Copier JSON</button>
+        <button class="o-btn o-btn--sm" id="saveJson" data-i18n="saveJson">Enregistrer JSON</button>
+        <button class="o-btn o-btn--sm" id="saveCsv" data-i18n="saveCsv">Enregistrer CSV</button>
+        <button class="o-btn o-btn--sm" id="saveSql" data-i18n="saveSql">Enregistrer SQL</button>
+        <label class="o-check"><span data-i18n="table">Table</span> <input class="o-input table" id="table" value="users"></label>
+      </div>
+    </div>
+
+    <div class="o-panel o-panel--flush wrap">
+      <table class="o-table"><thead id="head"></thead><tbody id="rows"></tbody></table>
+      <div class="more" id="more"></div>
+    </div>
+  </div>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

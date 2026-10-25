@@ -1,0 +1,19 @@
+[extension]
+id = "outilo.network"
+name = { fr = "Réseau", en = "Network" }
+description = { fr = "IP locale et publique, ping, DNS, test de port, vider le cache DNS", en = "Local and public IP, ping, DNS, port test, flush DNS cache" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["reseau", "systeme"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[permissions]
+# L'utilisateur saisit lui-même l'hôte à tester : tous les domaines sont autorisés
+network = ["*"]
+shell.safe = true
+clipboard = true

@@ -1,0 +1,44 @@
+---
+title: Architecture
+---
+
+# Architecture
+
+```text
+┌──────────────────────── Application Outilo (Tauri 2) ────────────────────────┐
+│  Shell Vue 3 + TS : barre d'activité, explorateur, onglets, palette, onboarding │
+│        │                                                                       │
+│        ├── iframe isolée par extension (UI + thème injecté)                    │
+│        │        ⇅ RPC postMessage (API Outilo, contrôlée par permissions)       │
+│  ──────┴──────────────────────── Cœur Rust ─────────────────────────────────── │
+│  Registre & mises à jour · Signatures · Permissions · Stockage (KV + SQLite)   │
+│  Hôte WebAssembly (wasmtime) · API système (profil utilisateur uniquement)     │
+└────────────────────────────────────────────────────────────────────────────────┘
+```
+
+## Choix techniques
+
+| Sujet | Choix | Pourquoi |
+| --- | --- | --- |
+| Application | Tauri 2 | Cœur Rust natif, WebView2 de Windows, installateur ~10 Mo |
+| Interface | Vue 3 + TypeScript + Vite | Reprise du prototype, extensions en TS/JS naturelles |
+| Logique des extensions | TS/JS dans l'iframe, ou Rust → WebAssembly | Accessible à tous, isolé |
+| Stockage | Clé/valeur + SQLite par extension | Local, sans serveur |
+| Thèmes | Tokens → variables CSS + CSS libre | Personnalisation totale |
+| Distribution | Releases GitHub + index JSON (GitHub Pages) | Gratuit, mises à jour indépendantes |
+| Site | Nextra (export statique) sur GitHub Pages | Ce site |
+| Licence | Apache-2.0 | Chacun peut bâtir ses propres produits |
+
+## Organisation du dépôt `outilo`
+
+```text
+outilo/
+├─ src/            # shell Vue 3
+├─ src-tauri/      # cœur Rust
+├─ crates/         # registry, runtime (wasmtime + permissions), theme
+├─ packages/       # @outilo/sdk, @outilo/ui
+├─ site/           # ce site (Nextra)
+├─ docs/           # cahier des charges, notes de conception
+├─ CLAUDE.md
+└─ LICENSE
+```

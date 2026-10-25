@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .card .big { font-size: 18px; font-weight: 600; margin: 4px 0 6px; word-break: break-word; }
+    .card .o-meter { margin-top: 8px; }
+    td.k { color: var(--o-muted); font-family: var(--o-font-ui); }
+    .o-panel--flush { max-height: 280px; }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Infos système</h1>
+    <p class="o-sub" data-i18n="subtitle">Système, processeur, mémoire, disques et cartes graphiques.</p>
+  </div>
+
+  <div class="o-stack">
+    <div class="o-row">
+      <span class="o-sub" id="status" style="margin:0"></span>
+      <span class="o-spacer"></span>
+      <button class="o-btn" id="refresh" data-i18n="refresh">Actualiser</button>
+      <button class="o-btn" id="save" data-i18n="save">Enregistrer</button>
+      <button class="o-btn o-btn--primary" id="copy" data-i18n="copy">Copier le résumé</button>
+    </div>
+    <div class="o-grid" id="cards"></div>
+    <div class="o-panel o-panel--flush">
+      <table class="o-table"><thead><tr><th data-i18n="disk">Disque</th><th data-i18n="fs">Système de fichiers</th><th data-i18n="used">Utilisé</th><th data-i18n="free">Libre</th><th></th></tr></thead><tbody id="disks"></tbody></table>
+    </div>
+    <div class="o-panel o-panel--flush">
+      <table class="o-table"><tbody id="details"></tbody></table>
+    </div>
+  </div>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

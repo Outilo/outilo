@@ -1,0 +1,23 @@
+[meta]
+id = "atelier-light"
+name = "Atelier clair"
+mode = "light"
+
+[colors]
+bg = "#f6f7f9"
+surface = "#ffffff"
+surface-2 = "#eef0f4"
+border = "#dde1e8"
+text = "#161a22"
+muted = "#5d6577"
+accent = "#d97706"
+accent-ink = "#ffffff"
+success = "#059669"
+danger = "#dc2626"
+
+[shape]
+radius = "8px"
+
+[font]
+ui = "'Inter Variable', system-ui, sans-serif"
+mono = "'JetBrains Mono', ui-monospace, monospace"

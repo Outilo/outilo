@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outilo — Maquette A · Atelier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1115; --bg-2:#151820; --bg-3:#1c2029; --line:#262b36; --text:#e6e8ee; --muted:#8a91a3;
+  --accent:#f59e0b; --accent-ink:#1a1204; --ok:#34d399; --danger:#f87171; --radius:8px;
+  --font:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+:root[data-theme="light"]{
+  --bg:#f6f7f9; --bg-2:#ffffff; --bg-3:#eef0f4; --line:#dde1e8; --text:#161a22; --muted:#5d6577;
+  --accent-ink:#ffffff;
+}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:#05060a;font-family:var(--font);color:var(--text);display:grid;place-items:center;padding:24px}
+.note{position:fixed;top:8px;left:50%;transform:translateX(-50%);font-size:12px;color:#8a91a3}
+.win{width:min(1280px,100%);height:min(800px,calc(100vh - 48px));background:var(--bg);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:grid;grid-template-rows:36px 1fr 26px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+/* title bar */
+.titlebar{display:flex;align-items:center;gap:12px;padding:0 12px;background:var(--bg-2);border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
+.dots{display:flex;gap:6px}.dots i{width:11px;height:11px;border-radius:50%;background:var(--line);display:block}
+.cmd{margin:0 auto;display:flex;align-items:center;gap:8px;width:420px;max-width:50%;height:24px;padding:0 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--muted);cursor:pointer}
+.cmd kbd{margin-left:auto}
+kbd{font-family:var(--mono);font-size:10px;padding:1px 5px;border:1px solid var(--line);border-radius:4px;color:var(--muted)}
+/* body */
+.main{display:grid;grid-template-columns:48px 240px 1fr;min-height:0}
+.activity{background:var(--bg-2);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:8px 0;gap:4px}
+.act{width:36px;height:36px;border-radius:8px;display:grid;place-items:center;color:var(--muted);cursor:pointer;position:relative;border:0;background:none}
+.act:hover{color:var(--text);background:var(--bg-3)}
+.act.on{color:var(--accent)}
+.act.on::before{content:"";position:absolute;left:-6px;top:8px;bottom:8px;width:2px;background:var(--accent);border-radius:2px}
+.act svg{width:20px;height:20px}
+.spacer{flex:1}
+.side{background:var(--bg-2);border-right:1px solid var(--line);overflow:auto;padding:10px 0}
+.side h6{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:10px 14px 6px;font-weight:600}
+.item{display:flex;align-items:center;gap:10px;padding:6px 14px;font-size:13px;cursor:pointer;color:var(--text);border-left:2px solid transparent}
+.item:hover{background:var(--bg-3)}
+.item.on{background:var(--bg-3);border-left-color:var(--accent)}
+.item .ic{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;background:var(--bg-3);font-size:12px;color:var(--accent);font-family:var(--mono)}
+.item .badge{margin-left:auto;font-size:10px;color:var(--muted)}
+.content{display:grid;grid-template-rows:36px 1fr;min-width:0;min-height:0}
+.tabs{display:flex;background:var(--bg-2);border-bottom:1px solid var(--line);overflow:hidden}
+.tab{display:flex;align-items:center;gap:8px;padding:0 14px;font-size:12px;color:var(--muted);border-right:1px solid var(--line);cursor:pointer;white-space:nowrap}
+.tab.on{background:var(--bg);color:var(--text);box-shadow:inset 0 2px 0 var(--accent)}
+.tab .x{opacity:.5}
+.view{overflow:auto;padding:28px 32px;display:none}
+.view.on{display:block}
+h1{font-size:22px;font-weight:600;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:13px;margin-top:4px}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.panel{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:8px;display:block}
+.out{font-family:var(--mono);font-size:18px;padding:14px 16px;background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);display:flex;align-items:center;gap:12px;word-break:break-all}
+.out span{flex:1}
+.btn{font:inherit;font-size:13px;font-weight:500;padding:8px 14px;border-radius:var(--radius);border:1px solid var(--line);background:var(--bg-3);color:var(--text);cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--muted);cursor:pointer;user-select:none}
+.chip.on{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+input[type=range]{accent-color:var(--accent);width:100%}
+.meter{height:6px;border-radius:4px;background:var(--bg-3);overflow:hidden;margin-top:10px}
+.meter i{display:block;height:100%;background:var(--accent);transition:width .2s}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:8px 10px;border-bottom:1px solid var(--line);font-family:var(--mono);white-space:nowrap}
+tr:hover td{background:var(--bg-3)}
+select{font:inherit;font-size:13px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:var(--radius);padding:7px 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.ext{display:flex;flex-direction:column;gap:10px}
+.ext header{display:flex;gap:12px;align-items:center}
+.ext .logo{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font-weight:700;font-family:var(--mono);background:var(--bg-3);color:var(--accent)}
+.ext p{font-size:12.5px;color:var(--muted);line-height:1.5}
+.ext footer{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-top:auto}
+.price{margin-left:auto;font-weight:600;color:var(--text)}
+.price.free{color:var(--ok)}
+.status{background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;gap:16px;padding:0 12px;font-size:11px;font-weight:500}
+.status span:last-child{margin-left:auto}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.sw{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent}
+.sw.on{border-color:var(--text)}
+pre{font-family:var(--mono);font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:14px;color:var(--muted);overflow:auto;line-height:1.6}
+.toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--text);color:var(--bg);font-size:12px;padding:8px 14px;border-radius:6px;transition:.2s}
+.toast.on{opacity:1;transform:translateX(-50%)}
+</style>
+</head>
+<body>
+<div class="note">Maquette A — « Atelier » : esprit IDE, onglets, sombre par défaut</div>
+<div class="win">
+  <div class="titlebar">
+    <div class="dots"><i></i><i></i><i></i></div>
+    <strong style="color:var(--text)">Outilo</strong>
+    <div class="cmd" onclick="toast('Palette de commandes (Ctrl+K)')">⌕ Rechercher un outil, une commande, une extension… <kbd>Ctrl K</kbd></div>
+    <span>v0.1.0</span>
+  </div>
+
+  <div class="main">
+    <nav class="activity">
+      <button class="act on" data-go="home" title="Accueil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/></svg></button>
+      <button class="act" data-go="pwd" title="Outils"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 005.4-5.4l-2.5 2.5-2.5-.5-.5-2.5z"/></svg></button>
+      <button class="act" data-go="store" title="Extensions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg></button>
+      <button class="act" data-go="theme" title="Thèmes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3a9 9 0 100 18c1 0 1.5-.8 1.5-1.5 0-1-.8-1.3-.8-2.2 0-.8.7-1.3 1.5-1.3H17a4 4 0 004-4c0-5-4-9-9-9z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7" r="1"/></svg></button>
+      <div class="spacer"></div>
+      <button class="act" onclick="toggleMode()" title="Clair / sombre"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+    </nav>
+
+    <aside class="side">
+      <h6>Favoris</h6>
+      <div class="item" data-go="pwd"><span class="ic">**</span>Mots de passe</div>
+      <h6>Intégrés</h6>
+      <div class="item" data-go="pwd"><span class="ic">**</span>Mots de passe</div>
+      <div class="item" data-go="user"><span class="ic">@</span>Utilisateurs fictifs</div>
+      <div class="item" data-go="jwt"><span class="ic">{}</span>JWT / Base64</div>
+      <h6>Extensions installées</h6>
+      <div class="item"><span class="ic">#</span>Hash Text<span class="badge">1.2.0</span></div>
+      <div class="item"><span class="ic">⏱</span>Crontab<span class="badge">0.4.1</span></div>
+      <h6>Catégories</h6>
+      <div class="item"><span class="ic">T</span>Texte<span class="badge">4</span></div>
+      <div class="item"><span class="ic">&lt;/&gt;</span>Code<span class="badge">7</span></div>
+      <div class="item"><span class="ic">⚿</span>Sécurité<span class="badge">3</span></div>
+      <div class="item"><span class="ic">⇄</span>Réseau<span class="badge">2</span></div>
+    </aside>
+
+    <section class="content">
+      <div class="tabs">
+        <div class="tab on" data-go="home">Accueil</div>
+        <div class="tab" data-go="pwd">Mots de passe <span class="x">×</span></div>
+        <div class="tab" data-go="user">Utilisateurs fictifs <span class="x">×</span></div>
+      </div>
+
+      <!-- HOME -->
+      <div class="view on" id="v-home">
+        <h1>Bonjour 👋</h1>
+        <p class="sub">3 outils intégrés · 2 extensions installées · 1 mise à jour disponible</p>
+        <div class="grid" style="margin-top:24px">
+          <div class="panel ext" data-go="pwd" style="cursor:pointer"><header><div class="logo">**</div><div><strong>Mots de passe</strong><p>Générateur sécurisé, entropie, phrases de passe</p></div></header></div>
+          <div class="panel ext" data-go="user" style="cursor:pointer"><header><div class="logo">@</div><div><strong>Utilisateurs fictifs</strong><p>Jeux de données réalistes, export JSON/CSV/SQL</p></div></header></div>
+          <div class="panel ext" data-go="jwt" style="cursor:pointer"><header><div class="logo">{}</div><div><strong>JWT / Base64</strong><p>Décoder, inspecter, encoder</p></div></header></div>
+        </div>
+        <h6 class="label" style="margin-top:32px">Suggestions d'extensions</h6>
+        <div class="grid">
+          <div class="panel ext"><header><div class="logo">SQL</div><div><strong>SQL Runner</strong><p>Postgres, MySQL, SQLite</p></div></header><footer>★ 4.8 · outilo-dev<span class="price">4,99 €</span></footer></div>
+          <div class="panel ext"><header><div class="logo">QR</div><div><strong>QR Code</strong><p>Générer et lire des QR codes</p></div></header><footer>★ 4.6 · communauté<span class="price free">Gratuit</span></footer></div>
+        </div>
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="view" id="v-pwd">
+        <h1>Générateur de mots de passe</h1>
+        <p class="sub">Aléatoire cryptographique — rien ne quitte votre machine.</p>
+        <div class="panel" style="margin-top:20px">
+          <div class="out"><span id="pwd">—</span><button class="btn" onclick="copy(document.getElementById('pwd').textContent)">Copier</button><button class="btn primary" onclick="genPwd()">Générer</button></div>
+          <div class="meter"><i id="meter"></i></div>
+          <div class="sub" id="entropy" style="font-size:12px"></div>
+        </div>
+        <div class="row" style="margin-top:16px">
+          <div class="panel" style="flex:1;min-width:260px">
+            <span class="label">Longueur : <b id="lenv">20</b></span>
+            <input type="range" min="4" max="128" value="20" id="len" oninput="lenv.textContent=this.value;genPwd()">
+            <span class="label" style="margin-top:18px">Caractères</span>
+            <div class="row" style="gap:8px" id="sets">
+              <span class="chip on" data-set="upper">A–Z</span><span class="chip on" data-set="lower">a–z</span><span class="chip on" data-set="digits">0–9</span><span class="chip on" data-set="symbols">!@#$</span><span class="chip" data-set="nosimilar">Sans 0 O l 1 I</span>
+            </div>
+          </div>
+          <div class="panel" style="flex:1;min-width:260px">
+            <span class="label">Historique (session)</span>
+            <pre id="hist" style="max-height:150px"></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div class="view" id="v-user">
+        <h1>Utilisateurs fictifs</h1>
+        <p class="sub">Données de test réalistes. Graine reproductible.</p>
+        <div class="row" style="margin:20px 0 16px;align-items:center">
+          <select id="ucount"><option>5</option><option selected>10</option><option>25</option></select>
+          <select><option>🇫🇷 Français</option><option>🇺🇸 English (US)</option><option>🇩🇪 Deutsch</option></select>
+          <button class="btn primary" onclick="genUsers()">Générer</button>
+          <button class="btn" onclick="toast('Export JSON')">JSON</button><button class="btn" onclick="toast('Export CSV')">CSV</button><button class="btn" onclick="toast('Export SQL')">SQL</button>
+        </div>
+        <div class="panel" style="padding:0;overflow:auto"><table><thead><tr><th>Nom</th><th>E-mail</th><th>Téléphone</th><th>Ville</th><th>Naissance</th><th>Poste</th></tr></thead><tbody id="users"></tbody></table></div>
+      </div>
+
+      <!-- JWT -->
+      <div class="view" id="v-jwt">
+        <h1>JWT / Base64</h1>
+        <p class="sub">3ᵉ outil intégré (proposition).</p>
+        <div class="row" style="margin-top:20px">
+          <div class="panel" style="flex:1"><span class="label">Jeton</span><pre style="color:var(--accent)">eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MiIsIm5hbWUiOiJBZGEifQ.sig</pre></div>
+          <div class="panel" style="flex:1"><span class="label">Payload décodé</span><pre>{
+  "sub": "42",
+  "name": "Ada"
+}</pre></div>
+        </div>
+      </div>
+
+      <!-- STORE -->
+      <div class="view" id="v-store">
+        <h1>Extensions</h1>
+        <p class="sub">Registre <span style="font-family:var(--mono)">github.com/outilo-dev/registry</span> · 128 extensions</p>
+        <div class="row" style="margin:20px 0;gap:8px">
+          <span class="chip on">Toutes</span><span class="chip">Gratuites</span><span class="chip">Payantes</span><span class="chip">Installées</span><span class="chip">Thèmes</span>
+        </div>
+        <div class="grid" id="store"></div>
+      </div>
+
+      <!-- THEME -->
+      <div class="view" id="v-theme">
+        <h1>Thème</h1>
+        <p class="sub">Niveau 1 : réglages · Niveau 2 : fichier theme.toml · Niveau 3 : CSS personnalisé</p>
+        <div class="row" style="margin-top:20px">
+          <div class="panel" style="flex:1;min-width:280px">
+            <span class="label">Couleur d'accent</span>
+            <div class="swatches" id="sw"></div>
+            <span class="label" style="margin-top:20px">Arrondis : <b id="rv">8</b>px</span>
+            <input type="range" min="0" max="18" value="8" oninput="rv.textContent=this.value;document.documentElement.style.setProperty('--radius',this.value+'px');dump()">
+            <span class="label" style="margin-top:20px">Mode</span>
+            <div class="row" style="gap:8px"><span class="chip on" onclick="setMode('dark',this)">Sombre</span><span class="chip" onclick="setMode('light',this)">Clair</span></div>
+            <div class="row" style="margin-top:20px;gap:8px"><button class="btn">Importer un thème…</button><button class="btn primary" onclick="toast('theme.toml exporté')">Exporter</button></div>
+          </div>
+          <div class="panel" style="flex:1;min-width:280px"><span class="label">theme.toml</span><pre id="toml"></pre></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="status"><span>● Hors-ligne OK</span><span>2 extensions</span><span>FR</span><span>Mise à jour disponible : 0.1.1</span></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function go(v){$$('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));
+  $$('[data-go]').forEach(e=>e.classList.toggle('on',e.dataset.go===v));}
+$$('[data-go]').forEach(e=>e.addEventListener('click',()=>go(e.dataset.go)));
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),1400)}
+function copy(t){navigator.clipboard?.writeText(t);toast('Copié')}
+function toggleMode(){const r=document.documentElement;r.dataset.theme=r.dataset.theme==='light'?'dark':'light';dump()}
+function setMode(m,el){document.documentElement.dataset.theme=m;el.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===el));dump()}
+
+/* password */
+const SETS={upper:'ABCDEFGHIJKLMNOPQRSTUVWXYZ',lower:'abcdefghijklmnopqrstuvwxyz',digits:'0123456789',symbols:'!@#$%^&*()-_=+[]{};:,.?/'};
+$$('#sets .chip').forEach(c=>c.onclick=()=>{c.classList.toggle('on');genPwd()});
+function genPwd(){
+  const on=$$('#sets .chip.on').map(c=>c.dataset.set);let pool=on.filter(s=>SETS[s]).map(s=>SETS[s]).join('');
+  if(on.includes('nosimilar'))pool=pool.replace(/[0Ol1I]/g,'');if(!pool)pool=SETS.lower;
+  const n=+$('#len').value,r=new Uint32Array(n);crypto.getRandomValues(r);
+  const p=[...r].map(x=>pool[x%pool.length]).join('');$('#pwd').textContent=p;
+  const bits=Math.round(n*Math.log2(pool.length));$('#meter').style.width=Math.min(100,bits/1.28)+'%';
+  $('#entropy').textContent=`${bits} bits d'entropie · ${bits<50?'faible':bits<80?'correct':bits<110?'fort':'très fort'}`;
+  const h=$('#hist');h.textContent=(p+'\n'+h.textContent).split('\n').slice(0,8).join('\n');
+}
+/* users */
+const FN=['Camille','Lucas','Léa','Hugo','Chloé','Nathan','Manon','Louis','Inès','Jules','Emma','Arthur','Sarah','Théo'],LN=['Martin','Bernard','Dubois','Thomas','Robert','Petit','Durand','Leroy','Moreau','Simon','Laurent','Lefèvre'],CT=['Paris','Lyon','Nantes','Bordeaux','Lille','Rennes','Toulouse','Nice'],JB=['Développeuse back-end','Product owner','DevOps','Designer UI','Data analyst','CTO','Développeur mobile'];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+function genUsers(){$('#users').innerHTML=Array.from({length:+$('#ucount').value},()=>{const f=pick(FN),l=pick(LN);
+  return `<tr><td>${f} ${l}</td><td>${norm(f)}.${norm(l)}@exemple.fr</td><td>06 ${[1,2,3,4].map(()=>String(Math.floor(Math.random()*100)).padStart(2,'0')).join(' ')}</td><td>${pick(CT)}</td><td>${String(1+Math.floor(Math.random()*28)).padStart(2,'0')}/${String(1+Math.floor(Math.random()*12)).padStart(2,'0')}/${1965+Math.floor(Math.random()*40)}</td><td style="font-family:var(--font)">${pick(JB)}</td></tr>`}).join('')}
+/* store */
+const EXT=[['SQL','SQL Runner','Exécuter des requêtes Postgres, MySQL, SQLite.','outilo-dev','4,99 €',4.8,'réseau, fichiers'],['QR','QR Code','Générer et scanner des QR codes.','communauté','Gratuit',4.6,'presse-papiers'],['#','Hash Text','MD5, SHA-1/256/512, bcrypt, argon2.','outilo-dev','Installé',4.9,'aucune'],['⏱','Crontab','Expressions cron lisibles et prochaines exécutions.','@marie','Installé',4.5,'aucune'],['🐳','Docker Converter','docker run ⇄ docker-compose.','@kev','Gratuit',4.4,'aucune'],['€','Factures','Générer des factures PDF.','outilo-dev','9,99 €',4.7,'fichiers'],['◐','Thème Nord','Palette Nord pour Outilo.','@arctic','Gratuit',4.8,'thème'],['⇄','Pinger','Ping, traceroute, DNS lookup.','communauté','Gratuit',4.2,'réseau']];
+$('#store').innerHTML=EXT.map(([lg,n,d,a,p,s,perm])=>`<div class="panel ext"><header><div class="logo">${lg}</div><div><strong>${n}</strong><div style="font-size:12px;color:var(--muted)">${a}</div></div></header><p>${d}</p><p style="font-size:11px">Permissions : ${perm}</p><footer>★ ${s}<span class="price ${p==='Gratuit'?'free':''}">${p}</span><button class="btn ${p==='Installé'?'':'primary'}" onclick="toast('${p==='Installé'?'Déjà installée':'Installation de '+n+'…'}')">${p==='Installé'?'Gérer':'Installer'}</button></footer></div>`).join('');
+/* theme */
+const ACC=['#f59e0b','#f97316','#ef4444','#ec4899','#8b5cf6','#3b82f6','#06b6d4','#10b981'];
+$('#sw').innerHTML=ACC.map((c,i)=>`<div class="sw ${i?'':'on'}" style="background:${c}" data-c="${c}"></div>`).join('');
+$$('.sw').forEach(s=>s.onclick=()=>{$$('.sw').forEach(x=>x.classList.remove('on'));s.classList.add('on');document.documentElement.style.setProperty('--accent',s.dataset.c);dump()});
+function dump(){const cs=getComputedStyle(document.documentElement),v=k=>cs.getPropertyValue(k).trim();
+  $('#toml').textContent=`[meta]\nname = "Mon thème"\nmode = "${document.documentElement.dataset.theme||'dark'}"\n\n[colors]\nbg      = "${v('--bg')}"\nsurface = "${v('--bg-2')}"\nborder  = "${v('--line')}"\ntext    = "${v('--text')}"\naccent  = "${v('--accent')}"\n\n[shape]\nradius = "${v('--radius')}"\n\n[font]\nui   = "Inter"\nmono = "JetBrains Mono"`}
+genPwd();genUsers();dump();
+</script>
+</body>
+</html>

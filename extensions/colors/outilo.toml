@@ -1,0 +1,17 @@
+[extension]
+id = "outilo.colors"
+name = { fr = "Couleurs", en = "Colors" }
+description = { fr = "HEX, RGB, HSL, OKLCH, contraste WCAG, palettes, pipette", en = "HEX, RGB, HSL, OKLCH, WCAG contrast, palettes, eyedropper" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["design"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[permissions]
+clipboard = true
+storage = true

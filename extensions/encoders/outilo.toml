@@ -1,0 +1,17 @@
+[extension]
+id = "outilo.encoders"
+name = { fr = "Encodeurs", en = "Encoders" }
+description = { fr = "Base64 (texte et fichier), URL, entités HTML, hexadécimal, Unicode", en = "Base64 (text and file), URL, HTML entities, hexadecimal, Unicode" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["code", "texte"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[permissions]
+clipboard = true
+storage = true

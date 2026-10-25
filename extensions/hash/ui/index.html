@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .hidden { display: none !important; }
+    #file { display: none; }
+    .drop { border: 1px dashed var(--o-border); border-radius: var(--o-radius); padding: 26px; text-align: center; color: var(--o-muted); cursor: pointer; }
+    .drop.over { border-color: var(--o-accent); color: var(--o-accent); }
+    td.val { white-space: normal; word-break: break-all; width: 100%; }
+    tr.match td { color: var(--o-success); }
+    .algo { color: var(--o-muted); }
+    .o-textarea.small { min-height: 90px; }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Hash</h1>
+    <p class="o-sub" data-i18n="subtitle">Empreintes MD5, SHA et HMAC d’un texte ou d’un fichier, et mots de passe bcrypt.</p>
+  </div>
+
+  <div class="o-stack">
+    <div class="o-panel o-stack" style="gap:12px">
+      <div class="o-row">
+        <button class="o-chip on" data-src="text" data-i18n="text">Texte</button>
+        <button class="o-chip" data-src="file" data-i18n="file">Fichier</button>
+        <span class="o-spacer"></span>
+        <label class="o-check"><span data-i18n="format">Format</span>
+          <select class="o-select" id="format"><option value="hex">hex</option><option value="HEX">HEX</option><option value="b64">Base64</option></select>
+        </label>
+      </div>
+      <textarea class="o-textarea small" id="text" spellcheck="false" data-i18n-placeholder="textHint"></textarea>
+      <label class="drop hidden" id="drop" for="file"><span id="dropText" data-i18n="drop">Déposez un fichier ici ou cliquez pour le choisir</span></label>
+      <input type="file" id="file">
+      <div class="o-row">
+        <input class="o-input o-grow" id="key" spellcheck="false" data-i18n-placeholder="keyHint">
+        <input class="o-input o-grow" id="expected" spellcheck="false" data-i18n-placeholder="expectedHint">
+      </div>
+    </div>
+
+    <div class="o-panel o-panel--flush">
+      <table class="o-table"><tbody id="rows"></tbody></table>
+    </div>
+    <p class="o-sub" id="verdict" style="margin:0"></p>
+
+    <div class="o-panel o-stack" style="gap:12px">
+      <span class="o-label" style="margin:0">bcrypt</span>
+      <div class="o-row">
+        <input class="o-input o-grow" id="bPass" spellcheck="false" data-i18n-placeholder="bPass">
+        <label class="o-check"><span data-i18n="cost">Coût</span>
+          <select class="o-select" id="cost"><option>8</option><option selected>10</option><option>12</option><option>14</option></select>
+        </label>
+        <button class="o-btn o-btn--primary" id="bGen" data-i18n="bGen">Générer</button>
+      </div>
+      <div class="o-row">
+        <input class="o-input o-grow" id="bHash" spellcheck="false" placeholder="$2a$10$…">
+        <button class="o-btn" id="bCheck" data-i18n="bCheck">Vérifier</button>
+        <button class="o-btn" id="bCopy" data-i18n="copy">Copier</button>
+      </div>
+      <p class="o-sub" id="bOut" style="margin:0"></p>
+    </div>
+  </div>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="vendor/bcrypt.min.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

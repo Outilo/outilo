@@ -1,0 +1,44 @@
+---
+title: Manifeste outilo.toml
+---
+
+# Manifeste `outilo.toml`
+
+```toml
+[extension]
+id = "outilo.password"          # unique, préfixé par l'auteur
+name = "Mots de passe"
+description = "Mots de passe et phrases de passe robustes"
+version = "1.2.0"               # semver
+api = "1"                       # version de l'API Outilo ciblée
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["securite", "generateur"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/dist/index.html"
+
+[logic]                         # optionnel
+wasm = "logic/logic.wasm"
+
+[[commands]]                    # entrées de la palette (optionnel)
+id = "copy-24"
+title = "Copier un mot de passe de 24 caractères"
+
+[permissions]
+clipboard = "write"
+```
+
+## Champs
+
+| Champ | Obligatoire | Description |
+| --- | --- | --- |
+| `extension.id` | oui | Identifiant unique `auteur.nom` |
+| `extension.version` | oui | Version semver ; détermine les mises à jour |
+| `extension.api` | oui | Version de l'API Outilo ; une application incompatible n'installe pas l'extension |
+| `ui.entry` | oui (sauf thème) | Page HTML de l'outil |
+| `logic.wasm` | non | Module WebAssembly |
+| `commands` | non | Commandes ajoutées à la palette |
+| `permissions` | non | Voir [API & permissions](/docs/extensions/permissions/) |
+| `theme` | non | Fait de l'extension un thème, voir [Thèmes](/docs/themes/) |

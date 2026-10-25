@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .group { margin-bottom: 4px; }
+    .item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-top: 1px solid var(--o-border); cursor: pointer; }
+    .item:first-of-type { border-top: 0; }
+    .item:hover { background: var(--o-surface-2); }
+    .item .name { flex: 1; }
+    .item .size { font-family: var(--o-font-mono); font-size: 12.5px; color: var(--o-muted); text-align: right; min-width: 150px; }
+    .total { font-size: 20px; font-weight: 600; font-family: var(--o-font-mono); }
+    .note { font-size: 12.5px; color: var(--o-muted); }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Nettoyeur</h1>
+    <p class="o-sub" data-i18n="subtitle">Libère de l’espace dans votre profil : fichiers temporaires, caches des navigateurs et des outils de développement.</p>
+  </div>
+
+  <div class="o-stack">
+    <div class="o-panel o-row">
+      <div>
+        <span class="o-label" style="margin:0" data-i18n="selected">Sélectionné</span>
+        <div class="total" id="total">—</div>
+      </div>
+      <span class="o-spacer"></span>
+      <button class="o-btn" id="scan" data-i18n="scan">Analyser</button>
+      <button class="o-btn o-btn--primary" id="clean" data-i18n="clean" disabled>Nettoyer</button>
+    </div>
+    <p class="o-sub" id="status" style="margin:0"></p>
+    <div id="groups" class="o-stack" style="gap:12px"></div>
+    <p class="note" data-i18n="note">Sans droits administrateur : seuls les dossiers de votre profil sont concernés. Les fichiers ouverts par un programme sont ignorés. Une confirmation Windows est toujours demandée.</p>
+  </div>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

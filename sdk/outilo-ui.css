@@ -1,0 +1,105 @@
+/*!
+ * Outilo UI — composants de base pour les extensions. Utilise uniquement les tokens du thème.
+ * Licence Apache-2.0.
+ */
+@font-face { font-family: 'Inter Variable'; font-weight: 100 900; font-display: swap; src: url('fonts/inter.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 400; font-display: swap; src: url('fonts/jetbrains-mono-400.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 500; font-display: swap; src: url('fonts/jetbrains-mono-500.woff2') format('woff2'); }
+
+:root {
+  --o-bg: #0f1115; --o-surface: #151820; --o-surface-2: #1c2029; --o-border: #262b36;
+  --o-text: #e6e8ee; --o-muted: #8a91a3; --o-accent: #f59e0b; --o-accent-ink: #1a1204;
+  --o-success: #34d399; --o-danger: #f87171; --o-radius: 8px;
+  --o-font-ui: 'Inter Variable', system-ui, sans-serif; --o-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--o-bg); color: var(--o-text); font-family: var(--o-font-ui); font-size: 14px; line-height: 1.45;
+  padding: 28px 32px 40px; -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, p { margin: 0; }
+h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+h2 { font-size: 15px; font-weight: 600; }
+code, pre, kbd, .o-mono { font-family: var(--o-font-mono); }
+::selection { background: color-mix(in srgb, var(--o-accent) 35%, transparent); }
+:focus-visible { outline: 2px solid var(--o-accent); outline-offset: 2px; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--o-border); border-radius: 10px; border: 2px solid var(--o-bg); }
+
+.o-sub { color: var(--o-muted); font-size: 13px; margin-top: 4px; }
+.o-header { margin-bottom: 20px; }
+.o-stack { display: flex; flex-direction: column; gap: 16px; }
+.o-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.o-row > .o-grow { flex: 1; min-width: 240px; }
+.o-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.o-spacer { flex: 1; }
+
+.o-panel { background: var(--o-surface); border: 1px solid var(--o-border); border-radius: var(--o-radius); padding: 18px; }
+.o-panel--flush { padding: 0; overflow: auto; }
+.o-label {
+  display: block; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--o-muted);
+  font-weight: 600; margin-bottom: 8px;
+}
+
+.o-btn {
+  font: inherit; font-size: 13px; font-weight: 500; padding: 8px 14px; border-radius: var(--o-radius);
+  border: 1px solid var(--o-border); background: var(--o-surface-2); color: var(--o-text); cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+.o-btn:hover { border-color: var(--o-muted); }
+.o-btn:disabled { opacity: .5; cursor: not-allowed; }
+.o-btn--primary { background: var(--o-accent); border-color: var(--o-accent); color: var(--o-accent-ink); }
+.o-btn--primary:hover { filter: brightness(1.08); border-color: var(--o-accent); }
+.o-btn--ghost { background: transparent; }
+.o-btn--sm { padding: 5px 10px; font-size: 12px; }
+
+.o-input, .o-select, .o-textarea {
+  font: inherit; font-size: 13px; background: var(--o-bg); color: var(--o-text); border: 1px solid var(--o-border);
+  border-radius: var(--o-radius); padding: 8px 10px; width: 100%;
+}
+.o-select { width: auto; }
+.o-input:focus, .o-select:focus, .o-textarea:focus { outline: none; border-color: var(--o-accent); }
+.o-textarea { font-family: var(--o-font-mono); font-size: 12.5px; line-height: 1.6; resize: vertical; min-height: 120px; }
+input[type=range] { accent-color: var(--o-accent); width: 100%; }
+input[type=checkbox] { accent-color: var(--o-accent); }
+
+.o-chip {
+  font: inherit; font-size: 12px; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--o-border);
+  background: var(--o-bg); color: var(--o-muted); cursor: pointer; user-select: none;
+}
+.o-chip.on, .o-chip[aria-pressed="true"] {
+  border-color: var(--o-accent); color: var(--o-accent); background: color-mix(in srgb, var(--o-accent) 12%, transparent);
+}
+.o-check { display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; }
+
+.o-out {
+  font-family: var(--o-font-mono); font-size: 18px; padding: 14px 16px; background: var(--o-bg);
+  border: 1px solid var(--o-border); border-radius: var(--o-radius); display: flex; align-items: center; gap: 12px;
+  word-break: break-all;
+}
+.o-out > :first-child { flex: 1; }
+.o-pre {
+  font-family: var(--o-font-mono); font-size: 12.5px; background: var(--o-bg); border: 1px solid var(--o-border);
+  border-radius: var(--o-radius); padding: 14px; color: var(--o-text); overflow: auto; line-height: 1.6;
+  margin: 0; white-space: pre-wrap; word-break: break-all;
+}
+.o-meter { height: 6px; border-radius: 4px; background: var(--o-surface-2); overflow: hidden; }
+.o-meter > i { display: block; height: 100%; background: var(--o-accent); transition: width .2s; }
+
+.o-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.o-table th {
+  text-align: left; font-weight: 600; color: var(--o-muted); font-size: 11px; text-transform: uppercase;
+  letter-spacing: .06em; padding: 8px 10px; border-bottom: 1px solid var(--o-border); position: sticky; top: 0;
+  background: var(--o-surface);
+}
+.o-table td { padding: 8px 10px; border-bottom: 1px solid var(--o-border); font-family: var(--o-font-mono); white-space: nowrap; }
+.o-table tr:hover td { background: var(--o-surface-2); }
+.o-empty { color: var(--o-muted); text-align: center; padding: 40px 16px; }
+.o-badge {
+  display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--o-border);
+  color: var(--o-muted);
+}
+.o-ok { color: var(--o-success); }
+.o-err { color: var(--o-danger); }

@@ -1,0 +1,17 @@
+[extension]
+id = "outilo.cleaner"
+name = { fr = "Nettoyeur", en = "Cleaner" }
+description = { fr = "Fichiers temporaires, caches des navigateurs et des outils de développement, corbeille", en = "Temporary files, browser and developer tool caches, Recycle Bin" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["systeme"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[permissions]
+# Liste fixe de caches du profil utilisateur, définie par le cœur d'Outilo
+files.scoped = true

@@ -1,0 +1,22 @@
+[extension]
+id = "outilo.fake-user"
+name = { fr = "Utilisateurs fictifs", en = "Fake users" }
+description = { fr = "Profils réalistes FR/EN, graine reproductible, export JSON/CSV/SQL", en = "Realistic FR/EN profiles, reproducible seed, JSON/CSV/SQL export" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["donnees", "generateur"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[[commands]]
+id = "copy-one"
+title = { fr = "Copier un utilisateur fictif (JSON)", en = "Copy a fake user (JSON)" }
+
+[permissions]
+clipboard = true
+storage = true
+files.save = true

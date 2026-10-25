@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .re { display: flex; align-items: center; gap: 0; font-family: var(--o-font-mono); }
+    .re span { color: var(--o-muted); padding: 0 6px; font-size: 16px; }
+    .re .o-input { font-family: var(--o-font-mono); }
+    .flags .o-chip { font-family: var(--o-font-mono); padding: 4px 9px; }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .hl { min-height: 140px; max-height: 260px; }
+    mark { background: color-mix(in srgb, var(--o-accent) 30%, transparent); color: inherit; border-radius: 3px; outline: 1px solid color-mix(in srgb, var(--o-accent) 60%, transparent); }
+    mark.alt { background: color-mix(in srgb, var(--o-success) 25%, transparent); outline-color: color-mix(in srgb, var(--o-success) 55%, transparent); }
+    .groups { max-height: 220px; }
+    td.wrap { white-space: pre-wrap; word-break: break-all; }
+    @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Regex</h1>
+    <p class="o-sub" data-i18n="subtitle">Testez une expression régulière JavaScript : correspondances surlignées, groupes, remplacement.</p>
+  </div>
+
+  <div class="o-stack">
+    <div class="o-panel o-stack" style="gap:12px">
+      <div class="re"><span>/</span><input class="o-input" id="pattern" spellcheck="false" placeholder="\d+"><span>/</span><input class="o-input" id="flagsText" spellcheck="false" style="width:80px"></div>
+      <div class="o-row">
+        <div class="o-row flags" id="flags">
+          <button class="o-chip" data-f="g" data-i18n-title="fg">g</button>
+          <button class="o-chip" data-f="i" data-i18n-title="fi">i</button>
+          <button class="o-chip" data-f="m" data-i18n-title="fm">m</button>
+          <button class="o-chip" data-f="s" data-i18n-title="fs">s</button>
+          <button class="o-chip" data-f="u" data-i18n-title="fu">u</button>
+          <button class="o-chip" data-f="y" data-i18n-title="fy">y</button>
+        </div>
+        <span class="o-spacer"></span>
+        <label class="o-check"><span data-i18n="library">Bibliothèque</span>
+          <select class="o-select" id="library"><option value="" data-i18n="pick">— Choisir —</option></select>
+        </label>
+      </div>
+      <p class="o-sub" id="status" style="margin:0"></p>
+    </div>
+
+    <div class="cols">
+      <div class="o-stack" style="gap:6px">
+        <span class="o-label" data-i18n="text">Texte à tester</span>
+        <textarea class="o-textarea hl" id="text" spellcheck="false"></textarea>
+      </div>
+      <div class="o-stack" style="gap:6px">
+        <span class="o-label" data-i18n="preview">Correspondances</span>
+        <pre class="o-pre hl" id="preview"></pre>
+      </div>
+    </div>
+
+    <div class="cols">
+      <div class="o-panel o-panel--flush groups">
+        <table class="o-table"><thead><tr><th>#</th><th data-i18n="match">Correspondance</th><th data-i18n="groups">Groupes</th></tr></thead><tbody id="rows"></tbody></table>
+      </div>
+      <div class="o-stack" style="gap:6px">
+        <input class="o-input" id="replacement" spellcheck="false" data-i18n-placeholder="replaceHint">
+        <pre class="o-pre hl" id="replaced"></pre>
+        <div class="o-row"><span class="o-spacer"></span><button class="o-btn o-btn--sm" id="copyRe" data-i18n="copyRe">Copier la regex</button><button class="o-btn o-btn--sm" id="copyOut" data-i18n="copyOut">Copier le résultat</button></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

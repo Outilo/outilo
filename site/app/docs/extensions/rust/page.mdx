@@ -1,0 +1,41 @@
+---
+title: Logique en Rust (WebAssembly)
+---
+
+# Logique en Rust (WebAssembly)
+
+Pour les calculs lourds ou pour réutiliser une bibliothèque Rust, une extension peut embarquer un module
+WebAssembly. Il est exécuté par le cœur d'Outilo dans `wasmtime`, isolé et soumis aux mêmes permissions.
+
+```rust filename="logic/src/lib.rs"
+use outilo_sdk::prelude::*;
+
+#[outilo::command]
+fn hash_sha256(input: String) -> String {
+    use sha2::{Digest, Sha256};
+    format!("{:x}", Sha256::digest(input.as_bytes()))
+}
+```
+
+```toml filename="outilo.toml"
+[logic]
+wasm = "logic/target/wasm32-wasip2/release/logic.wasm"
+```
+
+Appel depuis l'interface :
+
+```ts filename="ui/main.ts"
+import { logic } from '@outilo/sdk'
+
+const digest = await logic.call<string>('hash_sha256', 'bonjour')
+```
+
+## Compiler
+
+```bash
+rustup target add wasm32-wasip2
+cargo build --release --target wasm32-wasip2 --manifest-path logic/Cargo.toml
+```
+
+Le module n'a accès à rien par défaut : ni fichiers, ni réseau, en dehors de ce que l'API Outilo expose selon les
+permissions déclarées.

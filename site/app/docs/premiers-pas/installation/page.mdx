@@ -1,0 +1,57 @@
+---
+title: Installation
+---
+
+import { Callout, Steps } from 'nextra/components'
+
+# Installation
+
+## Configuration requise
+
+| | Minimum |
+| --- | --- |
+| Système | Windows 10 22H2 ou Windows 11, 64 bits |
+| Espace disque | ~ 30 Mo + extensions |
+| Composant | WebView2 (déjà présent sur Windows 10/11 à jour) |
+
+macOS et Linux sont prévus plus tard : l'architecture est portable.
+
+## Installer
+
+<Steps>
+### Télécharger
+
+Récupérez `Outilo_x.y.z_x64-setup.exe` dans les
+[Releases GitHub](https://github.com/outilo/outilo/releases).
+
+### Lancer l'installateur
+
+L'installation se fait **dans votre profil utilisateur**, sans droits administrateur.
+
+### Choisir un profil
+
+Au premier lancement, Outilo vous demande votre profil et installe les extensions correspondantes
+([en savoir plus](/docs/premiers-pas/profils/)).
+</Steps>
+
+<Callout type="info">
+  En V1, l'installateur **n'est pas signé**. Windows SmartScreen affiche « Windows a protégé votre ordinateur » :
+  cliquez sur **Informations complémentaires** puis **Exécuter quand même**.
+</Callout>
+
+## Mises à jour
+
+- **L'application** vérifie ses mises à jour au démarrage et vous propose de les installer.
+- **Chaque extension** se met à jour séparément, sans redémarrer l'application. Voir
+  [Publication & mises à jour](/docs/extensions/publication/).
+
+## Où sont mes données ?
+
+| Contenu | Emplacement |
+| --- | --- |
+| Réglages, thèmes | `%APPDATA%\Outilo\` |
+| Extensions installées | `%APPDATA%\Outilo\extensions\<id>\<version>\` |
+| Données des extensions (clé/valeur, SQLite) | `%APPDATA%\Outilo\data\<id>\` |
+| Journaux | `%LOCALAPPDATA%\Outilo\logs\` |
+
+Désinstaller Outilo depuis les Paramètres Windows supprime l'application ; une case permet aussi d'effacer ces dossiers.

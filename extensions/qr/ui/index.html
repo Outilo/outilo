@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .layout { display: grid; grid-template-columns: 1fr 300px; gap: 16px; align-items: start; }
+    .code { background: var(--o-surface); border: 1px solid var(--o-border); border-radius: var(--o-radius); padding: 16px; display: grid; place-items: center; }
+    .code svg { width: 260px; height: 260px; display: block; }
+    .hidden { display: none !important; }
+    .o-input.color { width: 56px; padding: 2px; height: 34px; }
+    @media (max-width: 760px) { .layout { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">QR code</h1>
+    <p class="o-sub" data-i18n="subtitle">Lien, texte, Wi-Fi ou e-mail ; export PNG ou SVG.</p>
+  </div>
+
+  <div class="layout">
+    <div class="o-stack">
+      <div class="o-row" id="kinds">
+        <button class="o-chip on" data-kind="text" data-i18n="kText">Texte / lien</button>
+        <button class="o-chip" data-kind="wifi">Wi-Fi</button>
+        <button class="o-chip" data-kind="email" data-i18n="kEmail">E-mail</button>
+      </div>
+
+      <div class="o-panel o-stack" style="gap:10px" data-form="text">
+        <textarea class="o-textarea" id="text" spellcheck="false" style="min-height:110px">https://github.com/Outilo/outilo</textarea>
+      </div>
+      <div class="o-panel o-stack hidden" style="gap:10px" data-form="wifi">
+        <input class="o-input" id="ssid" data-i18n-placeholder="ssid">
+        <input class="o-input" id="wpass" data-i18n-placeholder="wpass">
+        <div class="o-row">
+          <select class="o-select" id="security"><option value="WPA">WPA / WPA2 / WPA3</option><option value="WEP">WEP</option><option value="nopass" data-i18n="open">Ouvert</option></select>
+          <label class="o-check"><input type="checkbox" id="hidden"> <span data-i18n="hiddenNet">Réseau masqué</span></label>
+        </div>
+      </div>
+      <div class="o-panel o-stack hidden" style="gap:10px" data-form="email">
+        <input class="o-input" id="to" data-i18n-placeholder="to">
+        <input class="o-input" id="subject" data-i18n-placeholder="subject">
+        <textarea class="o-textarea" id="body" data-i18n-placeholder="body" style="min-height:70px"></textarea>
+      </div>
+
+      <div class="o-panel o-row">
+        <label class="o-check"><span data-i18n="ecc">Correction</span>
+          <select class="o-select" id="ecc"><option value="L">L 7 %</option><option value="M" selected>M 15 %</option><option value="Q">Q 25 %</option><option value="H">H 30 %</option></select>
+        </label>
+        <label class="o-check"><span data-i18n="size">Taille</span>
+          <select class="o-select" id="px"><option>256</option><option selected>512</option><option>1024</option><option>2048</option></select>
+        </label>
+        <label class="o-check"><span data-i18n="fg">Encre</span><input class="o-input color" type="color" id="fg" value="#000000"></label>
+        <label class="o-check"><span data-i18n="bg">Fond</span><input class="o-input color" type="color" id="bg" value="#ffffff"></label>
+      </div>
+      <p class="o-sub" id="status" style="margin:0"></p>
+    </div>
+
+    <div class="o-stack">
+      <div class="code" id="code"></div>
+      <div class="o-row">
+        <button class="o-btn o-grow" id="png" data-i18n="png">Enregistrer PNG</button>
+        <button class="o-btn o-grow" id="svg" data-i18n="svg">Enregistrer SVG</button>
+      </div>
+      <button class="o-btn" id="copy" data-i18n="copy">Copier le contenu encodé</button>
+    </div>
+  </div>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="vendor/qrcode.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

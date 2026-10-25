@@ -1,0 +1,36 @@
+# Installateur Windows (non signé en V1) attaché à la Release `v0.5.0` quand on pousse ce tag.
+name: Application
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      - run: npm ci
+      - run: npm run app:build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: installateur
+          path: src-tauri/target/release/bundle/nsis/*.exe
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: gh release create "$GITHUB_REF_NAME" src-tauri/target/release/bundle/nsis/*.exe --title "Outilo ${GITHUB_REF_NAME#v}" --notes "Installateur Windows non signé (V1 interne) : SmartScreen demandera « Exécuter quand même »." --latest

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .top { display: grid; grid-template-columns: 180px 1fr; gap: 16px; }
+    .swatch { border-radius: var(--o-radius); border: 1px solid var(--o-border); min-height: 180px; display: grid; place-items: center; font-family: var(--o-font-mono); font-size: 15px; position: relative; overflow: hidden; }
+    .swatch input[type=color] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    td.k { color: var(--o-muted); font-family: var(--o-font-ui); width: 90px; }
+    td.v { width: 100%; }
+    .chips { display: flex; gap: 0; border-radius: var(--o-radius); overflow: hidden; border: 1px solid var(--o-border); }
+    .chips button { flex: 1; height: 56px; border: 0; cursor: pointer; font: 11px var(--o-font-mono); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px; }
+    .preview { border-radius: var(--o-radius); padding: 16px; border: 1px solid var(--o-border); }
+    .preview .big { font-size: 22px; font-weight: 600; }
+    .hidden { display: none !important; }
+    @media (max-width: 700px) { .top { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Couleurs</h1>
+    <p class="o-sub" data-i18n="subtitle">Conversions HEX, RGB, HSL, OKLCH, contraste WCAG et palettes.</p>
+  </div>
+
+  <div class="o-stack">
+    <div class="top">
+      <div class="swatch" id="swatch"><span id="swatchText"></span><input type="color" id="native"></div>
+      <div class="o-stack" style="gap:10px">
+        <div class="o-row">
+          <input class="o-input o-grow" id="input" spellcheck="false" value="#f59e0b">
+          <button class="o-btn hidden" id="pick" data-i18n="pick">Pipette</button>
+        </div>
+        <div class="o-panel o-panel--flush"><table class="o-table"><tbody id="formats"></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="o-panel o-stack" style="gap:12px">
+      <span class="o-label" style="margin:0" data-i18n="contrast">Contraste</span>
+      <div class="o-row">
+        <label class="o-check"><span data-i18n="against">Avec</span><input class="o-input" id="other" spellcheck="false" value="#ffffff" style="width:150px"></label>
+        <label class="o-check"><input type="checkbox" id="asText"> <span data-i18n="asText">La couleur est celle du texte</span></label>
+        <span class="o-spacer"></span>
+        <strong id="ratio" style="font-family:var(--o-font-mono);font-size:18px"></strong>
+      </div>
+      <div class="preview" id="preview"><div class="big" data-i18n="sampleBig">Titre d’exemple</div><div data-i18n="sampleSmall">Texte courant pour juger de la lisibilité.</div></div>
+      <div class="o-row" id="badges"></div>
+    </div>
+
+    <div class="o-stack" style="gap:8px">
+      <div class="o-row" id="kinds">
+        <button class="o-chip on" data-kind="shades" data-i18n="shades">Nuances</button>
+        <button class="o-chip" data-kind="complementary" data-i18n="complementary">Complémentaire</button>
+        <button class="o-chip" data-kind="analogous" data-i18n="analogous">Analogues</button>
+        <button class="o-chip" data-kind="triadic" data-i18n="triadic">Triadique</button>
+        <span class="o-spacer"></span>
+        <button class="o-btn o-btn--sm" id="copyCss" data-i18n="copyCss">Copier en variables CSS</button>
+      </div>
+      <div class="chips" id="palette"></div>
+    </div>
+  </div>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

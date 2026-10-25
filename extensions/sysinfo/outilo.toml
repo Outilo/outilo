@@ -1,0 +1,22 @@
+[extension]
+id = "outilo.sysinfo"
+name = { fr = "Infos système", en = "System info" }
+description = { fr = "OS, processeur, mémoire, disques, carte graphique ; résumé pour un ticket de support", en = "OS, processor, memory, disks, graphics card; summary for a support ticket" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["systeme"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[[commands]]
+id = "copy-summary"
+title = { fr = "Copier le résumé système", en = "Copy the system summary" }
+
+[permissions]
+system.info = true
+clipboard = true
+files.save = true

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .now { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .now div { cursor: pointer; }
+    .now strong { display: block; font-family: var(--o-font-mono); font-size: 17px; font-weight: 500; margin-top: 4px; }
+    td.k { color: var(--o-muted); font-family: var(--o-font-ui); width: 220px; }
+    td.v { white-space: normal; word-break: break-all; }
+    td.c { width: 1%; }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Timestamps</h1>
+    <p class="o-sub" data-i18n="subtitle">Unix ⇄ date lisible, ISO 8601, RFC 2822, fuseaux horaires.</p>
+  </div>
+
+  <div class="o-stack">
+    <div class="o-panel now" id="now">
+      <div data-copy="unix"><span class="o-label" style="margin:0" data-i18n="nowUnix">Maintenant (Unix)</span><strong id="nowUnix"></strong></div>
+      <div data-copy="ms"><span class="o-label" style="margin:0" data-i18n="nowMs">Millisecondes</span><strong id="nowMs"></strong></div>
+      <div data-copy="iso"><span class="o-label" style="margin:0">ISO 8601</span><strong id="nowIso" style="font-size:14px"></strong></div>
+    </div>
+
+    <div class="o-panel o-stack" style="gap:12px">
+      <div class="o-row">
+        <input class="o-input o-grow" id="input" spellcheck="false" data-i18n-placeholder="inputHint">
+        <label class="o-check"><span data-i18n="zone">Fuseau</span>
+          <select class="o-select" id="zone"></select>
+        </label>
+        <button class="o-btn" id="nowBtn" data-i18n="now">Maintenant</button>
+      </div>
+      <p class="o-sub" id="status" style="margin:0"></p>
+    </div>
+
+    <div class="o-panel o-panel--flush">
+      <table class="o-table"><tbody id="rows"></tbody></table>
+    </div>
+
+    <div class="o-panel o-panel--flush">
+      <table class="o-table"><thead><tr><th data-i18n="zones">Autres fuseaux</th><th></th><th data-i18n="offset">Décalage</th></tr></thead><tbody id="zones"></tbody></table>
+    </div>
+  </div>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

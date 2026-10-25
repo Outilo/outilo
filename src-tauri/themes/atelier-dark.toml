@@ -1,0 +1,23 @@
+[meta]
+id = "atelier-dark"
+name = "Atelier sombre"
+mode = "dark"
+
+[colors]
+bg = "#0f1115"
+surface = "#151820"
+surface-2 = "#1c2029"
+border = "#262b36"
+text = "#e6e8ee"
+muted = "#8a91a3"
+accent = "#f59e0b"
+accent-ink = "#1a1204"
+success = "#34d399"
+danger = "#f87171"
+
+[shape]
+radius = "8px"
+
+[font]
+ui = "'Inter Variable', system-ui, sans-serif"
+mono = "'JetBrains Mono', ui-monospace, monospace"

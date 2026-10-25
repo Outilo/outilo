@@ -1,0 +1,17 @@
+[extension]
+id = "outilo.qr"
+name = { fr = "QR code", en = "QR code" }
+description = { fr = "Générer un QR code (lien, texte, Wi-Fi, e-mail) ; export PNG ou SVG", en = "Generate a QR code (link, text, Wi-Fi, email); PNG or SVG export" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["design", "generateur"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[permissions]
+clipboard = true
+files.save = true

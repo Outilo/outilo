@@ -1,0 +1,6 @@
+{
+  "dev": ["outilo.password", "outilo.fake-user", "outilo.json", "outilo.jwt", "outilo.encoders", "outilo.hash", "outilo.uuid", "outilo.regex", "outilo.timestamps", "outilo.ports"],
+  "design": ["outilo.colors", "outilo.qr", "outilo.lorem", "outilo.fake-user", "outilo.password"],
+  "ops": ["outilo.ports", "outilo.network", "outilo.hash", "outilo.cron", "outilo.sysinfo", "outilo.cleaner"],
+  "daily": ["outilo.cleaner", "outilo.password", "outilo.qr", "outilo.sysinfo"]
+}

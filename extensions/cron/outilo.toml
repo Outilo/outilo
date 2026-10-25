@@ -1,0 +1,17 @@
+[extension]
+id = "outilo.cron"
+name = { fr = "Cron", en = "Cron" }
+description = { fr = "Expression cron ⇄ description lisible, prochaines exécutions", en = "Cron expression ⇄ readable description, next runs" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["code", "systeme"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[permissions]
+clipboard = true
+storage = true

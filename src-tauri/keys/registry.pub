@@ -1,0 +1,2 @@
+# Clés publiques ed25519 (base64) acceptées pour les paquets d'extensions du registre.
+# Une clé par ligne. Générer la paire avec : npm run keygen (la clé privée ne quitte jamais votre machine / les secrets GitHub).

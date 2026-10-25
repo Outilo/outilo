@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    #expr { font-family: var(--o-font-mono); font-size: 20px; letter-spacing: .04em; }
+    .desc { font-size: 17px; font-weight: 500; }
+    .fields { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; text-align: center; }
+    .fields div { background: var(--o-bg); border: 1px solid var(--o-border); border-radius: var(--o-radius); padding: 8px; }
+    .fields code { display: block; font-size: 15px; color: var(--o-accent); }
+    .fields small { color: var(--o-muted); font-size: 11px; }
+    .presets { gap: 6px; }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Cron</h1>
+    <p class="o-sub" data-i18n="subtitle">Expression cron ⇄ description lisible, et prochaines exécutions.</p>
+  </div>
+
+  <div class="o-stack">
+    <div class="o-panel o-stack" style="gap:14px">
+      <div class="o-row">
+        <input class="o-input o-grow" id="expr" spellcheck="false" value="*/15 9-17 * * 1-5">
+        <button class="o-btn" id="copy" data-i18n="copy">Copier</button>
+      </div>
+      <p class="desc" id="desc"></p>
+      <div class="fields" id="fields"></div>
+      <div class="o-row presets" id="presets"></div>
+    </div>
+
+    <div class="o-panel o-panel--flush">
+      <table class="o-table"><thead><tr><th data-i18n="next">Prochaines exécutions</th><th data-i18n="in">Dans</th></tr></thead><tbody id="runs"></tbody></table>
+    </div>
+  </div>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

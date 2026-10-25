@@ -1,0 +1,86 @@
+---
+title: Créer une extension (TypeScript)
+---
+
+import { Callout, Steps } from 'nextra/components'
+
+# Créer une extension en TypeScript
+
+<Callout type="warning">
+  Le SDK est en cours de conception : les noms de fonctions ci-dessous sont indicatifs.
+</Callout>
+
+<Steps>
+### Partir du modèle
+
+```bash
+npx degit outilo/extension-template mon-extension
+cd mon-extension
+npm install
+```
+
+### Décrire l'extension
+
+```toml filename="outilo.toml"
+[extension]
+id = "acme.slugify"
+name = "Slugify"
+version = "0.1.0"
+api = "1"
+license = "Apache-2.0"
+categories = ["texte"]
+
+[permissions]
+clipboard = "write"
+```
+
+### Écrire l'interface
+
+```html filename="ui/index.html"
+<label>Texte <input id="src" class="o-input" /></label>
+<output id="out" class="o-output"></output>
+<button id="copy" class="o-btn o-btn--primary">Copier</button>
+<script type="module" src="./main.ts"></script>
+```
+
+```ts filename="ui/main.ts"
+import { clipboard, toast } from '@outilo/sdk'
+
+const src = document.querySelector<HTMLInputElement>('#src')!
+const out = document.querySelector<HTMLOutputElement>('#out')!
+
+const slugify = (s: string) =>
+  s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+
+src.addEventListener('input', () => (out.value = slugify(src.value)))
+
+document.querySelector('#copy')!.addEventListener('click', async () => {
+  await clipboard.write(out.value)
+  toast('Copié')
+})
+```
+
+Les classes `o-*` viennent de `@outilo/ui` et utilisent les tokens du thème.
+
+### Tester en direct
+
+```bash
+npm run dev
+```
+
+Dans Outilo : **Paramètres → Mode développeur → Charger un dossier**. L'extension se recharge à chaque
+enregistrement.
+
+### Empaqueter
+
+```bash
+npm run pack   # produit acme.slugify-0.1.0.outilo
+```
+</Steps>
+
+## Bonnes pratiques
+
+- Demandez **le minimum de permissions**.
+- Fournissez `locales/fr.json` et `locales/en.json`.
+- N'utilisez que les tokens du thème pour les couleurs (pas de couleurs en dur).
+- Tenez à jour `README.md` et `CLAUDE.md`.

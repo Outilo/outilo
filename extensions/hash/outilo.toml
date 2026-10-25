@@ -1,0 +1,16 @@
+[extension]
+id = "outilo.hash"
+name = { fr = "Hash", en = "Hash" }
+description = { fr = "MD5, SHA-1/256/384/512, HMAC et bcrypt ; texte ou fichier, avec vérification", en = "MD5, SHA-1/256/384/512, HMAC and bcrypt; text or file, with verification" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["securite", "code"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[permissions]
+clipboard = true

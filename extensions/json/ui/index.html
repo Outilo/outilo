@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .panes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .panes .o-textarea, .panes .o-pre { height: calc(100vh - 300px); min-height: 220px; resize: none; }
+    .status { font-size: 12.5px; min-height: 18px; }
+    @media (max-width: 760px) { .panes { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">JSON</h1>
+    <p class="o-sub" data-i18n="subtitle">Collez du JSON (ou du YAML) : il est validé à la frappe.</p>
+  </div>
+
+  <div class="o-stack">
+    <div class="o-row">
+      <div class="o-row" id="modes">
+        <button class="o-chip on" data-mode="format" data-i18n="format">Formater</button>
+        <button class="o-chip" data-mode="minify" data-i18n="minify">Minifier</button>
+        <button class="o-chip" data-mode="yaml" data-i18n="toYaml">JSON → YAML</button>
+        <button class="o-chip" data-mode="fromYaml" data-i18n="fromYaml">YAML → JSON</button>
+      </div>
+      <span class="o-spacer"></span>
+      <label class="o-check"><span data-i18n="indent">Indentation</span>
+        <select class="o-select" id="indent"><option value="2">2</option><option value="4">4</option><option value="tab" data-i18n="tab">Tabulation</option></select>
+      </label>
+      <label class="o-check"><input type="checkbox" id="sort"> <span data-i18n="sort">Trier les clés</span></label>
+    </div>
+
+    <div class="panes">
+      <textarea class="o-textarea" id="input" spellcheck="false" data-i18n-placeholder="placeholder"></textarea>
+      <pre class="o-pre" id="output"></pre>
+    </div>
+
+    <div class="o-row">
+      <span class="status" id="status"></span>
+      <span class="o-spacer"></span>
+      <button class="o-btn o-btn--sm" id="sample" data-i18n="sample">Exemple</button>
+      <button class="o-btn o-btn--sm" id="clear" data-i18n="clear">Effacer</button>
+      <button class="o-btn o-btn--sm" id="save" data-i18n="save">Enregistrer</button>
+      <button class="o-btn o-btn--sm o-btn--primary" id="copy" data-i18n="copy">Copier le résultat</button>
+    </div>
+  </div>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="vendor/js-yaml.min.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

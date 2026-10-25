@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outilo — Maquette C · Lanceur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --glass:rgba(22,20,30,.82); --line:rgba(255,255,255,.08); --hover:rgba(255,255,255,.06); --text:#ecebf3; --muted:#9a97ab;
+  --accent:#a78bfa; --accent-ink:#140f24; --ok:#4ade80; --radius:10px;
+  --font:'Geist',system-ui,sans-serif; --mono:'Geist Mono',ui-monospace,monospace;
+}
+:root[data-theme="light"]{--glass:rgba(250,250,252,.86);--line:rgba(0,0,0,.08);--hover:rgba(0,0,0,.05);--text:#17151f;--muted:#6b6880;--accent-ink:#fff}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font-family:var(--font);color:var(--text);display:grid;place-items:center;padding:24px;
+  background:radial-gradient(circle at 20% 20%,#3b2a6b 0,transparent 45%),radial-gradient(circle at 80% 70%,#0e4a5c 0,transparent 45%),#0b0a12}
+.note{position:fixed;top:8px;left:50%;transform:translateX(-50%);font-size:12px;color:#9a97ab}
+.hint{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);font-size:12px;color:#9a97ab}
+.pal{width:min(780px,100%);height:min(540px,calc(100vh - 80px));background:var(--glass);backdrop-filter:blur(30px) saturate(1.4);border:1px solid var(--line);border-radius:16px;box-shadow:0 40px 120px rgba(0,0,0,.6);display:grid;grid-template-rows:56px 1fr 40px;overflow:hidden}
+.bar{display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--line)}
+.back{display:none;font-size:12px;border:1px solid var(--line);border-radius:6px;padding:3px 8px;color:var(--muted);cursor:pointer}
+.bar input{flex:1;background:none;border:0;outline:0;color:var(--text);font:inherit;font-size:17px}
+.bar input::placeholder{color:var(--muted)}
+.crumbtag{display:none;font-size:12px;padding:3px 9px;border-radius:6px;background:color-mix(in srgb,var(--accent) 22%,transparent);color:var(--accent);font-weight:600}
+.body{overflow:auto;min-height:0}
+.list{padding:8px}
+.grp{font-size:11.5px;color:var(--muted);font-weight:600;padding:10px 10px 6px}
+.it{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:var(--radius);cursor:pointer;font-size:14px}
+.it .ic{width:28px;height:28px;border-radius:7px;display:grid;place-items:center;font-size:14px;background:var(--hover);flex:none}
+.it .d{color:var(--muted);font-size:13px}
+.it .k{margin-left:auto;font-size:12px;color:var(--muted)}
+.it.sel{background:var(--hover);box-shadow:inset 0 0 0 1px var(--line)}
+.it.sel .ic{background:var(--accent);color:var(--accent-ink)}
+.foot{display:flex;align-items:center;gap:14px;padding:0 14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+.foot .logo{display:flex;align-items:center;gap:8px;color:var(--text);font-weight:600}
+.foot .logo i{width:18px;height:18px;border-radius:5px;background:var(--accent);display:block}
+.foot .r{margin-left:auto;display:flex;gap:14px}
+kbd{font-family:var(--mono);font-size:10.5px;padding:1px 5px;border-radius:4px;background:var(--hover);border:1px solid var(--line);color:var(--text)}
+.tool{display:none;padding:22px}
+.tool.on{display:block}
+.out{font-family:var(--mono);font-size:20px;padding:18px;border-radius:12px;background:var(--hover);border:1px solid var(--line);word-break:break-all;text-align:center;letter-spacing:.02em}
+.meta{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin-top:10px}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.pill{font-size:12.5px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--muted);cursor:pointer;user-select:none}
+.pill.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+input[type=range]{width:100%;accent-color:var(--accent);margin-top:16px}
+.btn{font:inherit;font-size:13px;font-weight:600;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--hover);color:var(--text);cursor:pointer}
+.btn.p{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.rows{margin-top:14px;font-family:var(--mono);font-size:12.5px}
+.rows div{display:grid;grid-template-columns:1.2fr 1.6fr 1fr .8fr;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer}
+.rows div:hover{background:var(--hover)}
+.rows div span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rows .h{color:var(--muted);font-family:var(--font);font-size:11.5px;font-weight:600;cursor:default}
+.rows .h:hover{background:none}
+.store{display:none;grid-template-columns:1fr 1.1fr;height:100%}
+.store.on{display:grid}
+.store .list{border-right:1px solid var(--line);overflow:auto}
+.detail{padding:22px;overflow:auto}
+.detail .big{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;font-size:26px;background:var(--accent);color:var(--accent-ink)}
+.detail h2{font-size:20px;margin-top:14px}
+.detail p{color:var(--muted);font-size:13.5px;line-height:1.6;margin-top:8px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:12.5px;margin-top:16px}
+.kv dt{color:var(--muted)}
+.perm{margin-top:16px;padding:12px;border-radius:10px;border:1px solid var(--line);font-size:12.5px;line-height:1.7}
+.toast{position:fixed;top:40px;left:50%;transform:translateX(-50%) translateY(-10px);opacity:0;background:var(--accent);color:var(--accent-ink);font-size:13px;font-weight:600;padding:8px 14px;border-radius:8px;transition:.2s}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.swatches{display:flex;gap:10px;margin-top:10px}
+.sw{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid transparent}
+.sw.on{border-color:var(--text)}
+pre{font-family:var(--mono);font-size:12px;color:var(--muted);background:var(--hover);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:14px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="note">Maquette C — « Lanceur » : palette de commandes au clavier (style Raycast/Spotlight), appelée par raccourci global</div>
+<div class="pal">
+  <div class="bar">
+    <span class="back" id="back" onclick="home()">← Esc</span>
+    <span class="crumbtag" id="tag"></span>
+    <input id="q" placeholder="Que voulez-vous faire ?" autocomplete="off" autofocus>
+  </div>
+  <div class="body">
+    <div class="list" id="list"></div>
+    <div class="tool" id="t-pwd">
+      <div class="out" id="pwd">—</div>
+      <div class="meta"><span id="ent"></span><span>↵ copier · ⌘R régénérer</span></div>
+      <input type="range" min="4" max="64" value="20" id="len" oninput="genPwd()">
+      <div class="pills" id="sets"><span class="pill on" data-s="upper">A–Z</span><span class="pill on" data-s="lower">a–z</span><span class="pill on" data-s="digits">0–9</span><span class="pill on" data-s="symbols">!@#</span><span class="pill" data-s="nosimilar">Sans ambigus</span></div>
+      <div style="display:flex;gap:8px;margin-top:20px"><button class="btn p" onclick="copy(pwd.textContent)">Copier</button><button class="btn" onclick="genPwd()">Régénérer</button></div>
+    </div>
+    <div class="tool" id="t-user">
+      <div style="display:flex;gap:8px;align-items:center"><button class="btn p" onclick="genUsers()">Générer 8</button><button class="btn">🇫🇷 FR</button><span style="flex:1"></span><button class="btn" onclick="toast('JSON copié')">Copier JSON</button><button class="btn" onclick="toast('Export CSV')">CSV</button></div>
+      <div class="rows" id="users"></div>
+    </div>
+    <div class="store" id="t-store"><div class="list" id="slist"></div><div class="detail" id="sdet"></div></div>
+    <div class="tool" id="t-theme">
+      <b>Accent</b><div class="swatches" id="sw"></div>
+      <div class="pills"><span class="pill on" onclick="mode('dark',this)">Sombre</span><span class="pill" onclick="mode('light',this)">Clair</span><span class="pill" onclick="toast('Import theme.toml…')">Importer…</span></div>
+      <pre>[colors]
+glass  = "rgba(22,20,30,.82)"
+accent = "<span id="acc">#a78bfa</span>"
+
+[css]
+# Niveau avancé : feuille de style personnalisée
+custom = "~/.outilo/themes/mon-theme.css"</pre>
+    </div>
+  </div>
+  <div class="foot">
+    <span class="logo"><i></i>Outilo</span>
+    <span id="hintL">2 extensions · hors-ligne</span>
+    <span class="r"><span><kbd>↑</kbd><kbd>↓</kbd> naviguer</span><span><kbd>↵</kbd> ouvrir</span><span><kbd>Esc</kbd> retour</span></span>
+  </div>
+</div>
+<div class="hint">Raccourci global prévu : <kbd>Alt</kbd> + <kbd>Espace</kbd> — tapez « mot », « user », « ext », « thème »…</div>
+<div class="toast" id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const ITEMS=[
+ {g:'Outils',ic:'🔐',n:'Générateur de mots de passe',d:'Sécurité',k:'Intégré',go:'pwd'},
+ {g:'Outils',ic:'👤',n:'Utilisateurs fictifs',d:'Données de test',k:'Intégré',go:'user'},
+ {g:'Outils',ic:'🔑',n:'Décoder un JWT',d:'Code',k:'Intégré'},
+ {g:'Outils',ic:'#',n:'Hash Text',d:'SHA-256, bcrypt…',k:'Extension'},
+ {g:'Outils',ic:'⏱',n:'Crontab',d:'Expressions cron',k:'Extension'},
+ {g:'Actions rapides',ic:'⚡',n:'Copier un UUID v4',d:'Directement dans le presse-papiers',k:'↵',act:()=>copy(crypto.randomUUID())},
+ {g:'Actions rapides',ic:'⚡',n:'Copier un mot de passe de 24 caractères',d:'',k:'↵',act:()=>{$('#len').value=24;genPwd();copy($('#pwd').textContent)}},
+ {g:'Outilo',ic:'🧩',n:'Parcourir les extensions',d:'128 disponibles',k:'',go:'store'},
+ {g:'Outilo',ic:'🎨',n:'Changer de thème',d:'',k:'',go:'theme'},
+ {g:'Outilo',ic:'⚙',n:'Paramètres',d:'',k:''},
+];
+let sel=0,view='list',shown=[];
+function render(){const q=$('#q').value.toLowerCase();shown=ITEMS.filter(i=>(i.n+' '+i.d+' '+i.g).toLowerCase().includes(q));
+  sel=Math.min(sel,Math.max(0,shown.length-1));let g='',h='';
+  shown.forEach((it,i)=>{if(it.g!==g){g=it.g;h+=`<div class="grp">${g}</div>`}h+=`<div class="it ${i===sel?'sel':''}" data-i="${i}"><span class="ic">${it.ic}</span>${it.n}<span class="d">${it.d}</span><span class="k">${it.k}</span></div>`});
+  $('#list').innerHTML=h||'<div class="grp">Aucun résultat — chercher « '+q+' » dans les extensions ?</div>';
+  $$('.it').forEach(e=>{e.onclick=()=>{sel=+e.dataset.i;open()};e.onmousemove=()=>{if(sel!==+e.dataset.i){sel=+e.dataset.i;render()}}})}
+const TITLES={pwd:'Mots de passe',user:'Utilisateurs',store:'Extensions',theme:'Thème'};
+function open(){const it=shown[sel];if(!it)return;if(it.act){it.act();return}if(!it.go){toast(it.n+' — à venir');return}
+  view=it.go;$('#list').style.display='none';$$('.tool,.store').forEach(e=>e.classList.remove('on'));$('#t-'+view).classList.add('on');
+  $('#back').style.display=$('#tag').style.display='inline-block';$('#tag').textContent=TITLES[view];$('#q').value='';$('#q').placeholder=view==='store'?'Rechercher une extension…':'Filtrer…'}
+function home(){view='list';$$('.tool,.store').forEach(e=>e.classList.remove('on'));$('#list').style.display='block';$('#back').style.display=$('#tag').style.display='none';$('#q').placeholder='Que voulez-vous faire ?';$('#q').value='';render();$('#q').focus()}
+$('#q').addEventListener('input',()=>{if(view==='list'){sel=0;render()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){home();return}if(view!=='list')return;
+  if(e.key==='ArrowDown'){sel=Math.min(sel+1,shown.length-1);render();e.preventDefault()}
+  if(e.key==='ArrowUp'){sel=Math.max(sel-1,0);render();e.preventDefault()}
+  if(e.key==='Enter')open()});
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),1300)}
+function copy(t){navigator.clipboard?.writeText(t);toast('Copié ✓')}
+function mode(m,el){document.documentElement.dataset.theme=m;el.parentElement.querySelectorAll('.pill').forEach((p,i)=>i<2&&p.classList.toggle('on',p===el))}
+const rnd=n=>{const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]%n};
+const SETS={upper:'ABCDEFGHIJKLMNOPQRSTUVWXYZ',lower:'abcdefghijklmnopqrstuvwxyz',digits:'0123456789',symbols:'!@#$%^&*()-_=+[]{};:,.?/'};
+$$('#sets .pill').forEach(p=>p.onclick=()=>{p.classList.toggle('on');genPwd()});
+function genPwd(){const on=$$('#sets .pill.on').map(p=>p.dataset.s);let pool=on.filter(s=>SETS[s]).map(s=>SETS[s]).join('');if(on.includes('nosimilar'))pool=pool.replace(/[0Ol1I]/g,'');if(!pool)pool=SETS.lower;
+  const n=+$('#len').value;$('#pwd').textContent=Array.from({length:n},()=>pool[rnd(pool.length)]).join('');const b=Math.round(n*Math.log2(pool.length));$('#ent').textContent=`${n} caractères · ${b} bits · ${b<50?'faible':b<80?'correct':b<110?'fort':'très fort'}`}
+const FN=['Camille','Lucas','Léa','Hugo','Chloé','Nathan','Manon','Louis','Inès','Jules'],LN=['Martin','Bernard','Dubois','Thomas','Robert','Petit','Durand','Leroy'],CT=['Paris','Lyon','Nantes','Bordeaux','Lille','Rennes'];
+const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+function genUsers(){$('#users').innerHTML='<div class="h"><span>Nom</span><span>E-mail</span><span>Téléphone</span><span>Ville</span></div>'+Array.from({length:8},()=>{const f=FN[rnd(FN.length)],l=LN[rnd(LN.length)];return `<div onclick="toast('Ligne copiée')"><span>${f} ${l}</span><span>${norm(f)}.${norm(l)}@exemple.fr</span><span>06 ${[1,2,3,4].map(()=>String(rnd(100)).padStart(2,'0')).join(' ')}</span><span>${CT[rnd(CT.length)]}</span></div>`}).join('')}
+const EXT=[['🗄','SQL Runner','Équipe Outilo','4,99 €','Exécutez vos requêtes Postgres, MySQL et SQLite sans quitter Outilo. Historique, export CSV, connexions chiffrées.','Réseau (hôtes configurés) · Fichiers (sélection)'],['▦','QR Code','Communauté','Gratuit','Générez des QR codes (URL, Wi-Fi, vCard) et lisez-les depuis une image.','Presse-papiers'],['🧾','Factures','Équipe Outilo','9,99 €','Factures PDF conformes, numérotation automatique, clients enregistrés.','Fichiers (dossier choisi)'],['🐳','Docker Converter','@kev','Gratuit','Convertit une commande docker run en docker-compose.yml et inversement.','Aucune'],['📡','Pinger','Communauté','Gratuit','Ping, résolution DNS et traceroute.','Réseau (tous hôtes)'],['🎨','Thème Nord','@arctic','Gratuit','La palette Nord, version sombre et claire.','Aucune (thème)']];
+$('#slist').innerHTML=EXT.map((e,i)=>`<div class="it ${i?'':'sel'}" data-i="${i}"><span class="ic">${e[0]}</span>${e[1]}<span class="k" style="color:${e[3]==='Gratuit'?'var(--ok)':'inherit'}">${e[3]}</span></div>`).join('');
+function det(i){const e=EXT[i];$('#sdet').innerHTML=`<div class="big">${e[0]}</div><h2>${e[1]}</h2><div style="font-size:12.5px;color:var(--muted);margin-top:4px">par ${e[2]} · ★ 4.7 · 2,1 k installations</div><p>${e[4]}</p><dl class="kv"><dt>Version</dt><dd>1.2.0</dd><dt>Source</dt><dd style="font-family:var(--mono)">github.com/outilo-dev/${e[1].toLowerCase().replace(/ /g,'-')}</dd><dt>Signature</dt><dd style="color:var(--ok)">✓ vérifiée</dd></dl><div class="perm"><b>Permissions demandées</b><br>${e[5]}</div><div style="display:flex;gap:8px;margin-top:18px"><button class="btn p" onclick="toast('Installation…')">${e[3]==='Gratuit'?'Installer':'Acheter · '+e[3]}</button><button class="btn">Voir le code</button></div>`}
+$$('#slist .it').forEach(el=>el.onclick=()=>{$$('#slist .it').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');det(+el.dataset.i)});det(0);
+const AC=['#a78bfa','#f472b6','#fb923c','#facc15','#4ade80','#22d3ee','#60a5fa'];
+$('#sw').innerHTML=AC.map((c,i)=>`<div class="sw ${i?'':'on'}" style="background:${c}" data-c="${c}"></div>`).join('');
+$$('.sw').forEach(s=>s.onclick=()=>{$$('.sw').forEach(x=>x.classList.remove('on'));s.classList.add('on');document.documentElement.style.setProperty('--accent',s.dataset.c);$('#acc').textContent=s.dataset.c});
+render();genPwd();genUsers();
+</script>
+</body>
+</html>

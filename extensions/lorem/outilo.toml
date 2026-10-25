@@ -1,0 +1,20 @@
+[extension]
+id = "outilo.lorem"
+name = { fr = "Lorem ipsum", en = "Lorem ipsum" }
+description = { fr = "Texte de remplissage en latin, français ou anglais ; texte, HTML ou Markdown", en = "Placeholder text in Latin, French or English; text, HTML or Markdown" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["design", "texte", "generateur"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[[commands]]
+id = "copy-paragraph"
+title = { fr = "Copier un paragraphe de lorem ipsum", en = "Copy a lorem ipsum paragraph" }
+
+[permissions]
+clipboard = true

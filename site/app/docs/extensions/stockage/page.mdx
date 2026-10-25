@@ -1,0 +1,40 @@
+---
+title: Stockage & SQLite
+---
+
+# Stockage & SQLite
+
+Chaque extension dispose d'un espace privé dans `%APPDATA%\Outilo\data\<id>\`. Aucune extension ne peut lire
+les données d'une autre.
+
+## Clé / valeur
+
+Pour les réglages et petits états (permission `storage`) :
+
+```ts
+import { storage } from '@outilo/sdk'
+
+await storage.set('longueur', 24)
+const longueur = (await storage.get<number>('longueur')) ?? 20
+```
+
+## SQLite
+
+Pour les données structurées, par exemple une future extension CRM (permission `storage.sql`) :
+
+```ts
+import { sql } from '@outilo/sdk'
+
+const db = await sql.open() // crée data/<id>/main.sqlite si besoin
+
+await db.migrate([
+  `CREATE TABLE contacts (id INTEGER PRIMARY KEY, nom TEXT NOT NULL, email TEXT)`
+])
+
+await db.execute('INSERT INTO contacts (nom, email) VALUES (?, ?)', ['Ada', 'ada@exemple.fr'])
+const rows = await db.select<{ id: number; nom: string }>('SELECT id, nom FROM contacts')
+```
+
+- Requêtes **paramétrées** uniquement (`?`).
+- Migrations versionnées, appliquées dans l'ordre au chargement.
+- Désinstaller l'extension propose de supprimer sa base.

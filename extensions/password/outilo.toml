@@ -1,0 +1,25 @@
+[extension]
+id = "outilo.password"
+name = { fr = "Mots de passe", en = "Passwords" }
+description = { fr = "Mots de passe et phrases de passe robustes, entropie en direct", en = "Strong passwords and passphrases with live entropy" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["securite", "generateur"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[[commands]]
+id = "copy-24"
+title = { fr = "Copier un mot de passe de 24 caractères", en = "Copy a 24-character password" }
+
+[[commands]]
+id = "passphrase"
+title = { fr = "Générer une phrase de passe", en = "Generate a passphrase" }
+
+[permissions]
+clipboard = true
+storage = true

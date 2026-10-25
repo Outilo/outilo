@@ -1,0 +1,17 @@
+[extension]
+id = "outilo.regex"
+name = { fr = "Regex", en = "Regex" }
+description = { fr = "Testeur d'expressions régulières : surlignage, groupes, remplacement, bibliothèque", en = "Regular expression tester: highlighting, groups, replacement, library" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["code", "texte"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[permissions]
+clipboard = true
+storage = true

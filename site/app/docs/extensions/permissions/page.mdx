@@ -1,0 +1,33 @@
+---
+title: API & permissions
+---
+
+import { Callout } from 'nextra/components'
+
+# API & permissions
+
+Une extension n'accède au système que via l'API Outilo, et seulement pour les permissions déclarées dans son
+manifeste. Elles sont affichées avant l'installation et redemandées si une mise à jour en ajoute.
+
+| Permission | Accès | Sensible |
+| --- | --- | --- |
+| `clipboard` | Lire / écrire le presse-papiers | non |
+| `storage` | Stockage clé/valeur propre à l'extension | non |
+| `storage.sql` | Base SQLite propre à l'extension | non |
+| `files.pick` | Fichiers choisis par l'utilisateur via une boîte de dialogue | non |
+| `system.info` | Informations OS, CPU, RAM, disques | non |
+| `network` | HTTP vers les domaines déclarés | moyen |
+| `files.scoped` | Lecture/suppression dans des dossiers déclarés **du profil utilisateur** | **oui** |
+| `process` | Lister / arrêter des processus de l'utilisateur | **oui** |
+| `shell.safe` | Commandes prédéfinies par Outilo (ex. vider le cache DNS) | **oui** |
+
+```toml
+[permissions]
+network = ["api.github.com"]
+files.scoped = ["%TEMP%", "%LOCALAPPDATA%\\npm-cache"]
+```
+
+<Callout type="important">
+  Outilo ne demande **jamais** de droits administrateur. Les permissions de fichiers sont limitées au profil
+  utilisateur, quoi que déclare le manifeste.
+</Callout>

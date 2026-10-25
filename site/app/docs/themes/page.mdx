@@ -1,0 +1,70 @@
+---
+title: Thèmes
+---
+
+# Thèmes
+
+Outilo est livré avec deux thèmes, **Atelier sombre** et **Atelier clair**. Tout le reste est modifiable, sur
+trois niveaux.
+
+## 1. Réglages
+
+**Paramètres → Apparence** : clair / sombre / système, couleur d'accent libre, arrondis, densité, polices.
+
+## 2. Fichier `theme.toml`
+
+Un thème est une extension sans code. Il définit les **tokens** utilisés par l'application et par toutes les
+extensions.
+
+```toml filename="outilo.toml"
+[extension]
+id = "acme.nord"
+name = "Nord"
+version = "1.0.0"
+api = "1"
+
+[theme]
+file = "theme.toml"
+```
+
+```toml filename="theme.toml"
+[meta]
+mode = "dark"
+
+[colors]
+bg      = "#2e3440"
+surface = "#3b4252"
+border  = "#434c5e"
+text    = "#eceff4"
+muted   = "#a3abbb"
+accent  = "#88c0d0"
+success = "#a3be8c"
+danger  = "#bf616a"
+
+[shape]
+radius = "6px"
+
+[font]
+ui   = "Inter"
+mono = "JetBrains Mono"
+```
+
+Chaque token devient une variable CSS (`--o-color-accent`, `--o-radius`…). Glissez-déposez un `theme.toml` dans
+Outilo pour l'importer.
+
+## 3. CSS libre
+
+Pour aller plus loin, ajoutez une feuille de style chargée après le thème : elle peut cibler n'importe quel
+élément de l'interface.
+
+```toml filename="theme.toml"
+[css]
+file = "custom.css"
+```
+
+```css filename="custom.css"
+.o-statusbar { background: linear-gradient(90deg, var(--o-color-accent), #b48ead); }
+.o-tab[aria-selected="true"] { font-weight: 600; }
+```
+
+L'éditeur intégré (**barre d'activité → Thèmes**) affiche un aperçu en direct et exporte votre thème.

@@ -1,0 +1,131 @@
+/* Identité « Atelier » (maquette A) appliquée au thème Nextra et à la page d'accueil */
+:root {
+  --ol-bg: #f6f7f9;
+  --ol-surface: #ffffff;
+  --ol-surface-2: #eef0f4;
+  --ol-line: #dde1e8;
+  --ol-text: #161a22;
+  --ol-muted: #5d6577;
+  --ol-accent: #d97706;
+  --ol-accent-ink: #ffffff;
+}
+html.dark {
+  --ol-bg: #0f1115;
+  --ol-surface: #151820;
+  --ol-surface-2: #1c2029;
+  --ol-line: #262b36;
+  --ol-text: #e6e8ee;
+  --ol-muted: #8a91a3;
+  --ol-accent: #f59e0b;
+  --ol-accent-ink: #1a1204;
+}
+
+body {
+  font-family: var(--font-ui), system-ui, sans-serif;
+}
+code, kbd, pre {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+.ol-logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -0.01em; }
+.ol-logo-mark {
+  width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center;
+  background: var(--ol-accent); color: var(--ol-accent-ink); font-family: var(--font-mono), monospace; font-size: 14px;
+}
+
+/* ---------- Landing ---------- */
+.ol-landing { max-width: 1180px; margin: 0 auto; padding: 0 24px 80px; color: var(--ol-text); }
+.ol-hero { display: grid; grid-template-columns: 1fr 1.15fr; gap: 48px; align-items: center; padding: 72px 0 56px; }
+.ol-badge {
+  display: inline-block; font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 999px;
+  border: 1px solid var(--ol-line); color: var(--ol-accent); background: color-mix(in srgb, var(--ol-accent) 10%, transparent);
+}
+.ol-hero h1 { font-size: clamp(34px, 5vw, 54px); line-height: 1.05; letter-spacing: -0.035em; font-weight: 700; margin: 18px 0 16px; }
+.ol-hero h1 span { color: var(--ol-accent); }
+.ol-hero p { color: var(--ol-muted); font-size: 17px; line-height: 1.6; max-width: 520px; }
+.ol-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.ol-meta { font-size: 13px !important; margin-top: 16px; }
+.ol-btn {
+  display: inline-flex; align-items: center; font-size: 14px; font-weight: 600; padding: 11px 18px; border-radius: 8px;
+  border: 1px solid var(--ol-line); background: var(--ol-surface); color: var(--ol-text); transition: border-color .15s;
+}
+.ol-btn:hover { border-color: var(--ol-muted); }
+.ol-btn.primary { background: var(--ol-accent); border-color: var(--ol-accent); color: var(--ol-accent-ink); }
+
+.ol-section { padding: 48px 0 8px; }
+.ol-section h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 20px; }
+.ol-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.ol-card { background: var(--ol-surface); border: 1px solid var(--ol-line); border-radius: 10px; padding: 20px; }
+.ol-card h3 { font-size: 15px; font-weight: 600; margin: 10px 0 6px; }
+.ol-card p { color: var(--ol-muted); font-size: 14px; line-height: 1.55; }
+.ol-icon {
+  display: inline-grid; place-items: center; min-width: 36px; height: 36px; padding: 0 6px; border-radius: 8px;
+  background: var(--ol-surface-2); color: var(--ol-accent); font-family: var(--font-mono), monospace; font-size: 13px; font-weight: 500;
+}
+.ol-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.ol-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.ol-chips span {
+  font-size: 13px; padding: 6px 11px; border-radius: 999px; border: 1px solid var(--ol-line);
+  background: var(--ol-bg); color: var(--ol-text);
+}
+.ol-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; list-style: none; padding: 0; margin: 0; }
+.ol-step { font-family: var(--font-mono), monospace; color: var(--ol-accent); font-size: 13px; font-weight: 500; }
+.ol-dev { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+.ol-dev p { color: var(--ol-muted); line-height: 1.6; margin-bottom: 20px; }
+.ol-code {
+  background: var(--ol-surface); border: 1px solid var(--ol-line); border-radius: 10px; padding: 20px;
+  font-size: 13px; line-height: 1.7; color: var(--ol-muted); overflow: auto;
+}
+
+/* ---------- Aperçu de l'application (maquette A miniature) ---------- */
+.ol-win {
+  border: 1px solid var(--ol-line); border-radius: 12px; overflow: hidden; background: var(--ol-bg);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .25); font-size: 12px; display: grid; grid-template-rows: 30px 1fr 22px;
+}
+.ol-win-bar { display: flex; align-items: center; gap: 6px; padding: 0 10px; background: var(--ol-surface); border-bottom: 1px solid var(--ol-line); }
+.ol-win-bar > i { width: 9px; height: 9px; border-radius: 50%; background: var(--ol-line); }
+.ol-win-cmd {
+  margin: 0 auto; display: flex; gap: 8px; align-items: center; padding: 3px 10px; border: 1px solid var(--ol-line);
+  border-radius: 5px; color: var(--ol-muted); font-size: 11px; min-width: 50%;
+}
+.ol-win-cmd kbd { margin-left: auto; font-size: 9px; border: 1px solid var(--ol-line); border-radius: 3px; padding: 0 4px; }
+.ol-win-main { display: grid; grid-template-columns: 34px 150px 1fr; min-height: 280px; }
+.ol-win-act { background: var(--ol-surface); border-right: 1px solid var(--ol-line); display: flex; flex-direction: column; align-items: center; gap: 10px; padding-top: 10px; }
+.ol-win-act b { width: 16px; height: 16px; border-radius: 4px; background: var(--ol-surface-2); }
+.ol-win-act b.on { background: var(--ol-accent); }
+.ol-win-side { background: var(--ol-surface); border-right: 1px solid var(--ol-line); padding: 8px 0; }
+.ol-win-side small { display: block; font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--ol-muted); padding: 8px 10px 4px; font-weight: 600; }
+.ol-win-side p { padding: 4px 10px; color: var(--ol-text); border-left: 2px solid transparent; font-size: 11.5px; }
+.ol-win-side p.on { background: var(--ol-surface-2); border-left-color: var(--ol-accent); }
+.ol-win-tabs { display: flex; background: var(--ol-surface); border-bottom: 1px solid var(--ol-line); }
+.ol-win-tabs span { padding: 6px 12px; color: var(--ol-muted); border-right: 1px solid var(--ol-line); font-size: 11px; }
+.ol-win-tabs span.on { background: var(--ol-bg); color: var(--ol-text); box-shadow: inset 0 2px 0 var(--ol-accent); }
+.ol-win-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.ol-win-body strong { font-size: 14px; }
+.ol-win-out {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--ol-line);
+  border-radius: 7px; background: var(--ol-surface);
+}
+.ol-win-out code { flex: 1; font-size: 13px; color: var(--ol-text); }
+.ol-win-out span { font-size: 10.5px; padding: 3px 8px; border-radius: 5px; background: var(--ol-accent); color: var(--ol-accent-ink); font-weight: 600; }
+.ol-win-meter { height: 5px; border-radius: 3px; background: var(--ol-surface-2); overflow: hidden; }
+.ol-win-meter i { display: block; width: 92%; height: 100%; background: var(--ol-accent); }
+.ol-win-body em { font-style: normal; color: var(--ol-muted); font-size: 11px; }
+.ol-win-chips { display: flex; gap: 6px; }
+.ol-win-chips span {
+  font-size: 10.5px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--ol-accent); color: var(--ol-accent);
+  background: color-mix(in srgb, var(--ol-accent) 12%, transparent);
+}
+.ol-win-status { display: flex; align-items: center; gap: 14px; padding: 0 10px; background: var(--ol-accent); color: var(--ol-accent-ink); font-size: 10.5px; font-weight: 500; }
+
+@media (max-width: 900px) {
+  .ol-hero, .ol-dev, .ol-tools { grid-template-columns: 1fr; }
+  .ol-grid, .ol-steps { grid-template-columns: 1fr 1fr; }
+  .ol-hero { padding-top: 40px; }
+}
+@media (max-width: 600px) {
+  .ol-landing { padding: 0 16px 60px; }
+  .ol-grid, .ol-steps { grid-template-columns: 1fr; }
+  .ol-win-main { grid-template-columns: 1fr; }
+  .ol-win-act, .ol-win-side { display: none; }
+}

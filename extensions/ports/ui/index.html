@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .wrap { max-height: calc(100vh - 290px); min-height: 160px; }
+    .hidden { display: none !important; }
+    td.dim { color: var(--o-muted); }
+    td.path { max-width: 360px; overflow: hidden; text-overflow: ellipsis; color: var(--o-muted); }
+    #query { font-size: 15px; }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Ports & processus</h1>
+    <p class="o-sub" data-i18n="subtitle">« Qui utilise le port 3000 ? », processus en cours, arrêt avec confirmation.</p>
+  </div>
+
+  <div class="o-stack">
+    <div class="o-row">
+      <button class="o-chip on" data-tab="ports" data-i18n="ports">Ports</button>
+      <button class="o-chip" data-tab="procs" data-i18n="procs">Processus</button>
+      <input class="o-input o-grow" id="query" spellcheck="false" data-i18n-placeholder="queryHint">
+      <label class="o-check" id="listenOpt"><input type="checkbox" id="listening" checked> <span data-i18n="listening">En écoute seulement</span></label>
+      <select class="o-select hidden" id="sort">
+        <option value="memory" data-i18n="byMemory">Tri : mémoire</option>
+        <option value="cpu" data-i18n="byCpu">Tri : processeur</option>
+        <option value="name" data-i18n="byName">Tri : nom</option>
+        <option value="pid">Tri : PID</option>
+      </select>
+      <label class="o-check"><input type="checkbox" id="auto"> <span data-i18n="auto">Actualiser</span></label>
+      <button class="o-btn" id="refresh" data-i18n="refresh">Rafraîchir</button>
+    </div>
+    <p class="o-sub" id="status" style="margin:0"></p>
+
+    <div class="o-panel o-panel--flush wrap" id="portsView">
+      <table class="o-table">
+        <thead><tr><th data-i18n="proto">Proto</th><th data-i18n="local">Adresse locale</th><th data-i18n="port">Port</th><th data-i18n="state">État</th><th data-i18n="remote">Distante</th><th>PID</th><th data-i18n="process">Processus</th><th></th></tr></thead>
+        <tbody id="portRows"></tbody>
+      </table>
+    </div>
+    <div class="o-panel o-panel--flush wrap hidden" id="procsView">
+      <table class="o-table">
+        <thead><tr><th>PID</th><th data-i18n="process">Processus</th><th data-i18n="memory">Mémoire</th><th data-i18n="cpu">Processeur</th><th data-i18n="path">Chemin</th><th></th></tr></thead>
+        <tbody id="procRows"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

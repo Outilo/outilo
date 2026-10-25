@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .list { max-height: calc(100vh - 380px); min-height: 120px; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">UUID & identifiants</h1>
+    <p class="o-sub" data-i18n="subtitle">Identifiants uniques générés avec un aléa cryptographique.</p>
+  </div>
+
+  <div class="o-stack">
+    <div class="o-panel o-stack" style="gap:14px">
+      <div class="o-row" id="kinds">
+        <button class="o-chip on" data-kind="v4">UUID v4</button>
+        <button class="o-chip" data-kind="v7">UUID v7</button>
+        <button class="o-chip" data-kind="ulid">ULID</button>
+        <button class="o-chip" data-kind="nanoid">NanoID</button>
+      </div>
+      <p class="o-sub" id="desc" style="margin:0"></p>
+      <div class="o-row">
+        <label class="o-check"><span data-i18n="count">Nombre</span>
+          <select class="o-select" id="count"><option>1</option><option selected>5</option><option>10</option><option>50</option><option>100</option></select>
+        </label>
+        <span id="uuidOpts" class="o-row">
+          <label class="o-check"><input type="checkbox" id="upper"> <span data-i18n="upper">Majuscules</span></label>
+          <label class="o-check"><input type="checkbox" id="noHyphens"> <span data-i18n="noHyphens">Sans tirets</span></label>
+        </span>
+        <label class="o-check hidden" id="sizeOpt"><span data-i18n="size">Longueur</span>
+          <input class="o-input" id="size" type="number" min="6" max="64" value="21" style="width:80px">
+        </label>
+        <span class="o-spacer"></span>
+        <button class="o-btn" id="copy" data-i18n="copyAll">Tout copier</button>
+        <button class="o-btn o-btn--primary" id="gen" data-i18n="generate">Générer</button>
+      </div>
+    </div>
+
+    <pre class="o-pre list" id="out"></pre>
+
+    <div class="o-panel o-stack" style="gap:10px">
+      <span class="o-label" style="margin:0" data-i18n="inspect">Lire l’horodatage d’un UUID v7 ou d’un ULID</span>
+      <input class="o-input" id="inspect" spellcheck="false" placeholder="01ARYZ6S41TSV4RRFFQ69G5FAV">
+      <p class="o-sub" id="inspectOut" style="margin:0"></p>
+    </div>
+  </div>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

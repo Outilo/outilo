@@ -1,0 +1,31 @@
+{
+  "name": "outilo",
+  "private": true,
+  "version": "0.5.0",
+  "type": "module",
+  "license": "Apache-2.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "typecheck": "vue-tsc --noEmit",
+    "tauri": "tauri",
+    "app": "tauri dev",
+    "app:build": "tauri build",
+    "keygen": "node scripts/keygen.mjs",
+    "test": "node --test \"tests/**/*.test.mjs\" && cargo test --manifest-path src-tauri/Cargo.toml"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.12.4",
+    "vue": "^3.5.44"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.12.4",
+    "@types/node": "^26.6.5",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "fflate": "^0.8.2",
+    "smol-toml": "^1.9.1",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.5",
+    "vue-tsc": "^3.3.13"
+  }
+}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .ip { font-family: var(--o-font-mono); font-size: 20px; cursor: pointer; }
+    .o-pre { min-height: 90px; max-height: 220px; }
+    .o-input.port { width: 100px; }
+    .o-panel--flush { max-height: 240px; }
+    @media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Réseau</h1>
+    <p class="o-sub" data-i18n="subtitle">Adresses IP, ping, résolution DNS, test de port et cache DNS.</p>
+  </div>
+
+  <div class="o-stack">
+    <div class="two">
+      <div class="o-panel o-stack" style="gap:6px">
+        <span class="o-label" style="margin:0" data-i18n="publicIp">IP publique</span>
+        <span class="ip" id="publicIp" data-i18n-title="clickCopy">—</span>
+        <div class="o-row"><span class="o-sub" style="margin:0" data-i18n="publicHint">Demandée à api.ipify.org</span><span class="o-spacer"></span><button class="o-btn o-btn--sm" id="getPublic" data-i18n="get">Obtenir</button></div>
+      </div>
+      <div class="o-panel o-stack" style="gap:6px">
+        <span class="o-label" style="margin:0" data-i18n="dnsCache">Cache DNS</span>
+        <p class="o-sub" style="margin:0" data-i18n="flushHint">Équivalent de « ipconfig /flushdns », utile après un changement de DNS ou de fichier hosts.</p>
+        <div class="o-row"><span class="o-spacer"></span><button class="o-btn o-btn--sm" id="flush" data-i18n="flush">Vider le cache DNS</button></div>
+      </div>
+    </div>
+
+    <div class="o-panel o-panel--flush">
+      <table class="o-table"><thead><tr><th data-i18n="iface">Interface</th><th data-i18n="addresses">Adresses</th><th>MAC</th></tr></thead><tbody id="ifaces"></tbody></table>
+    </div>
+
+    <div class="o-panel o-stack" style="gap:12px">
+      <div class="o-row">
+        <input class="o-input o-grow" id="host" spellcheck="false" value="exemple.com" data-i18n-placeholder="hostHint">
+        <input class="o-input port" id="port" type="number" min="1" max="65535" value="443">
+        <button class="o-btn" id="ping">Ping</button>
+        <button class="o-btn" id="dns" data-i18n="dns">DNS</button>
+        <button class="o-btn" id="tcp" data-i18n="tcp">Tester le port</button>
+      </div>
+      <pre class="o-pre" id="out"></pre>
+    </div>
+  </div>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

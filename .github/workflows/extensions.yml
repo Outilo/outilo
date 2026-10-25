@@ -1,0 +1,75 @@
+# Publie les extensions dont la version a changé : une Release GitHub par extension (tag `password-v1.2.0`)
+# et l'index du registre sur la branche `registry`. L'application n'est jamais reconstruite.
+name: Extensions
+
+on:
+  push:
+    branches: [main]
+    paths: ['extensions/**', 'scripts/**', '.github/workflows/extensions.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: registry
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      OUTILO_SIGNING_KEY: ${{ secrets.OUTILO_SIGNING_KEY }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Clé de signature
+        id: key
+        run: |
+          if [ -z "$OUTILO_SIGNING_KEY" ]; then
+            echo "::warning::Secret OUTILO_SIGNING_KEY absent : publication ignorée (voir docs/DISTRIBUTION.md)."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Branche registry
+        if: steps.key.outputs.ok == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin registry >/dev/null; then
+            git fetch origin registry
+            git worktree add registry-branch origin/registry
+            git -C registry-branch switch -c registry
+          else
+            git worktree add --detach registry-branch
+            git -C registry-branch switch --orphan registry
+          fi
+
+      - name: Paquets signés
+        if: steps.key.outputs.ok == 'true'
+        run: node scripts/release-extensions.mjs --index registry-branch/index.json --out registry-out --repo "$GITHUB_REPOSITORY"
+
+      - name: Releases
+        if: steps.key.outputs.ok == 'true'
+        run: |
+          node -e 'for (const p of require("./registry-out/plan.json")) console.log([p.tag, p.file, p.title].join("\t"))' |
+          while IFS=$'\t' read -r tag file title; do
+            gh release create "$tag" "registry-out/$file" --title "$title" --notes "Extension publiée par la CI." --latest=false
+          done
+
+      - name: Index
+        if: steps.key.outputs.ok == 'true'
+        run: |
+          cd registry-branch
+          git add index.json
+          if git diff --cached --quiet; then echo "Index inchangé."; exit 0; fi
+          git commit -m "registry: mise à jour de l'index"
+          git push origin registry

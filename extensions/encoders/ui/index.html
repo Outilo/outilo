@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .panes { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: stretch; }
+    .panes .o-textarea { height: calc(100vh - 330px); min-height: 200px; resize: none; }
+    .mid { display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+    .hidden { display: none !important; }
+    #file { display: none; }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Encodeurs</h1>
+    <p class="o-sub" data-i18n="subtitle">Base64, URL, entités HTML, hexadécimal et échappements Unicode, en UTF-8.</p>
+  </div>
+
+  <div class="o-stack">
+    <div class="o-row">
+      <div class="o-row" id="codecs">
+        <button class="o-chip on" data-codec="base64">Base64</button>
+        <button class="o-chip" data-codec="base64url">Base64 URL</button>
+        <button class="o-chip" data-codec="url">URL</button>
+        <button class="o-chip" data-codec="html">HTML</button>
+        <button class="o-chip" data-codec="hex" data-i18n="hex">Hexadécimal</button>
+        <button class="o-chip" data-codec="unicode">Unicode \u</button>
+      </div>
+      <span class="o-spacer"></span>
+      <label class="o-check hidden" id="allOpt"><input type="checkbox" id="all"> <span data-i18n="all">Encoder tous les caractères non ASCII</span></label>
+    </div>
+
+    <div class="panes">
+      <div class="o-stack" style="gap:6px">
+        <span class="o-label" data-i18n="plain">Texte</span>
+        <textarea class="o-textarea" id="plain" spellcheck="false"></textarea>
+      </div>
+      <div class="mid">
+        <button class="o-btn o-btn--sm" id="enc" data-i18n="encode">Encoder →</button>
+        <button class="o-btn o-btn--sm" id="dec" data-i18n="decode">← Décoder</button>
+      </div>
+      <div class="o-stack" style="gap:6px">
+        <span class="o-label" data-i18n="encoded">Encodé</span>
+        <textarea class="o-textarea" id="coded" spellcheck="false"></textarea>
+      </div>
+    </div>
+
+    <div class="o-row">
+      <span class="o-sub" id="status" style="margin:0"></span>
+      <span class="o-spacer"></span>
+      <label class="o-btn o-btn--sm" id="fileBtn" for="file" data-i18n="file">Fichier → Base64…</label>
+      <input type="file" id="file">
+      <button class="o-btn o-btn--sm" id="copyPlain" data-i18n="copyPlain">Copier le texte</button>
+      <button class="o-btn o-btn--sm o-btn--primary" id="copyCoded" data-i18n="copyCoded">Copier l’encodé</button>
+    </div>
+  </div>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

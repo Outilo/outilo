@@ -1,0 +1,6 @@
+# Fins de ligne LF partout : paquets d'extensions identiques quel que soit le système
+* text=auto eol=lf
+*.png binary
+*.ico binary
+*.icns binary
+*.woff2 binary

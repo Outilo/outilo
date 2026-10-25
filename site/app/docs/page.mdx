@@ -1,0 +1,30 @@
+---
+title: Introduction
+---
+
+import { Callout, Cards } from 'nextra/components'
+
+# Bienvenue dans Outilo
+
+Outilo est une application de bureau **open source** (Apache-2.0) qui réunit les petits outils du quotidien des
+développeurs, designers et utilisateurs avancés : générateur de mots de passe, données de test, JSON, JWT, réseau,
+nettoyage…
+
+<Callout type="warning">
+  Outilo est en cours de conception. La V1 est réservée aux tests internes : cette documentation décrit le
+  fonctionnement **prévu** et évoluera avec le code.
+</Callout>
+
+## Les principes
+
+- **Tout est extension** : chaque outil est un paquet indépendant, mis à jour sans toucher au reste.
+- **Natif et léger** : cœur Rust (Tauri 2), installateur d'environ 10 Mo, démarrage en moins d'une seconde.
+- **Local** : fonctionne hors-ligne, stocke tout dans votre profil utilisateur, sans droits administrateur.
+- **Personnalisable** : thèmes, palette de commandes, onglets, profils par métier.
+
+<Cards>
+  <Cards.Card title="Installer Outilo" href="/docs/premiers-pas/installation/" />
+  <Cards.Card title="Découvrir l'interface" href="/docs/premiers-pas/interface/" />
+  <Cards.Card title="Créer une extension" href="/docs/extensions/creer-une-extension/" />
+  <Cards.Card title="Personnaliser le thème" href="/docs/themes/" />
+</Cards>

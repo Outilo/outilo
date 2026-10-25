@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .result .o-btn { flex: none; }
+    .levels { display: flex; justify-content: space-between; font-size: 12px; color: var(--o-muted); margin-top: 8px; }
+    .batch { max-height: 260px; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Mots de passe</h1>
+    <p class="o-sub" data-i18n="subtitle">Aléa cryptographique : rien ne quitte votre machine.</p>
+  </div>
+
+  <div class="o-stack">
+    <div class="o-panel">
+      <div class="o-out result">
+        <span id="out">—</span>
+        <button class="o-btn" id="copy" data-i18n="copy">Copier</button>
+        <button class="o-btn o-btn--primary" id="gen" data-i18n="generate">Générer</button>
+      </div>
+      <div class="o-meter" style="margin-top:12px"><i id="meter"></i></div>
+      <div class="levels"><span id="bits"></span><span id="level"></span></div>
+    </div>
+
+    <div class="o-row" style="align-items:stretch">
+      <div class="o-panel o-grow">
+        <span class="o-label" data-i18n="mode">Type</span>
+        <div class="o-row" id="modes">
+          <button class="o-chip on" data-mode="password" data-i18n="password">Mot de passe</button>
+          <button class="o-chip" data-mode="passphrase" data-i18n="passphrase">Phrase de passe</button>
+        </div>
+
+        <div id="pwOpts">
+          <span class="o-label" style="margin-top:18px"><span data-i18n="length">Longueur</span> : <b id="lenv">20</b></span>
+          <input type="range" id="len" min="4" max="128" value="20">
+          <span class="o-label" style="margin-top:18px" data-i18n="chars">Caractères</span>
+          <div class="o-row" id="sets">
+            <button class="o-chip on" data-k="upper">A–Z</button>
+            <button class="o-chip on" data-k="lower">a–z</button>
+            <button class="o-chip on" data-k="digits">0–9</button>
+            <button class="o-chip on" data-k="symbols">!@#$</button>
+          </div>
+          <div class="o-stack" style="gap:8px;margin-top:14px">
+            <label class="o-check"><input type="checkbox" id="similar"> <span data-i18n="similar">Exclure les caractères similaires (0 O 1 l I)</span></label>
+            <label class="o-check"><input type="checkbox" id="ambiguous"> <span data-i18n="ambiguous">Exclure les caractères ambigus ({ } [ ] ( ) / \ ' " ` ~ , ; : . &lt; &gt;)</span></label>
+          </div>
+        </div>
+
+        <div id="ppOpts" class="hidden">
+          <span class="o-label" style="margin-top:18px"><span data-i18n="words">Mots</span> : <b id="wordsv">5</b></span>
+          <input type="range" id="words" min="3" max="12" value="5">
+          <div class="o-row" style="margin-top:14px">
+            <label class="o-check"><span data-i18n="separator">Séparateur</span>
+              <select class="o-select" id="sep"><option value="-">-</option><option value=".">.</option><option value="_">_</option><option value=" ">␣</option></select>
+            </label>
+            <label class="o-check"><input type="checkbox" id="cap" checked> <span data-i18n="capitalize">Majuscules</span></label>
+            <label class="o-check"><input type="checkbox" id="num" checked> <span data-i18n="number">Nombre</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="o-panel o-grow">
+        <div class="o-row">
+          <span class="o-label" style="margin:0" data-i18n="batch">Génération en lot</span>
+          <span class="o-spacer"></span>
+          <select class="o-select" id="count"><option>5</option><option selected>10</option><option>25</option><option>50</option></select>
+          <button class="o-btn o-btn--sm" id="batchGen" data-i18n="generate">Générer</button>
+          <button class="o-btn o-btn--sm" id="batchCopy" data-i18n="copyAll">Tout copier</button>
+        </div>
+        <pre class="o-pre batch" id="batch" style="margin-top:12px"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

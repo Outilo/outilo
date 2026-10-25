@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 860px) { .cols { grid-template-columns: 1fr; } }
+    .token { min-height: 150px; color: var(--o-accent); }
+    .claims td:first-child { color: var(--o-muted); font-family: var(--o-font-ui); }
+    .hidden { display: none !important; }
+    .status { font-size: 12.5px; }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">JWT & Base64</h1>
+    <p class="o-sub" data-i18n="subtitle">Tout est décodé localement : vos jetons ne quittent pas la machine.</p>
+  </div>
+
+  <div class="o-row" id="tabs" style="margin-bottom:16px">
+    <button class="o-chip on" data-tab="jwt">JWT</button>
+    <button class="o-chip" data-tab="b64">Base64</button>
+  </div>
+
+  <section id="jwt" class="o-stack">
+    <div class="cols">
+      <div class="o-panel o-stack" style="gap:10px">
+        <span class="o-label" style="margin:0" data-i18n="token">Jeton</span>
+        <textarea class="o-textarea token" id="token" spellcheck="false" data-i18n-placeholder="tokenHint" placeholder="Collez un JWT…"></textarea>
+        <p class="status" id="jwtStatus"></p>
+        <span class="o-label" style="margin:8px 0 0" data-i18n="verify">Vérifier la signature (HS256/384/512)</span>
+        <div class="o-row">
+          <input class="o-input o-grow" id="secret" type="password" data-i18n-placeholder="secret" placeholder="Secret">
+          <button class="o-btn" id="verify" data-i18n="verifyBtn">Vérifier</button>
+        </div>
+        <p class="status" id="sigStatus"></p>
+      </div>
+      <div class="o-stack">
+        <div class="o-panel">
+          <div class="o-row"><span class="o-label" style="margin:0">Header</span><span class="o-spacer"></span><button class="o-btn o-btn--sm" data-copy="header" data-i18n="copy">Copier</button></div>
+          <pre class="o-pre" id="header" style="margin-top:8px">—</pre>
+        </div>
+        <div class="o-panel">
+          <div class="o-row"><span class="o-label" style="margin:0">Payload</span><span class="o-spacer"></span><button class="o-btn o-btn--sm" data-copy="payload" data-i18n="copy">Copier</button></div>
+          <pre class="o-pre" id="payload" style="margin-top:8px">—</pre>
+          <table class="o-table claims" id="claims" style="margin-top:10px"></table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="b64" class="o-stack hidden">
+    <div class="o-row">
+      <label class="o-check"><input type="checkbox" id="urlSafe"> <span data-i18n="urlSafe">Variante URL (sans + / =)</span></label>
+    </div>
+    <div class="cols">
+      <div class="o-panel o-stack" style="gap:10px">
+        <div class="o-row"><span class="o-label" style="margin:0" data-i18n="plain">Texte</span><span class="o-spacer"></span><button class="o-btn o-btn--sm" data-copy="plain" data-i18n="copy">Copier</button></div>
+        <textarea class="o-textarea" id="plain" spellcheck="false"></textarea>
+      </div>
+      <div class="o-panel o-stack" style="gap:10px">
+        <div class="o-row"><span class="o-label" style="margin:0">Base64</span><span class="o-spacer"></span><button class="o-btn o-btn--sm" data-copy="encoded" data-i18n="copy">Copier</button></div>
+        <textarea class="o-textarea" id="encoded" spellcheck="false"></textarea>
+        <p class="status o-err" id="b64Err"></p>
+      </div>
+    </div>
+  </section>
+
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

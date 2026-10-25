@@ -1,0 +1,66 @@
+---
+title: Vue d'ensemble des extensions
+---
+
+import { Callout, FileTree } from 'nextra/components'
+
+# Extensions
+
+Dans Outilo, **chaque outil est une extension**, y compris ceux installés par défaut. Une extension peut fournir
+des outils (onglets), des commandes pour la palette et des thèmes.
+
+<Callout type="info">
+  En V1, seules les extensions développées par l'équipe Outilo sont publiées. L'ouverture aux auteurs externes est
+  prévue plus tard ; le format décrit ici sera le même.
+</Callout>
+
+## Anatomie
+
+<FileTree>
+  <FileTree.Folder name="mon-extension" defaultOpen>
+    <FileTree.File name="outilo.toml" />
+    <FileTree.Folder name="ui" defaultOpen>
+      <FileTree.File name="index.html" />
+      <FileTree.File name="main.ts" />
+    </FileTree.Folder>
+    <FileTree.Folder name="logic">
+      <FileTree.File name="lib.rs" />
+    </FileTree.Folder>
+    <FileTree.Folder name="locales">
+      <FileTree.File name="fr.json" />
+      <FileTree.File name="en.json" />
+    </FileTree.Folder>
+    <FileTree.File name="icon.svg" />
+    <FileTree.File name="README.md" />
+    <FileTree.File name="CLAUDE.md" />
+  </FileTree.Folder>
+</FileTree>
+
+| Élément | Rôle |
+| --- | --- |
+| `outilo.toml` | [Manifeste](/docs/extensions/manifeste/) : identité, version, permissions |
+| `ui/` | Interface web (TS/JS, Vue, Svelte, React…), compilée en HTML/JS |
+| `logic/` | Optionnel : code [Rust compilé en WebAssembly](/docs/extensions/rust/) |
+| `locales/` | Traductions FR / EN |
+| `CLAUDE.md` | Contexte pour le développement assisté par IA |
+
+## Comment ça s'exécute
+
+```text
+ Onglet de l'extension (iframe isolée, CSP stricte)
+        │  appels @outilo/sdk  (postMessage)
+        ▼
+ Cœur Outilo (Rust) ── vérifie la permission ──► presse-papiers, fichiers, réseau, SQLite…
+        │
+        └── module WebAssembly de l'extension (wasmtime), si présent
+```
+
+- L'interface n'a **aucun accès direct** au système : tout passe par l'[API Outilo](/docs/extensions/permissions/).
+- Une extension ne fournit **jamais de binaire natif**.
+- Le thème actif est injecté en variables CSS : vos composants suivent automatiquement le thème.
+
+## Extensions officielles V1
+
+| Développement | Système & quotidien |
+| --- | --- |
+| Mots de passe, Utilisateurs fictifs, JSON, JWT, Encodeurs, Hash, UUID / ULID, Regex, Timestamps, Cron | Nettoyeur, Ports & processus, Réseau, Infos système, Couleurs, QR code, Lorem ipsum |

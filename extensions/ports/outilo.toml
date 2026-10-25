@@ -1,0 +1,20 @@
+[extension]
+id = "outilo.ports"
+name = { fr = "Ports & processus", en = "Ports & processes" }
+description = { fr = "Qui utilise un port, liste des processus, arrêt d'un processus avec confirmation", en = "Who uses a port, process list, stop a process with confirmation" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["systeme", "reseau"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[[commands]]
+id = "who-port"
+title = { fr = "Qui utilise ce port ?", en = "Who is using this port?" }
+
+[permissions]
+process = true
