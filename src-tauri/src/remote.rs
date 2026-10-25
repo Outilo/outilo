@@ -398,6 +398,16 @@ mod tests {
     }
 
     #[test]
+    fn bundled_trusted_keys_are_valid() {
+        let lines: Vec<&str> =
+            TRUSTED_KEYS.lines().map(str::trim).filter(|l| !l.is_empty() && !l.starts_with('#')).collect();
+        assert!(!lines.is_empty(), "keys/registry.pub ne contient aucune clé");
+        for line in lines {
+            assert!(parse_key(line).is_some(), "clé invalide dans keys/registry.pub : {line}");
+        }
+    }
+
+    #[test]
     fn parses_trusted_key_lines() {
         let key = SigningKey::from_bytes(&[7; 32]);
         assert!(parse_key(&B64.encode(key.verifying_key().to_bytes())).is_some());
