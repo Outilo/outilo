@@ -302,6 +302,8 @@ mod machine_tests {
         let roots = Roots::from_env().unwrap();
         let list = scan(&roots, "fr");
         assert_eq!(list.len(), TARGETS.len());
-        assert!(list.iter().find(|t| t.id == "temp").unwrap().found);
+        // Le dossier temporaire n'est retenu que s'il est dans le profil (pas le cas sur les machines de CI)
+        let temp_in_profile = roots.temp.starts_with(&roots.profile);
+        assert_eq!(list.iter().find(|t| t.id == "temp").unwrap().found, temp_in_profile);
     }
 }
