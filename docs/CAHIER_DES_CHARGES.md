@@ -1,6 +1,6 @@
 # Cahier des charges — Outilo
 
-> Version 0.5 — 25/10/2026 — registre en ligne, 17 extensions (voir § 12). Organisation GitHub réelle : voir
+> Version 0.6 — 26/10/2026 — mise à jour de l'application, 27 extensions, outils développeurs (voir § 12). Organisation GitHub réelle : voir
 > `docs/DISTRIBUTION.md` (un seul dépôt `Outilo/outilo` pour l'instant).
 > Base : prototype Nuxt interne (<https://toolkit.iducation.fr>, appelé à disparaître)
 
@@ -299,26 +299,23 @@ outilo/
 
 Voir la conversation.
 
-## 12. État d'avancement — v0.5
+## 12. État d'avancement — v0.6
 
 | Élément | État |
 | --- | --- |
-| Shell maquette A, palette `Ctrl+K`, onboarding par profil, FR / EN | fait (v0.4) |
-| Runtime : manifeste validé, protocole `outilo-ext://`, iframe isolée, permissions, SDK `window.outilo` | fait (v0.4) |
-| Thèmes : 2 intégrés, accent, arrondis, CSS libre, import / export `theme.toml` | fait (v0.4) |
-| Registre en ligne (branche `registry`), paquets signés ed25519, mise à jour **une extension à la fois** | fait |
-| Mise à jour automatique (sauf nouvelles permissions), retour à la version précédente, catalogue, mode hors ligne | fait |
-| Packs d'onboarding servis par le registre (`scripts/packs.json`) | fait |
-| CI : tests, publication des extensions modifiées, installateur sur tag `v*` | fait |
-| Permissions `system.info`, `network` (domaines déclarés), `process`, `files.scoped` (nettoyeur), `shell.safe` (DNS) | fait |
-| `files.save` binaire (base64) | fait |
-| Raccourci global `Alt+Maj+Espace` (désactivé par défaut), zone de notification, instance unique | fait |
-| 17 extensions officielles (§ 6) | fait |
-| Clé de signature de production (`npm run keygen` + secret GitHub) | **à faire par l'équipe** |
-| `storage.sql` (SQLite), `files.pick`, logique WebAssembly | à faire |
-| Convertisseur d'images, Minuteur (cités dans les packs § 5.2) | à faire |
-| Auto-update de l'application (plugin updater + seconde clé) | à faire |
-| Utilisateurs fictifs : locales DE / ES, lots de 10 000 ; Hash : argon2 | à faire |
+| Shell, palette, onboarding, FR / EN, thèmes, runtime isolé, permissions | fait (v0.4) |
+| Registre en ligne signé, mises à jour par extension, retour arrière, CI de publication | fait (v0.5) |
+| Premier lancement : choix des outils à installer ; catalogue hors ligne du pack embarqué | fait |
+| Mise à jour de l'application : détection au lancement, bandeau, installation signée, option automatique | fait |
+| Nouvelle icône (clé mixte : œil hexagonal en « O ») | fait |
+| `storage.sql` (SQLite privée par extension) | fait |
+| 27 extensions : les 21 outils du prototype couverts (§ 6 + Texte, Markdown, Docker, Minuteur, SQL, Notes, Factures, Images, JavaScript) | fait |
+| Serveur MCP `outilo-mcp` (créer, valider, tester, relier, empaqueter, proposer) | fait |
+| Bac à sable développeur : rechargement à chaud, journal d'API, actions système simulées | fait |
+| Extension Doc développeur, guide `docs/EXTENSIONS_COMMUNAUTE.md`, CI des propositions | fait |
+| `files.pick`, logique WebAssembly | à faire |
+| Publication npm de `@outilo/mcp` (compte npm de l'équipe) | à faire (optionnel) |
+| Utilisateurs fictifs DE / ES et lots de 10 000 ; Hash : argon2 | à faire |
 
 Écart par rapport à la conception : le SDK est un script global (`window.outilo`, servi sous `/_sdk/`) plutôt qu'un
 paquet npm `@outilo/sdk`, pour que les extensions restent du HTML/JS sans étape de build. La documentation du site

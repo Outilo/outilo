@@ -1,0 +1,17 @@
+[extension]
+id = "outilo.image"
+name = { fr = "Images", en = "Images" }
+description = { fr = "Convertir en PNG, JPEG, WebP ; redimensionner, pivoter, data URL", en = "Convert to PNG, JPEG, WebP; resize, rotate, data URL" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["design"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[permissions]
+clipboard = true
+files.save = true

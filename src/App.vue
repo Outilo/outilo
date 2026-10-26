@@ -9,6 +9,7 @@ import StatusBar from './components/StatusBar.vue'
 import TabBar from './components/TabBar.vue'
 import TitleBar from './components/TitleBar.vue'
 import Toasts from './components/Toasts.vue'
+import UpdateBanner from './components/UpdateBanner.vue'
 import { handleShortcut, store } from './lib/store'
 import type { ExtInfo, Tab } from './lib/types'
 import ExtensionsView from './views/ExtensionsView.vue'
@@ -42,6 +43,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
       <Explorer v-if="store.sidebarOpen" />
       <section class="content">
         <TabBar />
+        <UpdateBanner />
         <div class="view">
           <component
             :is="pages[activeTab.page]"
@@ -79,7 +81,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 }
 .content {
   display: grid;
-  grid-template-rows: 36px 1fr;
+  grid-template-rows: 36px auto 1fr;
   min-width: 0;
   min-height: 0;
 }

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    #file { display: none; }
+    .drop { border: 1px dashed var(--o-border); border-radius: var(--o-radius); padding: 30px; text-align: center; color: var(--o-muted); cursor: pointer; display: block; }
+    .drop.over { border-color: var(--o-accent); color: var(--o-accent); }
+    .view { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .view figure { margin: 0; background: var(--o-surface); border: 1px solid var(--o-border); border-radius: var(--o-radius); padding: 10px; text-align: center; }
+    .view img { max-width: 100%; max-height: calc(100vh - 470px); min-height: 60px; object-fit: contain; background: repeating-conic-gradient(var(--o-surface-2) 0 25%, transparent 0 50%) 0 0 / 16px 16px; }
+    figcaption { color: var(--o-muted); font-size: 12px; margin-top: 6px; }
+    .o-input.n { width: 100px; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Images</h1>
+    <p class="o-sub" data-i18n="subtitle">Convertir en PNG, JPEG ou WebP, redimensionner, faire pivoter. Tout reste sur votre PC.</p>
+  </div>
+  <div class="o-stack">
+    <label class="drop" id="drop" for="file"><span id="dropText" data-i18n="drop">Déposez une image ici ou cliquez pour la choisir</span></label>
+    <input type="file" id="file" accept="image/*">
+    <div class="o-panel o-row" id="opts">
+      <label class="o-check"><span data-i18n="format">Format</span>
+        <select class="o-select" id="format"><option value="png">PNG</option><option value="jpeg" selected>JPEG</option><option value="webp">WebP</option></select>
+      </label>
+      <label class="o-check" id="qualityOpt"><span data-i18n="quality">Qualité</span><input type="range" id="quality" min="0.3" max="1" step="0.05" value="0.85" style="width:120px"><span id="qv">85 %</span></label>
+      <label class="o-check"><span data-i18n="width">Largeur</span><input class="o-input n" id="width" type="number" min="1" data-i18n-placeholder="auto"></label>
+      <label class="o-check"><span data-i18n="height">Hauteur</span><input class="o-input n" id="height" type="number" min="1" data-i18n-placeholder="auto"></label>
+      <label class="o-check"><input type="checkbox" id="keep" checked> <span data-i18n="keep">Garder les proportions</span></label>
+      <button class="o-btn o-btn--sm" id="rotate" data-i18n="rotate">Pivoter 90°</button>
+      <button class="o-btn o-btn--sm" id="flip" data-i18n="flip">Miroir</button>
+    </div>
+    <div class="view hidden" id="view">
+      <figure><img id="before" alt=""><figcaption id="beforeInfo"></figcaption></figure>
+      <figure><img id="after" alt=""><figcaption id="afterInfo"></figcaption></figure>
+    </div>
+    <div class="o-row">
+      <span class="o-spacer"></span>
+      <button class="o-btn" id="copyUrl" data-i18n="copyUrl">Copier en data URL</button>
+      <button class="o-btn o-btn--primary" id="save" data-i18n="save">Enregistrer</button>
+    </div>
+  </div>
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

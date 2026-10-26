@@ -1,0 +1,23 @@
+[extension]
+id = "outilo.timer"
+name = { fr = "Minuteur", en = "Timer" }
+description = { fr = "Compte à rebours, chronomètre avec tours, pomodoro", en = "Countdown, stopwatch with laps, pomodoro" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["autres"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[[commands]]
+id = "pomodoro"
+title = { fr = "Lancer un pomodoro", en = "Start a pomodoro" }
+
+[[commands]]
+id = "five"
+title = { fr = "Minuteur de 5 minutes", en = "5-minute timer" }
+
+[permissions]

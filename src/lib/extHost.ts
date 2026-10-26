@@ -2,7 +2,7 @@
 // Chaque appel est vérifié contre les permissions déclarées dans le manifeste de l'extension.
 import { api, UnavailableError } from './api'
 import { locale, t } from './i18n'
-import { handleShortcut, store, themeState, toast } from './store'
+import { handleShortcut, logDevCall, store, themeState, toast } from './store'
 
 interface Frame {
   extId: string
@@ -20,6 +20,8 @@ const METHOD_PERMISSION: Record<string, string | null> = {
   'storage.remove': 'storage',
   'storage.keys': 'storage',
   'files.save': 'files.save',
+  'sql.query': 'storage.sql',
+  'sql.exec': 'storage.sql',
   'system.info': 'system.info',
   'process.list': 'process',
   'process.ports': 'process',
@@ -84,14 +86,39 @@ window.addEventListener('message', async event => {
     return
   }
   if (m.kind === 'call') {
+    const method = String(m.method)
+    const start = performance.now()
+    const dev = store.extensions.find(e => e.id === frame.extId)?.source === 'dev'
+    const simulated = dev && store.settings.devSimulate && method in SIMULATED
+    const log = (error?: string) =>
+      dev && logDevCall({ time: Date.now(), extId: frame.extId, method, ms: Math.round(performance.now() - start), error, simulated })
     try {
-      const result = await handleCall(frame.extId, String(m.method), m.params ?? {})
+      const result = simulated ? await simulate(frame.extId, method) : await handleCall(frame.extId, method, m.params ?? {})
+      log()
       post(win, { kind: 'reply', id: m.id, result })
     } catch (e) {
-      post(win, { kind: 'reply', id: m.id, error: e instanceof Error ? e.message : String(e) })
+      const error = e instanceof Error ? e.message : String(e)
+      log(error)
+      post(win, { kind: 'reply', id: m.id, error })
     }
   }
 })
+
+/** Bac à sable : actions destructrices simulées pour les extensions en développement (réponse type de l'API). */
+const SIMULATED: Record<string, unknown> = {
+  'process.kill': true,
+  'clean.run': { bytes: 0, files: 0, skipped: 0 },
+  'shell.flushDns': true
+}
+
+async function simulate(extId: string, method: string): Promise<unknown> {
+  const ext = store.extensions.find(e => e.id === extId)
+  const permission = METHOD_PERMISSION[method]
+  // Les permissions restent vérifiées : le bac à sable ne remplace que l'effet
+  if (permission && !ext?.permissions.includes(permission)) throw new Error(`${t('err.permission')} : ${permission}`)
+  toast(t('dev.simulated', { method }), 'info')
+  return SIMULATED[method]
+}
 
 async function handleCall(extId: string, method: string, p: Record<string, any>): Promise<unknown> {
   const ext = store.extensions.find(e => e.id === extId)
@@ -116,6 +143,10 @@ async function handleCall(extId: string, method: string, p: Record<string, any>)
         return api.extStorage(extId, 'keys')
       case 'files.save':
         return api.extSaveFile(extId, String(p.name), String(p.content), p.encoding === 'base64' ? 'base64' : undefined)
+      case 'sql.query':
+        return api.ext('sql', extId, { sql: String(p.sql), params: Array.isArray(p.params) ? p.params : [] })
+      case 'sql.exec':
+        return api.ext('sql', extId, { sql: String(p.sql), script: true })
       case 'system.info':
         return api.ext('system_info', extId)
       case 'process.list':

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .panes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .panes .o-textarea, .panes .o-pre { height: calc(100vh - 280px); min-height: 220px; resize: none; }
+    @media (max-width: 760px) { .panes { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Docker</h1>
+    <p class="o-sub" data-i18n="subtitle">Convertit une commande docker run en fichier compose, et inversement.</p>
+  </div>
+  <div class="o-stack">
+    <div class="o-row">
+      <button class="o-chip on" data-mode="run">docker run → compose</button>
+      <button class="o-chip" data-mode="compose">compose → docker run</button>
+      <span class="o-spacer"></span>
+      <button class="o-btn o-btn--sm" id="sample" data-i18n="sample">Exemple</button>
+      <button class="o-btn o-btn--sm" id="save" data-i18n="save">Enregistrer</button>
+      <button class="o-btn o-btn--sm o-btn--primary" id="copy" data-i18n="copy">Copier</button>
+    </div>
+    <div class="panes">
+      <textarea class="o-textarea" id="input" spellcheck="false"></textarea>
+      <pre class="o-pre" id="output"></pre>
+    </div>
+    <p class="o-sub" id="status" style="margin:0"></p>
+  </div>
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="vendor/js-yaml.min.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

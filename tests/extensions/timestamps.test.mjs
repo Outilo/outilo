@@ -32,3 +32,13 @@ test('fuseaux et formats', () => {
   assert.equal(f.find(x => x.id === 'unix').value, String(d.getTime() / 1000))
   assert.equal(f.find(x => x.id === 'rfc').value, 'Wed, 01 Jul 2026 12:00:00 GMT')
 })
+
+test('formatage par motif et code généré', () => {
+  const d = new Date(2026, 9, 5, 14, 7, 9, 42)
+  assert.equal(T.formatPattern(d, 'YYYY-MM-DD HH:mm:ss.SSS', 'fr'), '2026-10-05 14:07:09.042')
+  assert.equal(T.formatPattern(d, 'dddd D MMMM YYYY [à] H[h]mm', 'fr'), 'lundi 5 octobre 2026 à 14h07')
+  assert.equal(T.formatPattern(d, 'hh:mm A', 'en'), '02:07 PM')
+  const code = T.codeFor('DD/MM/YYYY [à] HH:mm')
+  const formatDate = new Function(code + '\nreturn formatDate')()
+  assert.equal(formatDate(d), '05/10/2026 à 14:07')
+})

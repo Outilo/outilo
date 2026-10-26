@@ -93,22 +93,35 @@ egistry-cache.json`, utilisé hors ligne).
 6. Rechargement de l'onglet de l'extension, sans redémarrer l'application.
 7. « Revenir à x.y.z » supprime la version courante et l'écarte : elle n'est plus réinstallée automatiquement.
 
-## 5. Extensions de la communauté (fermé en V1)
+## 5. Extensions de la communauté (ouvert en v0.6)
 
-En V1, seules les extensions de l'équipe sont publiées. Processus prévu pour l'ouverture :
+Guide complet : [`EXTENSIONS_COMMUNAUTE.md`](EXTENSIONS_COMMUNAUTE.md).
 
-1. L'auteur part du template, développe dans **son propre dépôt**.
-2. L'action GitHub `outilo/publish-action` construit et publie une Release dans son dépôt.
-3. Il ouvre une Pull Request sur `registry` ajoutant `extensions/<id>.json`.
-4. La CI de `registry` vérifie : manifeste valide, téléchargement OK, hash, permissions non sensibles, licence.
-5. Revue humaine puis merge → l'extension apparaît dans l'application.
+1. Le développeur crée son extension (seul ou avec son IA via le serveur MCP `outilo-mcp`) et la teste dans le bac à
+   sable d'Outilo (mode développeur).
+2. Il la propose par Pull Request ajoutant `extensions/<identifiant>/` (outil MCP `outilo_submit_extension`).
+3. La CI « Propositions d'extensions » (`community.yml`) vérifie : manifeste, préfixe `outilo.` réservé, pas de
+   permission sensible ni de réseau illimité, pas de ressource externe, tests.
+4. Relecture humaine par l'équipe, puis fusion : le workflow « Extensions » signe et publie, l'index la marque
+   `verified: false` → badge « Communauté » dans le catalogue.
 
-Les permissions sensibles (`files.scoped`, `process`, `shell.safe`) sont réservées aux extensions officielles en V1.
+Les permissions sensibles (`files.scoped`, `process`, `shell.safe`) et `network = ["*"]` restent réservées aux
+extensions officielles.
 
 ## 6. Mise à jour de l'application
 
-Canal indépendant. **v0.5** : pousser un tag `v0.5.0` déclenche `.github/workflows/app.yml`, qui construit
-l'installateur NSIS (non signé) et l'attache à la Release `v0.5.0` ; les testeurs le téléchargent à la main.
-**Prévu** : plugin updater de Tauri, manifeste signé `latest.json` dans les Releases (seconde clé, propre à Tauri).
-Une nouvelle version de l'application n'est nécessaire que si le shell ou l'API Outilo change. L'API est
-versionnée (`api = "1"`) : une application qui ne connaît pas l'API d'une extension ne l'installe pas.
+Canal indépendant des extensions. Pousser un tag `v0.6.0` déclenche `.github/workflows/app.yml` : construction de
+l'installateur NSIS (non signé Authenticode en V1), signature ed25519 avec la clé des extensions
+(`scripts/sign-installer.mjs`) et publication de `latest.json` dans la Release.
+
+Côté application (`src-tauri/src/updater.rs`) :
+
+1. Au lancement : lecture de `https://github.com/Outilo/outilo/releases/latest/download/latest.json`.
+2. Version plus récente → bandeau « Outilo x.y.z est disponible » (« Mettre à jour et redémarrer » / « Plus tard »).
+   Réglage « Installer automatiquement les nouvelles versions » (désactivé par défaut).
+3. Téléchargement dans `%APPDATA%\Outilo\updates\`, vérification SHA-256 + signature, lancement de l'installateur
+   en mode mise à jour (`/P /R /UPDATE` : sans assistant, sans droits administrateur, Outilo relancé).
+
+Une application qui ne connaît pas l'API d'une extension (`api = "1"`) ne l'installe pas : une nouvelle version de
+l'application n'est nécessaire que si le shell ou l'API change. Les installations v0.5 n'ont pas encore le
+mécanisme : la v0.6 s'installe une fois à la main, les suivantes arrivent toutes seules.

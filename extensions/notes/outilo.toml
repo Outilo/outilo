@@ -1,0 +1,22 @@
+[extension]
+id = "outilo.notes"
+name = { fr = "Notes", en = "Notes" }
+description = { fr = "Notes rapides enregistrées automatiquement, recherche, épingles, export Markdown", en = "Quick notes saved automatically, search, pins, Markdown export" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["texte", "autres"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[[commands]]
+id = "new"
+title = { fr = "Nouvelle note", en = "New note" }
+
+[permissions]
+"storage.sql" = true
+clipboard = true
+files.save = true

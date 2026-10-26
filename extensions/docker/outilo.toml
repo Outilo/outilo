@@ -1,0 +1,17 @@
+[extension]
+id = "outilo.docker"
+name = { fr = "Docker", en = "Docker" }
+description = { fr = "docker run ⇄ docker compose", en = "docker run ⇄ docker compose" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["code"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[permissions]
+clipboard = true
+files.save = true

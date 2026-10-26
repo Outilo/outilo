@@ -75,5 +75,59 @@
     ]
   }
 
-  root.TsLogic = { parse: parse, isoWeek: isoWeek, dayOfYear: dayOfYear, relative: relative, offset: offset, isoInZone: isoInZone, formats: formats }
+  // ---------- Formatage par motif (YYYY-MM-DD HH:mm…) ----------
+
+  var TOKENS = /YYYY|YY|MMMM|MMM|MM|M|DDDD|DDD|DD|D|dddd|ddd|HH|H|hh|h|mm|m|ss|s|SSS|A|Z|\[[^\]]*\]/g
+
+  function parts(date, locale) {
+    var p = {}
+    p.Y = date.getFullYear(); p.M = date.getMonth() + 1; p.D = date.getDate(); p.H = date.getHours()
+    p.m = date.getMinutes(); p.s = date.getSeconds(); p.S = date.getMilliseconds(); p.w = date.getDay()
+    p.monthLong = new Intl.DateTimeFormat(locale, { month: 'long' }).format(date)
+    p.monthShort = new Intl.DateTimeFormat(locale, { month: 'short' }).format(date)
+    p.dayLong = new Intl.DateTimeFormat(locale, { weekday: 'long' }).format(date)
+    p.dayShort = new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(date)
+    var off = -date.getTimezoneOffset()
+    p.Z = (off >= 0 ? '+' : '-') + String(Math.floor(Math.abs(off) / 60)).padStart(2, '0') + ':' + String(Math.abs(off) % 60).padStart(2, '0')
+    return p
+  }
+
+  /** Formate en heure locale selon un motif ; le texte entre crochets est recopié tel quel. */
+  function formatPattern(date, pattern, locale) {
+    var p = parts(date, locale)
+    var two = function (n) { return String(n).padStart(2, '0') }
+    var h12 = p.H % 12 || 12
+    var map = {
+      YYYY: String(p.Y), YY: String(p.Y).slice(-2), MMMM: p.monthLong, MMM: p.monthShort, MM: two(p.M), M: String(p.M),
+      DD: two(p.D), D: String(p.D), dddd: p.dayLong, ddd: p.dayShort, HH: two(p.H), H: String(p.H), hh: two(h12), h: String(h12),
+      mm: two(p.m), m: String(p.m), ss: two(p.s), s: String(p.s), SSS: String(p.S).padStart(3, '0'), A: p.H < 12 ? 'AM' : 'PM', Z: p.Z,
+      DDDD: String(dayOfYear(new Date(Date.UTC(p.Y, p.M - 1, p.D)))).padStart(3, '0'), DDD: String(dayOfYear(new Date(Date.UTC(p.Y, p.M - 1, p.D))))
+    }
+    return String(pattern).replace(TOKENS, function (t) { return t[0] === '[' ? t.slice(1, -1) : map[t] })
+  }
+
+  /** Code JavaScript autonome qui produit le même résultat que formatPattern (pour un projet). */
+  function codeFor(pattern) {
+    var pieces = []
+    var last = 0
+    String(pattern).replace(TOKENS, function (t, i) {
+      if (i > last) pieces.push(JSON.stringify(pattern.slice(last, i)))
+      var expr = {
+        YYYY: 'd.getFullYear()', YY: 'String(d.getFullYear()).slice(-2)', MM: 'p2(d.getMonth() + 1)', M: '(d.getMonth() + 1)',
+        DD: 'p2(d.getDate())', D: 'd.getDate()', HH: 'p2(d.getHours())', H: 'd.getHours()', hh: 'p2(d.getHours() % 12 || 12)',
+        h: '(d.getHours() % 12 || 12)', mm: 'p2(d.getMinutes())', m: 'd.getMinutes()', ss: 'p2(d.getSeconds())', s: 'd.getSeconds()',
+        SSS: "String(d.getMilliseconds()).padStart(3, '0')", A: "(d.getHours() < 12 ? 'AM' : 'PM')",
+        MMMM: "d.toLocaleDateString(locale, { month: 'long' })", MMM: "d.toLocaleDateString(locale, { month: 'short' })",
+        dddd: "d.toLocaleDateString(locale, { weekday: 'long' })", ddd: "d.toLocaleDateString(locale, { weekday: 'short' })"
+      }[t]
+      if (t[0] === '[') pieces.push(JSON.stringify(t.slice(1, -1)))
+      else pieces.push(expr || JSON.stringify(t))
+      last = i + t.length
+    })
+    if (last < pattern.length) pieces.push(JSON.stringify(pattern.slice(last)))
+    return "function formatDate(d, locale = 'fr-FR') {\n  const p2 = n => String(n).padStart(2, '0')\n  return " +
+      (pieces.length ? pieces.join(' + ') : "''") + '\n}'
+  }
+
+  root.TsLogic = { formatPattern: formatPattern, codeFor: codeFor, parse: parse, isoWeek: isoWeek, dayOfYear: dayOfYear, relative: relative, offset: offset, isoInZone: isoInZone, formats: formats }
 })(typeof window !== 'undefined' ? window : globalThis)

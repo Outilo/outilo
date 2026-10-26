@@ -13,6 +13,7 @@ npm run typecheck    # vue-tsc
 npm test             # tests JS des extensions + cargo test
 npm run app:build    # installateur NSIS : src-tauri/target/release/bundle/nsis/
 npm run keygen       # clés de signature du registre (clé privée → secret GitHub, jamais dans le dépôt)
+npm run mcp          # serveur MCP des développeurs (stdio) : mcp/server.mjs
 ```
 
 Variables utiles en développement : `OUTILO_NO_LIVE=1` (extensions installées au lieu du dossier du dépôt, pour tester
@@ -26,7 +27,9 @@ les mises à jour), `OUTILO_REGISTRY=file:///D:/chemin/index.json` (registre loc
 - `src-tauri/src/` — cœur Rust : `manifest.rs` (validation `outilo.toml`), `registry.rs` (amorçage, versions,
   mode dev), `protocol.rs` (protocole `outilo-ext://`, CSP des extensions), `storage.rs`, `theme.rs`, `lib.rs`
   (commandes Tauri), `remote.rs` (registre en ligne : index, vérification, installation, retour arrière),
-  `system.rs` / `net.rs` / `cleaner.rs` (API système des extensions).
+  `system.rs` / `net.rs` / `cleaner.rs` / `sql.rs` (API des extensions), `updater.rs` (mise à jour de l'application).
+- `mcp/server.mjs` — serveur MCP `outilo-mcp` ; s'appuie sur `scripts/lib/` (`validate.mjs` = règles du store,
+  `scaffold.mjs` = squelette, `package.mjs` = paquets signés).
 - `scripts/` — `release-extensions.mjs` (paquets signés + index, lancé par la CI), `keygen.mjs`, `packs.json`
   (packs d'onboarding). `.github/workflows/` — CI, publication des extensions, installateur, site (manuel).
 - `src-tauri/themes/` — thèmes intégrés (`theme.toml`).

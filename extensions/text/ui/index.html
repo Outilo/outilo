@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    #text { min-height: calc(100vh - 420px); }
+    .ops { gap: 6px; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+    .stats div { background: var(--o-surface); border: 1px solid var(--o-border); border-radius: var(--o-radius); padding: 8px 10px; }
+    .stats strong { display: block; font-family: var(--o-font-mono); font-size: 16px; }
+    .stats span { color: var(--o-muted); font-size: 11.5px; }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Texte</h1>
+    <p class="o-sub" data-i18n="subtitle">Changer la casse, nettoyer, trier, compter, rechercher et remplacer.</p>
+  </div>
+  <div class="o-stack">
+    <div class="o-row ops" id="cases"></div>
+    <div class="o-row ops" id="lines"></div>
+    <textarea class="o-textarea" id="text" spellcheck="false" data-i18n-placeholder="placeholder"></textarea>
+    <div class="o-row">
+      <input class="o-input o-grow" id="find" data-i18n-placeholder="find">
+      <input class="o-input o-grow" id="by" data-i18n-placeholder="by">
+      <label class="o-check"><input type="checkbox" id="regex"> Regex</label>
+      <label class="o-check"><input type="checkbox" id="case"> <span data-i18n="caseSensitive">Respecter la casse</span></label>
+      <button class="o-btn" id="replace" data-i18n="replace">Remplacer tout</button>
+    </div>
+    <div class="o-row">
+      <button class="o-btn o-btn--sm" id="undo" data-i18n="undo">Annuler</button>
+      <span class="o-spacer"></span>
+      <button class="o-btn o-btn--sm o-btn--primary" id="copy" data-i18n="copy">Copier</button>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

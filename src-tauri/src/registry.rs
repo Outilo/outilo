@@ -180,6 +180,37 @@ impl Registry {
     }
 }
 
+/// Extension du pack embarqué, pour le catalogue hors ligne et le choix au premier lancement.
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct BundledInfo {
+    pub id: String,
+    pub name: Localized,
+    pub description: Option<Localized>,
+    pub categories: Vec<String>,
+    pub version: String,
+    pub permissions: Vec<String>,
+}
+
+pub fn bundled(dir: &Path) -> Vec<BundledInfo> {
+    let mut list: Vec<BundledInfo> = fs::read_dir(dir)
+        .into_iter()
+        .flatten()
+        .flatten()
+        .filter_map(|e| Manifest::load(&e.path()).ok())
+        .map(|m| BundledInfo {
+            permissions: m.permission_names(),
+            id: m.extension.id,
+            name: m.extension.name,
+            description: m.extension.description,
+            categories: m.extension.categories,
+            version: m.extension.version,
+        })
+        .collect();
+    list.sort_by(|a, b| a.id.cmp(&b.id));
+    list
+}
+
 /// Plus haute version valide dans `<root>/extensions/<id>/`.
 fn newest_version(ext_dir: &Path) -> Option<(Manifest, PathBuf)> {
     versions(ext_dir).into_iter().next()

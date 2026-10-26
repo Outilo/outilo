@@ -1,0 +1,19 @@
+[extension]
+id = "outilo.sql"
+name = { fr = "SQL", en = "SQL" }
+description = { fr = "Atelier SQLite : base privée, requêtes, tables, export CSV", en = "SQLite workbench: private database, queries, tables, CSV export" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["code", "donnees"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[permissions]
+storage = true
+"storage.sql" = true  # clé entre guillemets : « storage » est déjà une permission
+clipboard = true
+files.save = true

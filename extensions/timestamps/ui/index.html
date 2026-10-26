@@ -40,6 +40,21 @@
       <table class="o-table"><tbody id="rows"></tbody></table>
     </div>
 
+    <div class="o-panel o-stack" style="gap:10px">
+      <span class="o-label" style="margin:0" data-i18n="formatter">Formater une date (code JavaScript)</span>
+      <div class="o-row">
+        <input class="o-input o-grow" id="pattern" spellcheck="false" value="dddd D MMMM YYYY [à] HH:mm">
+        <select class="o-select" id="patterns">
+          <option value="">—</option><option>YYYY-MM-DD</option><option>DD/MM/YYYY</option><option>DD/MM/YYYY HH:mm</option>
+          <option>YYYY-MM-DD HH:mm:ss</option><option>dddd D MMMM YYYY</option><option>MMM D, YYYY h:mm A</option><option>YYYYMMDD-HHmmss</option>
+        </select>
+      </div>
+      <div class="o-out" style="font-size:15px"><span id="patternOut"></span></div>
+      <pre class="o-pre" id="code"></pre>
+      <p class="o-sub" style="margin:0" data-i18n="tokens">Jetons : YYYY YY MMMM MMM MM M DD D dddd ddd HH H hh h mm ss SSS A Z ; [texte] est recopié tel quel.</p>
+      <div class="o-row"><span class="o-spacer"></span><button class="o-btn o-btn--sm" id="copyCode" data-i18n="copyCode">Copier le code</button></div>
+    </div>
+
     <div class="o-panel o-panel--flush">
       <table class="o-table"><thead><tr><th data-i18n="zones">Autres fuseaux</th><th></th><th data-i18n="offset">Décalage</th></tr></thead><tbody id="zones"></tbody></table>
     </div>

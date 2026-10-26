@@ -1,8 +1,8 @@
 [extension]
 id = "outilo.timestamps"
 name = { fr = "Timestamps", en = "Timestamps" }
-description = { fr = "Unix ⇄ date, ISO 8601, RFC 2822, semaine ISO, fuseaux horaires", en = "Unix ⇄ date, ISO 8601, RFC 2822, ISO week, time zones" }
-version = "1.0.0"
+description = { fr = "Unix ⇄ date, ISO 8601, RFC 2822, fuseaux horaires, formatage et code JavaScript", en = "Unix ⇄ date, ISO 8601, RFC 2822, time zones, formatting and JavaScript code" }
+version = "1.1.0"
 api = "1"
 license = "Apache-2.0"
 authors = ["Équipe Outilo"]

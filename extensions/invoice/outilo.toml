@@ -1,0 +1,17 @@
+[extension]
+id = "outilo.invoice"
+name = { fr = "Factures", en = "Invoices" }
+description = { fr = "Factures avec TVA par taux, numérotation, export HTML imprimable en PDF", en = "Invoices with per-rate VAT, numbering, printable HTML export" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["autres", "generateur"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[permissions]
+storage = true
+files.save = true

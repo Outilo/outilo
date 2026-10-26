@@ -7,9 +7,11 @@ mod net;
 mod protocol;
 mod registry;
 mod remote;
+mod sql;
 mod storage;
 mod system;
 mod theme;
+mod updater;
 
 use manifest::Localized;
 use registry::{ExtInfo, ExtState, Registry, Source};
@@ -44,6 +46,12 @@ impl Paths {
     }
     fn registry_cache(&self) -> PathBuf {
         self.root.join("registry-cache.json")
+    }
+    fn dev_links(&self) -> PathBuf {
+        self.root.join("dev-links.json")
+    }
+    fn updates(&self) -> PathBuf {
+        self.root.join("updates")
     }
 }
 
@@ -213,7 +221,10 @@ fn set_extension_enabled(state: State<AppState>, id: String, enabled: bool) -> R
 fn uninstall_extension(state: State<AppState>, id: String) -> Result<ExtList, String> {
     let source = state.registry.lock().expect("registre").get(&id).map(|e| (e.source, e.dir.clone()));
     match source {
-        Some((Source::Dev, dir)) => state.update_state(|st| st.dev.retain(|d| d != &dir))?,
+        Some((Source::Dev, dir)) => {
+            unlink_dev(&state.paths, &dir);
+            state.update_state(|st| st.dev.retain(|d| d != &dir))?
+        }
         Some((Source::Official, _)) => {
             if manifest::is_valid_id(&id) {
                 let _ = fs::remove_dir_all(state.paths.extensions.join(&id));
@@ -233,6 +244,44 @@ fn uninstall_extension(state: State<AppState>, id: String) -> Result<ExtList, St
 #[tauri::command]
 fn restore_official_extensions(state: State<AppState>) -> Result<ExtList, String> {
     state.update_state(|st| st.removed.clear())?;
+    state.reload();
+    Ok(state.list())
+}
+
+/// Extensions livrées avec l'application, installées ou non : catalogue disponible hors ligne.
+#[tauri::command]
+fn list_bundled(state: State<AppState>) -> Vec<registry::BundledInfo> {
+    state.paths.bundled.as_deref().or(state.paths.live.as_deref()).map(registry::bundled).unwrap_or_default()
+}
+
+/// Premier lancement : seules les extensions choisies sont installées, les autres restent au catalogue.
+#[tauri::command]
+fn choose_extensions(state: State<AppState>, ids: Vec<String>) -> Result<ExtList, String> {
+    let offered: Vec<String> = list_bundled(state.clone()).into_iter().map(|b| b.id).collect();
+    for id in offered.iter().filter(|id| !ids.contains(id)) {
+        if manifest::is_valid_id(id) {
+            let _ = fs::remove_dir_all(state.paths.extensions.join(id));
+        }
+    }
+    state.update_state(|st| {
+        st.removed.retain(|r| !ids.contains(r));
+        for id in offered.into_iter().filter(|id| !ids.contains(id)) {
+            if !st.removed.contains(&id) {
+                st.removed.push(id);
+            }
+        }
+    })?;
+    state.reload();
+    Ok(state.list())
+}
+
+/// Installe une extension du pack embarqué (sans réseau).
+#[tauri::command]
+fn install_bundled(state: State<AppState>, id: String) -> Result<ExtList, String> {
+    state.update_state(|st| {
+        st.removed.retain(|r| r != &id);
+        st.skipped.remove(&id);
+    })?;
     state.reload();
     Ok(state.list())
 }
@@ -313,6 +362,33 @@ fn registry_rollback(state: State<AppState>, id: String) -> Result<ExtList, Stri
     Ok(state.list())
 }
 
+// ---------- Mise à jour de l'application ----------
+
+#[tauri::command]
+async fn app_update_check(app: AppHandle) -> Result<updater::UpdateInfo, String> {
+    blocking(app, |app, _| {
+        let latest = updater::fetch(&updater::url())?;
+        Ok(updater::compare(&app.package_info().version.to_string(), &latest))
+    })
+    .await
+}
+
+/// Télécharge, vérifie et lance l'installateur, puis quitte Outilo (relancé par l'installateur).
+#[tauri::command]
+async fn app_update_install(app: AppHandle) -> Result<(), String> {
+    blocking(app, |app, state| {
+        let latest = updater::fetch(&updater::url())?;
+        if !updater::compare(&app.package_info().version.to_string(), &latest).available {
+            return Err("Outilo est déjà à jour".into());
+        }
+        let installer = updater::download(&latest, &state.paths.updates())?;
+        updater::launch(&installer)?;
+        app.exit(0);
+        Ok(())
+    })
+    .await
+}
+
 // ---------- API des extensions (permission vérifiée ici, en plus du shell) ----------
 
 #[tauri::command]
@@ -336,6 +412,26 @@ fn ext_storage(
         "keys" => Ok(Value::from(kv.keys())),
         _ => Err(format!("opération inconnue : {op}")),
     }
+}
+
+#[tauri::command]
+async fn ext_sql(
+    app: AppHandle,
+    id: String,
+    sql: String,
+    params: Option<Vec<Value>>,
+    script: Option<bool>,
+) -> Result<Option<sql::QueryResult>, String> {
+    blocking(app, move |_, state| {
+        state.require(&id, "storage.sql")?;
+        let conn = sql::open(&state.paths.data, &id)?;
+        if script.unwrap_or(false) {
+            sql::exec(&conn, &sql).map(|_| None)
+        } else {
+            sql::query(&conn, &sql, &params.unwrap_or_default()).map(Some)
+        }
+    })
+    .await
 }
 
 #[tauri::command]
@@ -619,10 +715,76 @@ fn set_shell_options(app: AppHandle, state: State<AppState>, options: ShellOptio
 }
 
 fn load_registry(paths: &Paths, state: &ExtState) -> Registry {
-    match &paths.live {
-        Some(repo) => Registry::load_live(repo, state),
-        None => Registry::load(&paths.extensions, paths.bundled.as_deref(), state),
+    // Dossiers liés par le serveur MCP des développeurs : pris en compte seulement en mode développeur
+    let mut state = state.clone();
+    if dev_mode(paths) {
+        for dir in dev_links(paths) {
+            if !state.dev.contains(&dir) {
+                state.dev.push(dir);
+            }
+        }
     }
+    match &paths.live {
+        Some(repo) => Registry::load_live(repo, &state),
+        None => Registry::load(&paths.extensions, paths.bundled.as_deref(), &state),
+    }
+}
+
+fn dev_mode(paths: &Paths) -> bool {
+    fs::read_to_string(paths.settings())
+        .ok()
+        .and_then(|s| serde_json::from_str::<Value>(&s).ok())
+        .and_then(|v| v.get("devMode").and_then(Value::as_bool))
+        .unwrap_or(false)
+}
+
+/// `<root>/dev-links.json` : `{ "folders": ["D:/mes-extensions/slugify"] }`, écrit par `outilo-mcp`.
+fn dev_links(paths: &Paths) -> Vec<PathBuf> {
+    fs::read_to_string(paths.dev_links())
+        .ok()
+        .and_then(|s| serde_json::from_str::<Value>(&s).ok())
+        .and_then(|v| v.get("folders").and_then(Value::as_array).cloned())
+        .unwrap_or_default()
+        .iter()
+        .filter_map(|f| f.as_str().map(PathBuf::from))
+        .collect()
+}
+
+fn unlink_dev(paths: &Paths, dir: &std::path::Path) {
+    let folders: Vec<PathBuf> = dev_links(paths).into_iter().filter(|d| d != dir).collect();
+    let json = serde_json::json!({ "folders": folders });
+    let _ = fsutil::write_atomic(&paths.dev_links(), json.to_string().as_bytes());
+}
+
+/// Empreinte des extensions en développement (date de modification la plus récente, nombre de fichiers) :
+/// le shell la compare régulièrement pour recharger à chaud.
+#[tauri::command]
+fn dev_fingerprint(state: State<AppState>) -> BTreeMap<String, String> {
+    fn walk(dir: &std::path::Path, out: &mut (u128, usize)) {
+        for entry in fs::read_dir(dir).into_iter().flatten().flatten() {
+            if out.1 > 5000 {
+                return;
+            }
+            let Ok(meta) = entry.metadata() else { continue };
+            if meta.is_dir() {
+                walk(&entry.path(), out);
+            } else {
+                out.1 += 1;
+                let t = meta.modified().ok().and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok());
+                out.0 = out.0.max(t.map(|d| d.as_millis()).unwrap_or(0));
+            }
+        }
+    }
+    let mut map = BTreeMap::new();
+    let links = fs::metadata(state.paths.dev_links()).and_then(|m| m.modified()).ok();
+    map.insert("__links".into(), format!("{links:?}"));
+    let reg = state.registry.lock().expect("registre");
+    for (id, ext) in reg.items.iter().filter(|(_, e)| e.source == Source::Dev) {
+        let mut fp = (0, 0);
+        walk(&ext.dir, &mut fp);
+        map.insert(id.clone(), format!("{}:{}", fp.0, fp.1));
+    }
+    map
 }
 
 /// (pack embarqué, dossier du dépôt en développement). `OUTILO_NO_LIVE=1` force le mode installé, pour tester
@@ -669,6 +831,7 @@ pub fn run() {
             for dir in [&paths.extensions, &paths.data, &paths.themes] {
                 fs::create_dir_all(dir)?;
             }
+            updater::cleanup(&paths.updates());
             let ext_state = ExtState::load(&paths.ext_state());
             let registry = load_registry(&paths, &ext_state);
             app.manage(AppState {
@@ -699,11 +862,17 @@ pub fn run() {
             set_extension_enabled,
             uninstall_extension,
             restore_official_extensions,
+            list_bundled,
+            choose_extensions,
+            install_bundled,
             add_dev_extension,
             registry_check,
             registry_install,
             registry_rollback,
+            app_update_check,
+            app_update_install,
             ext_storage,
+            ext_sql,
             ext_save_file,
             ext_system_info,
             ext_processes,
@@ -722,6 +891,7 @@ pub fn run() {
             export_theme,
             delete_theme,
             set_shell_options,
+            dev_fingerprint,
         ])
         .run(tauri::generate_context!())
         .expect("erreur au lancement d'Outilo");

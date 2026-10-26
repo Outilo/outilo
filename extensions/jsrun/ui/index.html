@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .panes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    #code { height: calc(100vh - 250px); min-height: 240px; resize: none; tab-size: 2; }
+    #out { height: calc(100vh - 250px); min-height: 240px; margin: 0; }
+    .line { padding: 2px 0; border-bottom: 1px solid var(--o-border); white-space: pre-wrap; word-break: break-word; }
+    .warn { color: var(--o-accent); }
+    .error { color: var(--o-danger); }
+    .result { color: var(--o-success); }
+    .muted { color: var(--o-muted); }
+    @media (max-width: 760px) { .panes { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">JavaScript</h1>
+    <p class="o-sub" data-i18n="subtitle">Exécutez du JavaScript dans un cadre isolé, sans réseau. « await » est permis.</p>
+  </div>
+  <div class="o-stack">
+    <div class="o-row">
+      <button class="o-btn o-btn--primary" id="run" data-i18n="run">Exécuter (Ctrl+Entrée)</button>
+      <button class="o-btn" id="clear" data-i18n="clear">Effacer la console</button>
+      <select class="o-select" id="examples"><option value="" data-i18n="examples">Exemples…</option></select>
+      <span class="o-spacer"></span>
+      <span class="o-sub" id="time" style="margin:0"></span>
+    </div>
+    <div class="panes">
+      <textarea class="o-textarea" id="code" spellcheck="false"></textarea>
+      <div class="o-pre" id="out"></div>
+    </div>
+  </div>
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

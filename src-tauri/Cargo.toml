@@ -1,6 +1,6 @@
 [package]
 name = "outilo"
-version = "0.5.0"
+version = "0.6.0"
 description = "Outilo — la boîte à outils extensible"
 edition = "2021"
 license = "Apache-2.0"
@@ -28,6 +28,7 @@ netstat2 = "0.11"
 tauri-plugin-global-shortcut = "2"
 tauri-plugin-single-instance = "2"
 zip = { version = "9", default-features = false, features = ["deflate"] }
+rusqlite = { version = "0.41", features = ["bundled", "limits"] }
 
 [target.'cfg(windows)'.dependencies]
 windows-sys = { version = "0.61", features = [

@@ -45,12 +45,32 @@ export interface Available {
   name: Localized
   description?: Localized | null
   categories: string[]
+  authors?: string[]
+  verified?: boolean
   version: string
   installed?: string | null
   update: boolean
   permissions: string[]
   newPermissions: string[]
   skipped: boolean
+  size: number
+}
+
+/** Extension du pack embarqué (catalogue hors ligne). */
+export interface BundledInfo {
+  id: string
+  name: Localized
+  description?: Localized | null
+  categories: string[]
+  version: string
+  permissions: string[]
+}
+
+export interface AppUpdate {
+  current: string
+  latest: string
+  available: boolean
+  notes: string
   size: number
 }
 
@@ -93,6 +113,11 @@ export interface Settings {
   autoUpdate: boolean
   closeToTray: boolean
   globalShortcut: boolean
+  appAutoUpdate: boolean
+  /** Bac à sable : les actions système des extensions en développement sont simulées. */
+  devSimulate: boolean
+  /** Version dont la notification a été fermée (« Plus tard »). */
+  appUpdateDismissed: string
 }
 
 export type Page = 'home' | 'extensions' | 'themes' | 'settings'
@@ -100,6 +125,16 @@ export type Page = 'home' | 'extensions' | 'themes' | 'settings'
 export type Tab =
   | { key: string; kind: 'page'; page: Page }
   | { key: string; kind: 'ext'; extId: string; reload: number }
+
+/** Journal des appels d'API des extensions en développement. */
+export interface DevCall {
+  time: number
+  extId: string
+  method: string
+  ms: number
+  error?: string
+  simulated?: boolean
+}
 
 export interface Toast {
   id: number

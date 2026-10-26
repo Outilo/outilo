@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    body { padding: 0; }
+    .layout { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+    nav { border-right: 1px solid var(--o-border); background: var(--o-surface); padding: 22px 12px; }
+    nav button { display: block; width: 100%; text-align: left; background: none; border: 0; color: var(--o-muted); font: inherit; font-size: 13px; padding: 7px 10px; border-radius: 6px; cursor: pointer; }
+    nav button:hover { color: var(--o-text); background: var(--o-surface-2); }
+    nav button.on { color: var(--o-accent); background: color-mix(in srgb, var(--o-accent) 10%, transparent); }
+    nav .brand { font-weight: 600; padding: 0 10px 14px; }
+    main { padding: 28px 36px 48px; max-width: 900px; }
+    main h2 { font-size: 18px; margin: 24px 0 10px; }
+    main h2:first-child { margin-top: 0; }
+    main h3 { font-size: 14px; margin: 18px 0 8px; }
+    main p, main li { color: var(--o-text); line-height: 1.6; }
+    main p { margin: 0 0 10px; }
+    main ul, main ol { margin: 0 0 12px; padding-left: 20px; }
+    main code { font-family: var(--o-font-mono); font-size: 12.5px; background: var(--o-surface-2); padding: 1px 5px; border-radius: 4px; }
+    .copyable { position: relative; }
+    .copyable .o-btn { position: absolute; top: 8px; right: 8px; }
+    .demo { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .err { color: var(--o-danger); }
+    .ok { color: var(--o-success); }
+    #toml { min-height: 260px; }
+    @media (max-width: 760px) { .layout { grid-template-columns: 1fr; } nav { border-right: 0; border-bottom: 1px solid var(--o-border); } }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav id="nav"><div class="brand" data-i18n="title">Doc développeur</div></nav>
+    <main id="main"></main>
+  </div>
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="vendor/smol-toml.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

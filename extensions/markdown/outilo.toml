@@ -1,0 +1,18 @@
+[extension]
+id = "outilo.markdown"
+name = { fr = "Markdown", en = "Markdown" }
+description = { fr = "Markdown → HTML avec aperçu en direct, export en page HTML", en = "Markdown → HTML with live preview, HTML page export" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["texte", "code"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[permissions]
+clipboard = true
+storage = true
+files.save = true

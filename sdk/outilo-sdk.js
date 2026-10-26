@@ -146,6 +146,12 @@
         return call('files.save', { name: name, content: String(content), encoding: options && options.encoding })
       }
     },
+    sql: {
+      /** Permission : storage.sql — une instruction avec paramètres « ? ». Résout { columns, rows, changes, truncated }. */
+      query: function (sql, params) { return call('sql.query', { sql: String(sql), params: params || [] }) },
+      /** Permission : storage.sql — script de plusieurs instructions (création de tables…). */
+      exec: function (script) { return call('sql.exec', { sql: String(script) }) }
+    },
     system: {
       /** Permission : system.info — OS, processeur, mémoire, disques, cartes graphiques, interfaces réseau. */
       info: function () { return call('system.info') }

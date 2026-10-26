@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .layout { display: grid; grid-template-columns: minmax(340px, 1fr) 1fr; gap: 16px; align-items: start; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .o-textarea.addr { min-height: 84px; font-family: var(--o-font-ui); }
+    .items td { padding: 4px; font-family: var(--o-font-ui); }
+    .items .o-input { padding: 6px 8px; }
+    .items .num { width: 80px; }
+    .preview { background: #fff; color: #1f2328; border-radius: var(--o-radius); padding: 22px; font-size: 12.5px; border: 1px solid var(--o-border); position: sticky; top: 0; }
+    .preview header { display: flex; justify-content: space-between; gap: 16px; }
+    .preview h1 { font-size: 18px; margin: 0 0 4px; }
+    .preview .from { text-align: right; }
+    .preview .to { margin: 18px 0; }
+    .preview table { width: 100%; border-collapse: collapse; }
+    .preview th, .preview td { padding: 5px; border-bottom: 1px solid #d0d7de; text-align: left; vertical-align: top; }
+    .preview .n { text-align: right; white-space: nowrap; }
+    .preview .sum { width: auto; margin: 12px 0 0 auto; }
+    .preview .sum td { border: 0; }
+    .preview .ttc td { font-weight: 700; border-top: 2px solid #1f2328; }
+    .preview .note { color: #57606a; font-size: 11.5px; margin-top: 14px; }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Factures</h1>
+    <p class="o-sub" data-i18n="subtitle">Créez une facture, exportez-la en page HTML puis imprimez-la en PDF depuis votre navigateur.</p>
+  </div>
+  <div class="layout">
+    <div class="o-stack">
+      <div class="o-panel o-stack" style="gap:10px">
+        <div class="two">
+          <label><span class="o-label" data-i18n="number">Numéro</span><input class="o-input" id="number"></label>
+          <label><span class="o-label" data-i18n="currency">Devise</span>
+            <select class="o-select" id="currency" style="width:100%"><option>EUR</option><option>USD</option><option>GBP</option><option>CHF</option><option>CAD</option></select>
+          </label>
+          <label><span class="o-label" data-i18n="date">Date</span><input class="o-input" id="date" type="date"></label>
+          <label><span class="o-label" data-i18n="due">Échéance</span><input class="o-input" id="due" type="date"></label>
+        </div>
+        <div class="two">
+          <label><span class="o-label" data-i18n="seller">Émetteur</span><textarea class="o-textarea addr" id="seller" data-i18n-placeholder="sellerHint"></textarea></label>
+          <label><span class="o-label" data-i18n="client">Client</span><textarea class="o-textarea addr" id="client" data-i18n-placeholder="clientHint"></textarea></label>
+        </div>
+      </div>
+      <div class="o-panel o-panel--flush">
+        <table class="o-table items"><thead><tr><th data-i18n="desc">Désignation</th><th data-i18n="qty">Qté</th><th data-i18n="price">Prix HT</th><th data-i18n="vat">TVA %</th><th></th></tr></thead><tbody id="items"></tbody></table>
+        <div class="o-row" style="padding:10px"><button class="o-btn o-btn--sm" id="add" data-i18n="add">Ajouter une ligne</button>
+          <span class="o-spacer"></span><label class="o-check"><input type="checkbox" id="exempt"> <span data-i18n="exempt">Franchise de TVA (micro-entreprise)</span></label></div>
+      </div>
+      <div class="o-panel o-stack" style="gap:10px">
+        <label><span class="o-label" data-i18n="payment">Paiement</span><textarea class="o-textarea addr" id="payment" data-i18n-placeholder="paymentHint"></textarea></label>
+        <label><span class="o-label" data-i18n="notes">Mentions</span><textarea class="o-textarea addr" id="notes" data-i18n-placeholder="notesHint"></textarea></label>
+      </div>
+      <div class="o-row">
+        <button class="o-btn" id="newInv" data-i18n="newInv">Nouvelle facture</button>
+        <span class="o-spacer"></span>
+        <button class="o-btn o-btn--primary" id="save" data-i18n="save">Enregistrer la page HTML</button>
+      </div>
+    </div>
+    <div class="preview" id="preview"></div>
+  </div>
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

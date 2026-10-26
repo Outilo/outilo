@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { inTauri } from '../lib/api'
 import { locale, t } from '../lib/i18n'
-import { store } from '../lib/store'
+import { checkAppUpdate, store } from '../lib/store'
 
 const shortcuts = [
   ['Ctrl K', 'key.palette'],
@@ -48,7 +48,16 @@ const setLocale = (l: string) => (locale.value = l === 'en' ? 'en' : 'fr')
 
       <div class="panel">
         <span class="label">{{ t('set.updates') }}</span>
-        <label class="switch"><input v-model="store.settings.autoUpdate" type="checkbox" /> {{ t('set.autoUpdate') }}</label>
+        <div class="col">
+          <label class="switch"><input v-model="store.settings.autoUpdate" type="checkbox" /> {{ t('set.autoUpdate') }}</label>
+          <label v-if="inTauri" class="switch">
+            <input v-model="store.settings.appAutoUpdate" type="checkbox" /> {{ t('set.appAutoUpdate') }}
+          </label>
+          <div v-if="inTauri" class="row">
+            <span class="hint" style="margin: 0">{{ t('set.appVersion') }} {{ store.info?.version }}</span>
+            <button class="btn sm" @click="checkAppUpdate(true)">{{ t('app.checkApp') }}</button>
+          </div>
+        </div>
       </div>
 
       <div class="panel">

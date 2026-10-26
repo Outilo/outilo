@@ -3,6 +3,7 @@ import { computed, nextTick, ref, watch } from 'vue'
 import { api, inTauri } from '../lib/api'
 import { loc, locale, t } from '../lib/i18n'
 import {
+  checkAppUpdate,
   checkUpdates,
   enabledExtensions,
   openPage,
@@ -67,6 +68,7 @@ const items = computed<Item[]>(() => {
     }
   ]
   if (inTauri) app.push({ group: t('pal.app'), label: t('pal.checkUpdates'), icon: 'download', run: () => checkUpdates(true) })
+  if (inTauri) app.push({ group: t('pal.app'), label: t('app.checkApp'), icon: 'download', run: () => checkAppUpdate(true) })
   list.push(...app)
   const q = normalize(query.value.trim())
   if (!q) return list

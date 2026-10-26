@@ -20,7 +20,16 @@ const confirming = ref<string | null>(null)
 const busy = ref(false)
 
 const reg = store.registry
-const catalog = computed(() => reg.items.filter(i => !i.installed))
+const devDocs = computed(() => store.extensions.find(e => e.id === 'outilo.devdocs' && e.enabled))
+/** Catalogue : registre en ligne, complété par le pack embarqué (disponible hors ligne). */
+const catalog = computed<Available[]>(() => {
+  const installed = new Set(store.extensions.map(e => e.id))
+  const online = reg.items.filter(i => !installed.has(i.id))
+  const offline = store.bundled
+    .filter(b => !installed.has(b.id) && !online.some(i => i.id === b.id))
+    .map(b => ({ ...b, installed: null, update: false, newPermissions: [], skipped: false, size: 0, bundled: true }))
+  return [...online, ...offline].sort((a, b) => loc(a.name).localeCompare(loc(b.name)))
+})
 const lastCheck = computed(() =>
   reg.checkedAt ? t('upd.lastCheck', { time: new Date(reg.checkedAt).toLocaleString(locale.value) }) : t('upd.never')
 )
@@ -68,8 +77,10 @@ async function updateAll() {
   for (const item of updates.value.filter(u => !u.newPermissions.length)) await installFromRegistry(item.id)
 }
 
-function install(item: Available) {
-  if (confirmed(`in:${item.id}`)) installFromRegistry(item.id)
+function install(item: Available & { bundled?: boolean }) {
+  if (!confirmed(`in:${item.id}`)) return
+  if (item.bundled) run(() => api.installBundled(item.id), t('upd.installed', { name: loc(item.name), v: item.version }))
+  else installFromRegistry(item.id)
 }
 
 const size = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} Mo` : `${Math.ceil(n / 1024)} Ko`)
@@ -111,6 +122,31 @@ const size = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} 
     </template>
     <p v-else class="note">{{ t('upd.preview') }}</p>
     <p v-if="!store.settings.devMode" class="note">{{ t('ext.devHint') }}</p>
+
+    <!-- Bac à sable -->
+    <section v-if="store.settings.devMode && inTauri" class="section panel sandbox">
+      <div class="section-head">
+        <h2>{{ t('dev.title') }}</h2>
+        <button v-if="devDocs" class="btn sm" @click="openTool(devDocs.id)">{{ t('dev.docs') }}</button>
+      </div>
+      <p class="desc">{{ t('dev.sub') }}</p>
+      <label class="switch"><input v-model="store.settings.devSimulate" type="checkbox" /> {{ t('dev.simulate') }}</label>
+      <div class="section-head" style="margin-top: 12px">
+        <span class="muted">{{ t('dev.log') }}</span>
+        <button class="btn sm" :disabled="!store.devLog.length" @click="store.devLog.splice(0)">{{ t('dev.clear') }}</button>
+      </div>
+      <div class="log">
+        <p v-if="!store.devLog.length" class="muted">{{ t('dev.empty') }}</p>
+        <div v-for="(c, i) in store.devLog.slice(0, 60)" :key="i" class="call" :class="{ err: c.error }">
+          <span class="mono">{{ new Date(c.time).toLocaleTimeString(locale) }}</span>
+          <span class="mono">{{ c.extId }}</span>
+          <strong class="mono">{{ c.method }}</strong>
+          <span class="mono">{{ c.ms }} ms</span>
+          <span v-if="c.simulated" class="chip acc">{{ t('dev.sim') }}</span>
+          <span v-if="c.error" class="mono">{{ c.error }}</span>
+        </div>
+      </div>
+    </section>
 
     <!-- Mises à jour -->
     <section v-if="updates.length" class="section">
@@ -202,6 +238,10 @@ const size = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} 
           <div class="title">
             <strong>{{ loc(item.name) }}</strong>
             <span class="mono">{{ item.version }}</span>
+            <span class="chip" :class="{ acc: item.verified === false }">
+              {{ item.verified === false ? t('ext.community') : t('ext.official') }}
+            </span>
+            <span v-if="item.verified === false && item.authors?.length" class="mono">{{ item.authors.join(', ') }}</span>
           </div>
           <p class="desc">{{ loc(item.description) }}</p>
           <div class="perms">
@@ -330,6 +370,26 @@ const size = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} 
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
+}
+.sandbox .desc {
+  margin-bottom: 10px;
+}
+.log {
+  max-height: 220px;
+  overflow: auto;
+  margin-top: 6px;
+  font-size: 12px;
+}
+.call {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 3px 0;
+  border-bottom: 1px solid var(--o-border);
+}
+.call.err strong,
+.call.err span:last-child {
+  color: var(--o-danger);
 }
 .restore {
   margin-top: 24px;

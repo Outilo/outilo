@@ -1,0 +1,20 @@
+[extension]
+id = "outilo.devdocs"
+name = { fr = "Doc développeur", en = "Developer docs" }
+description = { fr = "Créer une extension : manifeste, permissions, SDK, bac à sable, serveur MCP pour votre IA, publication", en = "Build an extension: manifest, permissions, SDK, sandbox, MCP server for your AI, publishing" }
+version = "1.0.0"
+api = "1"
+license = "Apache-2.0"
+authors = ["Équipe Outilo"]
+categories = ["code"]
+icon = "icon.svg"
+
+[ui]
+entry = "ui/index.html"
+
+[[commands]]
+id = "mcp"
+title = { fr = "Configurer le serveur MCP Outilo", en = "Set up the Outilo MCP server" }
+
+[permissions]
+clipboard = true

@@ -47,6 +47,11 @@ pub struct IndexExt {
     pub description: Option<Localized>,
     #[serde(default)]
     pub categories: Vec<String>,
+    #[serde(default)]
+    pub authors: Vec<String>,
+    /// Publiée par l'équipe Outilo (identifiant `outilo.*`).
+    #[serde(default)]
+    pub verified: bool,
     pub versions: BTreeMap<String, IndexVersion>,
 }
 
@@ -83,6 +88,8 @@ pub struct Available {
     pub name: Localized,
     pub description: Option<Localized>,
     pub categories: Vec<String>,
+    pub authors: Vec<String>,
+    pub verified: bool,
     pub version: String,
     pub installed: Option<String>,
     pub update: bool,
@@ -115,6 +122,8 @@ pub fn compare(index: &Index, reg: &Registry, state: &ExtState) -> Vec<Available
                 name: ext.name.clone(),
                 description: ext.description.clone(),
                 categories: ext.categories.clone(),
+                authors: ext.authors.clone(),
+                verified: ext.verified,
                 update: installed.as_ref().is_some_and(|i| *i < version),
                 installed: installed.map(|v| v.to_string()),
                 skipped: registry::is_skipped(state, id, &version),
@@ -179,6 +188,14 @@ fn get(url: &str, etag: Option<&str>, limit: u64) -> Result<Fetched, String> {
             Ok(Fetched::Body(body, tag))
         }
         code => Err(format!("le registre a répondu {code}")),
+    }
+}
+
+/// Téléchargement simple (https ou file://), limité à `limit` octets.
+pub fn get_bytes(url: &str, limit: u64) -> Result<Vec<u8>, String> {
+    match get(url, None, limit)? {
+        Fetched::Body(bytes, _) => Ok(bytes),
+        Fetched::NotModified => Err("réponse inattendue".into()),
     }
 }
 
@@ -479,6 +496,8 @@ mod tests {
                         name: Localized::Text("A".into()),
                         description: None,
                         categories: vec![],
+                        authors: vec![],
+                        verified: true,
                         versions: [
                             ("1.0.0".to_owned(), signed(b"y", &key)),
                             ("1.2.0".into(), v2),
@@ -493,6 +512,8 @@ mod tests {
                         name: Localized::Text("B".into()),
                         description: None,
                         categories: vec![],
+                        authors: vec![],
+                        verified: true,
                         versions: [("0.1.0".to_owned(), signed(b"z", &key))].into(),
                     },
                 ),

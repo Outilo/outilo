@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .layout { display: grid; grid-template-columns: 200px 1fr; gap: 12px; }
+    .tables { font-family: var(--o-font-mono); font-size: 12.5px; max-height: calc(100vh - 200px); overflow: auto; }
+    .tables button { display: block; width: 100%; text-align: left; background: none; border: 0; color: var(--o-text); font: inherit; padding: 5px 6px; border-radius: 6px; cursor: pointer; }
+    .tables button:hover { background: var(--o-surface-2); }
+    .tables small { color: var(--o-muted); }
+    #sql { min-height: 170px; }
+    .result { max-height: calc(100vh - 460px); min-height: 120px; }
+    td { max-width: 360px; overflow: hidden; text-overflow: ellipsis; }
+    @media (max-width: 760px) { .layout { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1>SQL</h1>
+    <p class="o-sub" data-i18n="subtitle">Atelier SQLite : une base privée sur votre PC pour tester des requêtes.</p>
+  </div>
+  <div class="layout">
+    <div class="o-panel tables">
+      <span class="o-label" data-i18n="tables">Tables</span>
+      <div id="tables"></div>
+    </div>
+    <div class="o-stack">
+      <textarea class="o-textarea" id="sql" spellcheck="false">SELECT sqlite_version() AS version;</textarea>
+      <div class="o-row">
+        <button class="o-btn o-btn--primary" id="run" data-i18n="run">Exécuter (Ctrl+Entrée)</button>
+        <button class="o-btn" id="sample" data-i18n="sample">Créer une base d’exemple</button>
+        <span class="o-spacer"></span>
+        <button class="o-btn o-btn--sm" id="csv" data-i18n="csv">Enregistrer en CSV</button>
+        <button class="o-btn o-btn--sm" id="copy" data-i18n="copy">Copier en CSV</button>
+      </div>
+      <p class="o-sub" id="status" style="margin:0"></p>
+      <div class="o-panel o-panel--flush result">
+        <table class="o-table"><thead id="head"></thead><tbody id="rows"></tbody></table>
+      </div>
+      <p class="o-sub" style="margin:0" data-i18n="hint">Chaque instruction s’exécute séparément ; pour une transaction, regroupez-la dans un seul bloc avec « Exécuter le script ».</p>
+      <button class="o-btn o-btn--sm" id="script" data-i18n="script" style="align-self:flex-start">Exécuter le script d’un bloc</button>
+    </div>
+  </div>
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

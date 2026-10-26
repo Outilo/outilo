@@ -44,6 +44,8 @@ for (const name of readdirSync(extDir).sort()) {
   entry.name = manifest.extension.name
   entry.description = manifest.extension.description ?? null
   entry.categories = manifest.extension.categories ?? []
+  entry.authors = manifest.extension.authors ?? []
+  entry.verified = id.startsWith('outilo.')
   if (entry.versions[version]) continue
 
   const tag = `${name}-v${version}`

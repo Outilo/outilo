@@ -1,0 +1,31 @@
+# Vérifie chaque proposition d'extension (Pull Request) : manifeste, règles communautaires, tests.
+# Après relecture humaine et fusion, le workflow « Extensions » publie l'extension dans le registre.
+name: Propositions d'extensions
+
+on:
+  pull_request:
+    paths: ['extensions/**']
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Extensions modifiées
+        id: changed
+        run: |
+          dirs=$(git diff --name-only "origin/$GITHUB_BASE_REF...HEAD" -- extensions | cut -d/ -f1-2 | sort -u | tr '\n' ' ')
+          echo "dirs=$dirs" >> "$GITHUB_OUTPUT"
+          echo "Modifiées : $dirs"
+      - name: Vérification
+        run: node scripts/check-extensions.mjs ${{ steps.changed.outputs.dirs }}

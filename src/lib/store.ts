@@ -2,7 +2,7 @@ import { computed, reactive, watch } from 'vue'
 import { api, inTauri } from './api'
 import { locale, loc, t } from './i18n'
 import { applyShellTheme, themeVars } from './theme'
-import type { AppInfo, Available, ExtInfo, ExtList, Page, Settings, Tab, ThemeDef, Toast } from './types'
+import type { AppInfo, AppUpdate, Available, BundledInfo, DevCall, ExtInfo, ExtList, Page, Settings, Tab, ThemeDef, Toast } from './types'
 import { broadcast, sendCommand } from './extHost'
 
 const DEFAULT_SETTINGS: Settings = {
@@ -19,7 +19,10 @@ const DEFAULT_SETTINGS: Settings = {
   sidebar: true,
   autoUpdate: true,
   closeToTray: false,
-  globalShortcut: false
+  globalShortcut: false,
+  appAutoUpdate: false,
+  devSimulate: true,
+  appUpdateDismissed: ''
 }
 
 /** Raccourci système qui affiche / masque Outilo. */
@@ -34,11 +37,17 @@ export const store = reactive({
   extensions: [] as ExtInfo[],
   warnings: [] as string[],
   themes: [] as ThemeDef[],
+  /** Pack embarqué : catalogue hors ligne. */
+  bundled: [] as BundledInfo[],
   tabs: [{ key: 'page:home', kind: 'page', page: 'home' }] as Tab[],
   active: 'page:home',
   paletteOpen: false,
   sidebarOpen: true,
   toasts: [] as Toast[],
+  /** Nouvelle version de l'application, si elle existe. */
+  appUpdate: null as AppUpdate | null,
+  appUpdating: false,
+  devLog: [] as DevCall[],
   registry: {
     items: [] as Available[],
     packs: {} as Record<string, string[]>,
@@ -83,6 +92,7 @@ export async function init() {
   store.sidebarOpen = store.settings.sidebar
   locale.value = store.settings.locale
   store.themes = themes.themes
+  store.bundled = await api.listBundled().catch(() => [])
   setExtensions(list, themes.warnings)
   store.ready = true
 
@@ -114,11 +124,85 @@ export async function init() {
     { immediate: true }
   )
 
+  // Bac à sable : rechargement à chaud des extensions en développement
+  watch(
+    () => store.settings.devMode,
+    on => (on ? startDevWatch() : stopDevWatch()),
+    { immediate: true }
+  )
+
   // Registre : au lancement puis toutes les 24 h
   if (inTauri) {
+    checkAppUpdate()
     checkUpdates()
     window.setInterval(checkUpdates, CHECK_INTERVAL)
   }
+}
+
+// ---------- Bac à sable développeur ----------
+
+let devTimer: number | undefined
+let lastPrint: Record<string, string> = {}
+
+function startDevWatch() {
+  if (!inTauri || devTimer) return
+  lastPrint = {}
+  // Le réglage est enregistré avec un léger délai : on laisse le cœur le relire avant de recharger
+  window.setTimeout(async () => setExtensions(await api.reloadExtensions()), 600)
+  devTimer = window.setInterval(async () => {
+    let print: Record<string, string>
+    try {
+      print = await api.devFingerprint()
+    } catch {
+      return
+    }
+    const first = !Object.keys(lastPrint).length
+    const changed = Object.keys(print).filter(k => lastPrint[k] !== print[k])
+    lastPrint = print
+    if (first || !changed.length) return
+    setExtensions(await api.reloadExtensions())
+    for (const tab of store.tabs) if (tab.kind === 'ext' && changed.includes(tab.extId)) tab.reload++
+    const names = changed.filter(k => k !== '__links')
+    if (names.length) toast(t('dev.reloaded', { n: names.length }), 'info')
+  }, 1500)
+}
+
+function stopDevWatch() {
+  clearInterval(devTimer)
+  devTimer = undefined
+}
+
+export function logDevCall(call: DevCall) {
+  store.devLog.unshift(call)
+  if (store.devLog.length > 200) store.devLog.length = 200
+}
+
+// ---------- Mise à jour de l'application ----------
+
+export async function checkAppUpdate(manual = false) {
+  try {
+    const info = await api.appUpdateCheck()
+    store.appUpdate = info.available ? info : null
+    if (manual) toast(info.available ? t('app.updateFound', { v: info.latest }) : t('app.upToDate', { v: info.current }), 'success')
+    if (info.available && store.settings.appAutoUpdate) await installAppUpdate()
+  } catch (e) {
+    if (manual) toast(String(e), 'error')
+  }
+}
+
+/** L'installateur est lancé puis Outilo se ferme ; il est relancé une fois à jour. */
+export async function installAppUpdate() {
+  store.appUpdating = true
+  try {
+    await api.appUpdateInstall()
+  } catch (e) {
+    store.appUpdating = false
+    toast(String(e), 'error')
+  }
+}
+
+export function dismissAppUpdate() {
+  if (store.appUpdate) store.settings.appUpdateDismissed = store.appUpdate.latest
 }
 
 // ---------- Registre en ligne ----------

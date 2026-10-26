@@ -4,6 +4,7 @@ import { inTauri } from '../lib/api'
 import { t } from '../lib/i18n'
 import { store } from '../lib/store'
 import Icon from './Icon.vue'
+import Logo from './Logo.vue'
 
 const win = inTauri ? getCurrentWindow() : null
 </script>
@@ -11,7 +12,7 @@ const win = inTauri ? getCurrentWindow() : null
 <template>
   <header class="titlebar" data-tauri-drag-region>
     <div class="brand" data-tauri-drag-region>
-      <span class="mark">O</span>
+      <Logo :size="20" />
       <strong>Outilo</strong>
     </div>
     <button class="cmd" @click="store.paletteOpen = true">
@@ -46,18 +47,6 @@ const win = inTauri ? getCurrentWindow() : null
   gap: 8px;
   padding-left: 12px;
   color: var(--o-text);
-}
-.mark {
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  display: grid;
-  place-items: center;
-  background: var(--o-accent);
-  color: var(--o-accent-ink);
-  font-family: var(--o-font-mono);
-  font-size: 11px;
-  font-weight: 500;
 }
 .cmd {
   display: flex;

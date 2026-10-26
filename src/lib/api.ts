@@ -1,7 +1,7 @@
 // Accès au cœur Rust. Hors de Tauri (aperçu `npm run dev` dans un navigateur), une implémentation
 // de secours lit les extensions du dépôt via le serveur Vite et garde l'état dans localStorage.
 import { invoke, isTauri } from '@tauri-apps/api/core'
-import type { AppInfo, CheckResult, ExtInfo, ExtList, ThemeDef, ThemeList } from './types'
+import type { AppInfo, AppUpdate, BundledInfo, CheckResult, ExtInfo, ExtList, ThemeDef, ThemeList } from './types'
 
 export const inTauri = isTauri()
 
@@ -16,10 +16,16 @@ export const api = {
   setExtensionEnabled: (id: string, enabled: boolean) => call<ExtList>('set_extension_enabled', { id, enabled }),
   uninstallExtension: (id: string) => call<ExtList>('uninstall_extension', { id }),
   restoreOfficialExtensions: () => call<ExtList>('restore_official_extensions'),
+  listBundled: () => call<BundledInfo[]>('list_bundled'),
+  chooseExtensions: (ids: string[]) => call<ExtList>('choose_extensions', { ids }),
+  installBundled: (id: string) => call<ExtList>('install_bundled', { id }),
   addDevExtension: () => call<ExtList | null>('add_dev_extension'),
   registryCheck: () => call<CheckResult>('registry_check'),
+  appUpdateCheck: () => call<AppUpdate>('app_update_check'),
+  appUpdateInstall: () => call<void>('app_update_install'),
   registryInstall: (id: string) => call<ExtList>('registry_install', { id }),
   registryRollback: (id: string) => call<ExtList>('registry_rollback', { id }),
+  devFingerprint: () => call<Record<string, string>>('dev_fingerprint'),
   setShellOptions: (options: { closeToTray: boolean; shortcut: string | null; locale: string }) =>
     call<void>('set_shell_options', { options }),
   /** Commandes de l'API des extensions : `ext_<nom>`, toujours avec l'identifiant de l'extension appelante. */
@@ -62,7 +68,10 @@ async function previewList(): Promise<ExtList> {
   const res = await fetch('/__dev/extensions.json')
   const list = (await res.json()) as ExtList
   const disabled = LS.get<string[]>('disabled', [])
-  list.items = list.items.map((e: ExtInfo) => ({ ...e, enabled: !disabled.includes(e.id) }))
+  const removed = LS.get<string[]>('removed', [])
+  list.items = list.items
+    .filter((e: ExtInfo) => !removed.includes(e.id))
+    .map((e: ExtInfo) => ({ ...e, enabled: !disabled.includes(e.id) }))
   return list
 }
 
@@ -91,7 +100,21 @@ async function preview(cmd: string, a: Record<string, any>): Promise<unknown> {
       return LS.set('settings', a.settings)
     case 'list_extensions':
     case 'reload_extensions':
+      return previewList()
     case 'restore_official_extensions':
+      LS.set('removed', [])
+      return previewList()
+    case 'list_bundled': {
+      const all = (await (await fetch('/__dev/extensions.json')).json()) as ExtList
+      return all.items.map(e => ({ id: e.id, name: e.name, description: e.description, categories: e.categories, version: e.version, permissions: e.permissions }))
+    }
+    case 'choose_extensions': {
+      const all = (await (await fetch('/__dev/extensions.json')).json()) as ExtList
+      LS.set('removed', all.items.map(e => e.id).filter(id => !a.ids.includes(id)))
+      return previewList()
+    }
+    case 'install_bundled':
+      LS.set('removed', LS.get<string[]>('removed', []).filter(id => id !== a.id))
       return previewList()
     case 'set_extension_enabled': {
       const disabled = LS.get<string[]>('disabled', []).filter(d => d !== a.id)

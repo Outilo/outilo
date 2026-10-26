@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    .panes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .panes > * { height: calc(100vh - 250px); min-height: 240px; }
+    #md { resize: none; }
+    #preview { overflow: auto; background: var(--o-surface); border: 1px solid var(--o-border); border-radius: var(--o-radius); padding: 18px 22px; line-height: 1.6; }
+    #preview h1, #preview h2, #preview h3 { margin: 1em 0 .4em; }
+    #preview p { margin: 0 0 .8em; }
+    #preview code { font-family: var(--o-font-mono); background: var(--o-surface-2); padding: 1px 4px; border-radius: 4px; font-size: 12.5px; }
+    #preview pre { background: var(--o-bg); border: 1px solid var(--o-border); padding: 12px; border-radius: var(--o-radius); overflow: auto; }
+    #preview pre code { background: none; padding: 0; }
+    #preview table { border-collapse: collapse; }
+    #preview td, #preview th { border: 1px solid var(--o-border); padding: 5px 10px; }
+    #preview blockquote { border-left: 3px solid var(--o-accent); margin: 0; padding-left: 12px; color: var(--o-muted); }
+    #preview a { color: var(--o-accent); }
+    #preview img { max-width: 100%; }
+    #html { display: none; }
+    .showHtml #preview { display: none; }
+    .showHtml #html { display: block; }
+    @media (max-width: 760px) { .panes { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1>Markdown</h1>
+    <p class="o-sub" data-i18n="subtitle">Aperçu en direct, HTML propre à copier ou à enregistrer.</p>
+  </div>
+  <div class="o-stack">
+    <div class="o-row">
+      <button class="o-chip on" data-view="preview" data-i18n="preview">Aperçu</button>
+      <button class="o-chip" data-view="html">HTML</button>
+      <span class="o-spacer"></span>
+      <span class="o-sub" id="stats" style="margin:0"></span>
+      <button class="o-btn o-btn--sm" id="copyHtml" data-i18n="copyHtml">Copier le HTML</button>
+      <button class="o-btn o-btn--sm" id="saveHtml" data-i18n="saveHtml">Enregistrer en page HTML</button>
+      <button class="o-btn o-btn--sm" id="saveMd" data-i18n="saveMd">Enregistrer .md</button>
+    </div>
+    <div class="panes" id="panes">
+      <textarea class="o-textarea" id="md" spellcheck="false"></textarea>
+      <div id="preview"></div>
+      <pre class="o-pre" id="html"></pre>
+    </div>
+  </div>
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="vendor/marked.umd.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

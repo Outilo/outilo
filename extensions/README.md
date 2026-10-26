@@ -28,9 +28,23 @@ au lancement suivant (ou via « Vérifier les mises à jour »).
 | `network` | `outilo.network` | network (`*`), shell.safe, clipboard |
 | `ports` | `outilo.ports` | process |
 | `cleaner` | `outilo.cleaner` | files.scoped |
+| `text` | `outilo.text` | clipboard, storage |
+| `markdown` | `outilo.markdown` | clipboard, storage, files.save |
+| `docker` | `outilo.docker` | clipboard, files.save |
+| `timer` | `outilo.timer` | aucune |
+| `sql` | `outilo.sql` | storage, storage.sql, clipboard, files.save |
+| `notes` | `outilo.notes` | storage.sql, clipboard, files.save |
+| `invoice` | `outilo.invoice` | storage, files.save |
+| `image` | `outilo.image` | clipboard, files.save |
+| `jsrun` | `outilo.jsrun` | storage |
+| `devdocs` | `outilo.devdocs` | clipboard |
 
-Bibliothèques embarquées (dans `ui/vendor/`, licences jointes) : js-yaml (MIT) pour JSON, bcryptjs (BSD-3) pour
-Hash, qrcode-generator (MIT) pour QR code.
+Bibliothèques embarquées (dans `ui/vendor/`, licences jointes) : js-yaml (MIT) pour JSON et Docker, bcryptjs
+(BSD-3) pour Hash, qrcode-generator (MIT) pour QR code, marked (MIT) pour Markdown, smol-toml (BSD-3) pour la doc
+développeur.
+
+**Extensions tierces** : voir [`docs/EXTENSIONS_COMMUNAUTE.md`](../docs/EXTENSIONS_COMMUNAUTE.md) (serveur MCP pour
+les assistants IA, bac à sable, proposition au store).
 
 ## Structure
 
@@ -82,7 +96,8 @@ Permissions reconnues par l'API 1. Une permission inconnue rend le manifeste inv
 | `process` | oui | implémentée (lister, ports, arrêter après confirmation) |
 | `files.scoped` | oui | implémentée pour le nettoyeur (liste fixe de caches du profil) |
 | `shell.safe` | oui | implémentée : vider le cache DNS |
-| `storage.sql`, `files.pick` | — | réservées, pas encore d'API |
+| `storage.sql` | non | implémentée : base SQLite privée (50 Mo, `ATTACH` interdit). Si `storage` est aussi déclaré : `"storage.sql" = true` |
+| `files.pick` | — | réservée, pas encore d'API |
 
 ## SDK (`window.outilo`)
 
@@ -97,6 +112,7 @@ réseau (`connect-src 'none'`) ni accès à Tauri. Tout passe par le SDK, et cha
 | `outilo.clipboard.write(texte)` | clipboard | Écrit dans le presse-papiers |
 | `outilo.storage.get/set/remove/keys` | storage | Clé/valeur JSON privé, 5 Mo max |
 | `outilo.files.save(nom, contenu, { encoding })` | files.save | Boîte « Enregistrer sous » ; résout `true` si enregistré. Binaire : contenu base64 et `{ encoding: 'base64' }` |
+| `outilo.sql.query(sql, params)`, `.exec(script)` | storage.sql | SQLite ; `{ columns, rows, changes, truncated }`, BLOB en `{ $blob: base64 }` |
 | `outilo.system.info()` | system.info | OS, CPU, mémoire, disques, cartes graphiques, interfaces |
 | `outilo.net.fetch(url, { method, headers, body })` | network | HTTP(S) vers un domaine déclaré ; `{ status, headers, body, ms }` (5 Mo max) |
 | `outilo.net.lookup(hôte)`, `.tcp(hôte, port, ms)`, `.ping(hôte, n)`, `.interfaces()` | network | Diagnostic réseau (ping ICMP sans droits admin) |
@@ -115,6 +131,7 @@ Composants CSS (`/_sdk/outilo-ui.css`) : `o-panel`, `o-btn`, `o-btn--primary`, `
 
 1. Paramètres → activer le **mode développeur**.
 2. Extensions → **Charger un dossier…** → choisir le dossier contenant `outilo.toml`.
-3. Après modification : palette → « Recharger l'onglet actif » (les fichiers sont relus à chaque requête).
+3. L'extension se recharge dès qu'un fichier change. Extensions → **Bac à sable** : journal des appels d'API et
+   simulation des actions système (arrêt de processus, nettoyage, cache DNS).
 
 Tests de la logique : `npm test` (fichiers `tests/extensions/*.test.mjs`).

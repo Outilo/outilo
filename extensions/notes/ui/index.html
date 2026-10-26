@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_sdk/outilo-ui.css">
+  <style>
+    body { padding-bottom: 20px; }
+    .layout { display: grid; grid-template-columns: 280px 1fr; gap: 12px; height: calc(100vh - 140px); min-height: 300px; }
+    .side { display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+    .list { flex: 1; overflow: auto; }
+    .item { padding: 9px 12px; border-bottom: 1px solid var(--o-border); cursor: pointer; }
+    .item:hover { background: var(--o-surface-2); }
+    .item.on { background: color-mix(in srgb, var(--o-accent) 12%, transparent); }
+    .item strong { display: block; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .item small { color: var(--o-muted); font-size: 11.5px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .editor { display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+    #body { flex: 1; resize: none; font-family: var(--o-font-ui); font-size: 14px; line-height: 1.6; }
+    .pin { color: var(--o-accent); }
+    @media (max-width: 760px) { .layout { grid-template-columns: 1fr; height: auto; } }
+  </style>
+</head>
+<body>
+  <div class="o-header">
+    <h1 data-i18n="title">Notes</h1>
+    <p class="o-sub" data-i18n="subtitle">Prises de notes rapides, enregistrées automatiquement sur votre PC.</p>
+  </div>
+  <div class="layout">
+    <div class="side">
+      <div class="o-row" style="flex-wrap:nowrap">
+        <input class="o-input" id="search" data-i18n-placeholder="search">
+        <button class="o-btn o-btn--primary" id="new" data-i18n="new">Nouvelle</button>
+      </div>
+      <div class="o-panel o-panel--flush list" id="list"></div>
+      <button class="o-btn o-btn--sm" id="export" data-i18n="export">Exporter tout (.md)</button>
+    </div>
+    <div class="editor">
+      <div class="o-row">
+        <span class="o-sub" id="saved" style="margin:0"></span>
+        <span class="o-spacer"></span>
+        <button class="o-btn o-btn--sm" id="pin" data-i18n="pin">Épingler</button>
+        <button class="o-btn o-btn--sm" id="copy" data-i18n="copy">Copier</button>
+        <button class="o-btn o-btn--sm" id="delete" data-i18n="delete">Supprimer</button>
+      </div>
+      <textarea class="o-textarea" id="body" data-i18n-placeholder="placeholder"></textarea>
+    </div>
+  </div>
+  <script src="/_sdk/outilo-sdk.js"></script>
+  <script src="logic.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

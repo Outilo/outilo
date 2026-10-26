@@ -3,7 +3,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { execFileSync } from 'node:child_process'
 import { generateKeyPairSync } from 'node:crypto'
-import { mkdtempSync, readFileSync } from 'node:fs'
+import { existsSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { unzipSync } from 'fflate'
@@ -55,4 +55,34 @@ test('publication incrémentale : une version déjà publiée n’est jamais ref
 
   assert.match(run(), /Aucune nouvelle version/)
   assert.deepEqual(JSON.parse(readFileSync(join(dir, 'out', 'plan.json'), 'utf8')), [])
+})
+
+test('validateur JS aligné sur le cœur Rust, extensions officielles valides', async () => {
+  const { validateExtension, KNOWN_PERMISSIONS } = await import('../scripts/lib/validate.mjs')
+  const rust = readFileSync(join(import.meta.dirname, '..', 'src-tauri', 'src', 'manifest.rs'), 'utf8')
+  const list = [...rust.matchAll(/\("([a-z.]+)", (true|false)\)/g)].map(m => [m[1], m[2] === 'true'])
+  assert.deepEqual(Object.fromEntries(list), KNOWN_PERMISSIONS)
+  const root = join(import.meta.dirname, '..', 'extensions')
+  for (const name of readdirSync(root).filter(n => existsSync(join(root, n, 'outilo.toml')))) {
+    const r = validateExtension(join(root, name))
+    assert.ok(r.ok, `${name} : ${r.errors.join(' ; ')}`)
+  }
+  // Règles communautaires : préfixe réservé et permissions sensibles refusés
+  const cleaner = validateExtension(join(root, 'cleaner'), { community: true })
+  assert.ok(cleaner.errors.some(e => e.includes('réservé')) && cleaner.errors.some(e => e.includes('sensible')))
+})
+
+test('signature de l’installateur et latest.json', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'outilo-app-'))
+  const exe = join(dir, 'setup.exe')
+  writeFileSync(exe, Buffer.from('installateur factice'))
+  execFileSync(process.execPath, ['scripts/sign-installer.mjs', exe, 'v0.6.0', 'https://exemple.com/setup.exe', join(dir, 'latest.json'), 'notes'], {
+    cwd: join(import.meta.dirname, '..'),
+    env: { ...process.env, OUTILO_SIGNING_KEY: pem }
+  })
+  const latest = JSON.parse(readFileSync(join(dir, 'latest.json'), 'utf8'))
+  assert.equal(latest.version, '0.6.0')
+  assert.equal(latest.size, 20)
+  assert.equal(latest.sha256, sha256(readFileSync(exe)))
+  assert.ok(verifyBytes(readFileSync(exe), latest.signature, rawPublicKey(pem)))
 })
