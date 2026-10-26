@@ -18,6 +18,8 @@ const KEEP_VERSIONS: usize = 2;
 pub enum Source {
     Official,
     Dev,
+    /// Extension privée installée par l'utilisateur (dossier ou fichier .outilo), hors du store.
+    Local,
 }
 
 #[derive(Debug, Clone)]
@@ -111,6 +113,21 @@ impl Registry {
         }
         reg.load_dev(state);
         reg
+    }
+
+    /// Extensions privées : `<root>/local/<id>/`. Une extension officielle ou en développement de même identifiant
+    /// est prioritaire.
+    pub fn load_local(&mut self, local: &Path, state: &ExtState) {
+        for entry in fs::read_dir(local).into_iter().flatten().flatten().filter(|e| e.path().is_dir()) {
+            match Manifest::load(&entry.path()) {
+                Ok(m) if self.items.contains_key(&m.extension.id) => self
+                    .warnings
+                    .push(format!("{} : identifiant déjà utilisé, extension locale ignorée", m.extension.id)),
+                Ok(m) if !state.removed.contains(&m.extension.id) => self.insert(m, entry.path(), Source::Local, None),
+                Ok(_) => {}
+                Err(e) => self.warnings.push(format!("Extension locale : {e}")),
+            }
+        }
     }
 
     fn load_dev(&mut self, state: &ExtState) {
@@ -347,6 +364,21 @@ mod tests {
         let reg = Registry::load_live(&repo, &state);
         assert_eq!(reg.get("test.a").unwrap().dir, repo.join("a"));
         assert!(reg.get("test.b").is_none());
+    }
+
+    #[test]
+    fn local_extensions_never_shadow_official_ones() {
+        let tmp = tempfile::tempdir().unwrap();
+        let installed = tmp.path().join("installed");
+        let local = tmp.path().join("local");
+        write_ext(&installed.join("test.a/1.0.0"), "test.a", "1.0.0");
+        write_ext(&local.join("test.a"), "test.a", "9.0.0");
+        write_ext(&local.join("moi.outil"), "moi.outil", "0.1.0");
+        let mut reg = Registry::load(&installed, None, &ExtState::default());
+        reg.load_local(&local, &ExtState::default());
+        assert_eq!(reg.get("test.a").unwrap().manifest.extension.version, "1.0.0");
+        assert_eq!(reg.get("moi.outil").unwrap().source, Source::Local);
+        assert_eq!(reg.warnings.len(), 1);
     }
 
     #[test]

@@ -39,7 +39,16 @@ relie-la à Outilo, puis propose-la. »
 4. Extensions → **Bac à sable** : journal de tous les appels d'API (méthode, durée, erreurs) et simulation des actions
    système (arrêt de processus, nettoyage, cache DNS) : rien n'est réellement exécuté tant que la case est cochée.
 
-## 3. Règles du store
+## 3. Extension privée (sans passer par le store)
+
+Une extension peut rester **pour vous seul** : Extensions → « Installer un dossier… » ou « Installer un fichier
+.outilo… » (produit par `outilo_package_extension`). Outilo affiche ses permissions et demande confirmation, puis
+l'installe dans `%APPDATA%\Outilo\local\<id>\` avec le badge « Locale ». Elle fonctionne sans le mode développeur,
+n'est jamais envoyée au store et n'est pas mise à jour par le registre (réinstallez-la pour une nouvelle version).
+Les règles du store ne s'appliquent pas : seul l'identifiant `outilo.*` est refusé. Les permissions sensibles
+restent possibles, signalées par ⚠ dans la confirmation.
+
+## 4. Règles du store
 
 - Identifiant `auteur.nom` en minuscules ; le préfixe `outilo.` est réservé à l'équipe.
 - Aucune ressource externe : bibliothèques dans `ui/vendor/` avec leur licence ; pas de CDN ni de police en ligne.
@@ -49,7 +58,7 @@ relie-la à Outilo, puis propose-la. »
 - Licence libre indiquée dans `[extension].license`. 30 Mo maximum.
 - Toute nouvelle version : monter `version` ; une version publiée n'est jamais modifiée.
 
-## 4. Proposer sans IA
+## 5. Proposer sans IA
 
 1. Forkez `Outilo/outilo`, ajoutez votre extension dans `extensions/<identifiant>/`.
 2. Vérifiez : `node scripts/check-extensions.mjs extensions/<identifiant>`.

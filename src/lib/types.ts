@@ -29,7 +29,7 @@ export interface ExtInfo {
   sensitive: string[]
   hosts: string[]
   previous?: string | null
-  source: 'official' | 'dev'
+  source: 'official' | 'dev' | 'local'
   enabled: boolean
   path: string
 }

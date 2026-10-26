@@ -2,7 +2,7 @@
 id = "outilo.devdocs"
 name = { fr = "Doc développeur", en = "Developer docs" }
 description = { fr = "Créer une extension : manifeste, permissions, SDK, bac à sable, serveur MCP pour votre IA, publication", en = "Build an extension: manifest, permissions, SDK, sandbox, MCP server for your AI, publishing" }
-version = "1.0.0"
+version = "1.1.0"
 api = "1"
 license = "Apache-2.0"
 authors = ["Équipe Outilo"]

@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { t } from '../lib/i18n'
-import { currentTheme, openPage, store, toggleMode, toggleSidebar, updates } from '../lib/store'
+import { loc } from '../lib/i18n'
+import { currentTheme, enabledExtensions, openPage, openTool, store, toggleFavorite, toggleMode, toggleSidebar, updates } from '../lib/store'
+import type { ExtInfo } from '../lib/types'
 import Icon from './Icon.vue'
+import ToolIcon from './ToolIcon.vue'
 
 const activePage = computed(() => (store.active.startsWith('page:') ? store.active.slice(5) : null))
+
+/** Favoris : l'icône de l'outil, directement dans la barre d'activité (clic droit pour le retirer). */
+const favorites = computed(() =>
+  store.settings.favorites.map(id => enabledExtensions.value.find(e => e.id === id)).filter((e): e is ExtInfo => !!e)
+)
 </script>
 
 <template>
@@ -22,7 +30,20 @@ const activePage = computed(() => (store.active.startsWith('page:') ? store.acti
     <button :class="{ on: activePage === 'themes' }" :title="t('act.themes')" @click="openPage('themes')">
       <Icon name="themes" :size="20" />
     </button>
-    <div class="spacer" />
+    <div class="favorites">
+      <span v-if="favorites.length" class="sep" />
+      <button
+        v-for="ext in favorites"
+        :key="ext.id"
+        class="fav"
+        :class="{ on: store.active === `ext:${ext.id}` }"
+        :title="`${loc(ext.name)} — ${t('act.unpin')}`"
+        @click="openTool(ext.id)"
+        @contextmenu.prevent="toggleFavorite(ext.id)"
+      >
+        <ToolIcon :ext="ext" :size="22" />
+      </button>
+    </div>
     <button :title="t('act.mode')" @click="toggleMode()">
       <Icon :name="currentTheme?.mode === 'dark' ? 'sun' : 'moon'" :size="20" />
     </button>
@@ -72,8 +93,33 @@ button.on::before {
   background: var(--o-accent);
   border-radius: 2px;
 }
-.spacer {
+.favorites {
   flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  scrollbar-width: none;
+}
+.favorites::-webkit-scrollbar {
+  display: none;
+}
+.sep {
+  width: 22px;
+  height: 1px;
+  background: var(--o-border);
+  margin: 4px 0;
+  flex: none;
+}
+.fav {
+  flex: none;
+}
+.fav :deep(.tool-icon) {
+  background: none;
 }
 .badge {
   position: absolute;

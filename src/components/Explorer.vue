@@ -6,10 +6,6 @@ import type { ExtInfo } from '../lib/types'
 import Icon from './Icon.vue'
 import ToolIcon from './ToolIcon.vue'
 
-const favorites = computed(() =>
-  store.settings.favorites.map(id => enabledExtensions.value.find(e => e.id === id)).filter((e): e is ExtInfo => !!e)
-)
-
 /** Une extension apparaît sous sa première catégorie. */
 const groups = computed(() => {
   const map = new Map<string, ExtInfo[]>()
@@ -25,28 +21,17 @@ const isActive = (id: string) => store.active === `ext:${id}`
 
 <template>
   <aside class="side">
-    <h6>{{ t('side.favorites') }}</h6>
-    <p v-if="!favorites.length" class="hint">{{ t('side.noFavorites') }}</p>
-    <div
-      v-for="ext in favorites"
-      :key="`fav-${ext.id}`"
-      class="item"
-      :class="{ on: isActive(ext.id) }"
-      @click="openTool(ext.id)"
-    >
-      <ToolIcon :ext="ext" />
-      <span class="name">{{ loc(ext.name) }}</span>
-    </div>
-
     <template v-for="[cat, list] in groups" :key="cat">
       <h6>{{ category(cat) }}</h6>
       <div v-for="ext in list" :key="ext.id" class="item" :class="{ on: isActive(ext.id) }" @click="openTool(ext.id)">
         <ToolIcon :ext="ext" />
         <span class="name">{{ loc(ext.name) }}</span>
         <span v-if="ext.source === 'dev'" class="badge">{{ t('side.dev') }}</span>
+        <span v-else-if="ext.source === 'local'" class="badge">{{ t('side.local') }}</span>
         <button
           class="star"
           :class="{ pinned: store.settings.favorites.includes(ext.id) }"
+          :title="t('side.pin')"
           @click.stop="toggleFavorite(ext.id)"
         >
           <Icon name="star" :size="13" />

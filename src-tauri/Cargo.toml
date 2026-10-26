@@ -1,6 +1,6 @@
 [package]
 name = "outilo"
-version = "0.6.0"
+version = "0.6.1"
 description = "Outilo — la boîte à outils extensible"
 edition = "2021"
 license = "Apache-2.0"

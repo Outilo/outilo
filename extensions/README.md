@@ -127,6 +127,12 @@ Composants CSS (`/_sdk/outilo-ui.css`) : `o-panel`, `o-btn`, `o-btn--primary`, `
 `o-textarea`, `o-chip` (`.on`), `o-check`, `o-out`, `o-pre`, `o-meter`, `o-table`, `o-label`, `o-sub`, `o-row`,
 `o-stack`, `o-grid`. Couleurs : uniquement les variables `--o-*` du thème.
 
+## Extension privée
+
+Extensions → « Installer un dossier… » ou « Installer un fichier .outilo… » : l'extension est copiée dans
+`%APPDATA%\Outilo\local\<id>\` (badge « Locale »), après confirmation de ses permissions. Elle n'est jamais publiée
+ni mise à jour par le registre. Voir `docs/EXTENSIONS_COMMUNAUTE.md`.
+
 ## Développer une extension
 
 1. Paramètres → activer le **mode développeur**.

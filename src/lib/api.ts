@@ -19,6 +19,7 @@ export const api = {
   listBundled: () => call<BundledInfo[]>('list_bundled'),
   chooseExtensions: (ids: string[]) => call<ExtList>('choose_extensions', { ids }),
   installBundled: (id: string) => call<ExtList>('install_bundled', { id }),
+  installLocal: (fromFile: boolean) => call<ExtList | null>('install_local', { fromFile }),
   addDevExtension: () => call<ExtList | null>('add_dev_extension'),
   registryCheck: () => call<CheckResult>('registry_check'),
   appUpdateCheck: () => call<AppUpdate>('app_update_check'),

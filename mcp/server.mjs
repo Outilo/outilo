@@ -190,7 +190,10 @@ server.registerTool(
     mkdirSync(out, { recursive: true })
     const file = join(out, `${manifest.extension.id}-${manifest.extension.version}.outilo`)
     writeFileSync(file, bytes)
-    return text(`Paquet : ${file}\nTaille : ${bytes.length} octets\nSHA-256 : ${sha256(bytes)}`)
+    return text(
+      `Paquet : ${file}\nTaille : ${bytes.length} octets\nSHA-256 : ${sha256(bytes)}\n\n` +
+        'Pour l’utiliser sur ce PC sans le publier : Outilo → Extensions → « Installer un fichier .outilo… » (extension privée).'
+    )
   }
 )
 

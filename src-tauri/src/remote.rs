@@ -108,8 +108,8 @@ pub fn compare(index: &Index, reg: &Registry, state: &ExtState) -> Vec<Available
         .filter_map(|(id, ext)| {
             let (version, entry) = index.candidate(id)?;
             let local = reg.get(id);
-            // Une extension en développement masque celle du registre
-            if local.is_some_and(|l| l.source == Source::Dev) {
+            // Une extension en développement ou locale masque celle du registre
+            if local.is_some_and(|l| l.source != Source::Official) {
                 return None;
             }
             let installed = local.map(|l| l.manifest.version());

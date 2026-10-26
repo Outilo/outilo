@@ -32,6 +32,8 @@ pub struct Paths {
     pub extensions: PathBuf,
     pub data: PathBuf,
     pub themes: PathBuf,
+    /// Extensions privées de l'utilisateur, hors du store.
+    pub local: PathBuf,
     pub bundled: Option<PathBuf>,
     /// En développement : dossier `extensions/` du dépôt, servi sans copie.
     pub live: Option<PathBuf>,
@@ -225,6 +227,11 @@ fn uninstall_extension(state: State<AppState>, id: String) -> Result<ExtList, St
             unlink_dev(&state.paths, &dir);
             state.update_state(|st| st.dev.retain(|d| d != &dir))?
         }
+        Some((Source::Local, dir)) => {
+            if dir.starts_with(&state.paths.local) {
+                fs::remove_dir_all(&dir).map_err(|e| e.to_string())?;
+            }
+        }
         Some((Source::Official, _)) => {
             if manifest::is_valid_id(&id) {
                 let _ = fs::remove_dir_all(state.paths.extensions.join(&id));
@@ -239,6 +246,78 @@ fn uninstall_extension(state: State<AppState>, id: String) -> Result<ExtList, St
     }
     state.reload();
     Ok(state.list())
+}
+
+/// Installe une extension privée depuis un dossier ou un fichier `.outilo` (non signé) : elle reste sur ce PC,
+/// n'est jamais envoyée au store et n'est pas mise à jour par le registre.
+#[tauri::command]
+async fn install_local(app: AppHandle, from_file: bool) -> Result<Option<ExtList>, String> {
+    blocking(app, move |app, state| {
+        let dialog = app.dialog().file();
+        let picked = if from_file {
+            dialog.add_filter("Extension Outilo", &["outilo", "zip"]).blocking_pick_file()
+        } else {
+            dialog.blocking_pick_folder()
+        };
+        let Some(picked) = picked else { return Ok(None) };
+        let source = picked.into_path().map_err(|e| e.to_string())?;
+
+        // Préparation dans un dossier temporaire du profil, puis contrôles
+        let staging = state.paths.local.join(".import.tmp");
+        let _ = fs::remove_dir_all(&staging);
+        fs::create_dir_all(&staging).map_err(|e| e.to_string())?;
+        let prepared = if from_file {
+            fs::read(&source).map_err(|e| e.to_string()).and_then(|bytes| remote::unpack(&bytes, &staging))
+        } else {
+            fsutil::copy_dir_all(&source, &staging).map_err(|e| e.to_string())
+        };
+        let checked = prepared.and_then(|_| manifest::Manifest::load(&staging));
+        let m = match checked {
+            Ok(m) => m,
+            Err(e) => {
+                let _ = fs::remove_dir_all(&staging);
+                return Err(e);
+            }
+        };
+        let id = m.extension.id.clone();
+        let taken = state.registry.lock().expect("registre").get(&id).is_some_and(|e| e.source != Source::Local);
+        if id.starts_with("outilo.") || taken {
+            let _ = fs::remove_dir_all(&staging);
+            return Err(format!("« {id} » est l'identifiant d'une extension officielle : choisissez-en un autre"));
+        }
+
+        let locale = state.locale();
+        let name = match &m.extension.name {
+            Localized::Text(s) => s.clone(),
+            Localized::Map(map) => map.get(&locale).or_else(|| map.get("fr")).cloned().unwrap_or_else(|| id.clone()),
+        };
+        let perms = m.permission_names();
+        let list = if perms.is_empty() {
+            "—".to_owned()
+        } else {
+            perms
+                .iter()
+                .map(|p| if manifest::is_sensitive(p) { format!("• {p} ⚠") } else { format!("• {p}") })
+                .collect::<Vec<_>>()
+                .join("\n")
+        };
+        let (title, message, ok) = if locale == "en" {
+            ("Install a local extension", format!("{name} ({id}) {}\n\nThis extension was not reviewed by the Outilo team. Only install code you trust.\n\nPermissions:\n{list}", m.extension.version), "Install")
+        } else {
+            ("Installer une extension locale", format!("{name} ({id}) {}\n\nCette extension n'a pas été vérifiée par l'équipe Outilo. N'installez que du code en lequel vous avez confiance.\n\nPermissions :\n{list}", m.extension.version), "Installer")
+        };
+        if !confirm(app, title, &message, ok, &locale) {
+            let _ = fs::remove_dir_all(&staging);
+            return Ok(None);
+        }
+        let target = state.paths.local.join(&id);
+        let _ = fs::remove_dir_all(&target);
+        fs::rename(&staging, &target).map_err(|e| format!("installation impossible : {e}"))?;
+        state.update_state(|st| st.removed.retain(|r| r != &id))?;
+        state.reload();
+        Ok(Some(state.list()))
+    })
+    .await
 }
 
 #[tauri::command]
@@ -724,10 +803,12 @@ fn load_registry(paths: &Paths, state: &ExtState) -> Registry {
             }
         }
     }
-    match &paths.live {
+    let mut reg = match &paths.live {
         Some(repo) => Registry::load_live(repo, &state),
         None => Registry::load(&paths.extensions, paths.bundled.as_deref(), &state),
-    }
+    };
+    reg.load_local(&paths.local, &state);
+    reg
 }
 
 fn dev_mode(paths: &Paths) -> bool {
@@ -824,11 +905,12 @@ pub fn run() {
                 extensions: root.join("extensions"),
                 data: root.join("data"),
                 themes: root.join("themes"),
+                local: root.join("local"),
                 bundled,
                 live,
                 root,
             };
-            for dir in [&paths.extensions, &paths.data, &paths.themes] {
+            for dir in [&paths.extensions, &paths.data, &paths.themes, &paths.local] {
                 fs::create_dir_all(dir)?;
             }
             updater::cleanup(&paths.updates());
@@ -863,6 +945,7 @@ pub fn run() {
             uninstall_extension,
             restore_official_extensions,
             list_bundled,
+            install_local,
             choose_extensions,
             install_bundled,
             add_dev_extension,

@@ -49,6 +49,11 @@ async function run(action: () => Promise<ExtList | null>, success?: string) {
   }
 }
 
+/** Extension privée (dossier ou .outilo) : confirmation native puis installation sur ce PC uniquement. */
+function installLocal(fromFile: boolean) {
+  run(() => api.installLocal(fromFile), t('ext.localInstalled'))
+}
+
 function toggle(id: string, enabled: boolean) {
   run(() => api.setExtensionEnabled(id, enabled))
 }
@@ -99,6 +104,12 @@ const size = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} 
         </button>
         <button class="btn" :disabled="busy" @click="run(api.reloadExtensions, t('ext.reloaded'))">
           <Icon name="reload" :size="14" /> {{ t('ext.reload') }}
+        </button>
+        <button v-if="inTauri" class="btn" :disabled="busy" :title="t('ext.localHint')" @click="installLocal(true)">
+          <Icon name="upload" :size="14" /> {{ t('ext.installFile') }}
+        </button>
+        <button v-if="inTauri" class="btn" :disabled="busy" :title="t('ext.localHint')" @click="installLocal(false)">
+          <Icon name="folder" :size="14" /> {{ t('ext.installFolder') }}
         </button>
         <button
           v-if="store.settings.devMode && inTauri"
@@ -183,8 +194,8 @@ const size = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} 
             <div class="title">
               <strong>{{ loc(ext.name) }}</strong>
               <span class="mono">{{ ext.version }}</span>
-              <span class="chip" :class="ext.source === 'dev' ? 'acc' : ''">
-                {{ ext.source === 'dev' ? t('ext.devBadge') : t('ext.official') }}
+              <span class="chip" :class="ext.source !== 'official' ? 'acc' : ''">
+                {{ ext.source === 'dev' ? t('ext.devBadge') : ext.source === 'local' ? t('ext.localBadge') : t('ext.official') }}
               </span>
             </div>
             <p class="desc">{{ loc(ext.description) }}</p>
