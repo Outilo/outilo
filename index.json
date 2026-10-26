@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated": "2026-10-26T10:26:17.043Z",
+  "generated": "2026-10-26T11:05:30.052Z",
   "extensions": {
     "outilo.cleaner": {
       "name": {
@@ -549,6 +549,16 @@
             "clipboard"
           ],
           "size": 19269
+        },
+        "1.1.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/devdocs-v1.1.0/outilo.devdocs-1.1.0.outilo",
+          "sha256": "bcd694e2fcdc55588ccf8f731016c29c4d6149da1aa78acc7f24d8dc437e833f",
+          "signature": "7Ti9Ug1fyyNQM9RNreFg/POrQTZkbMd2ZRVEpvL/clcjDOY4/G5s0MkSuDSSAaRxTlkk0+NJjEkU9H+4szu+Dg==",
+          "permissions": [
+            "clipboard"
+          ],
+          "size": 19396
         }
       },
       "description": {
