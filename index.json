@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated": "2026-10-25T23:34:26.297Z",
+  "generated": "2026-10-26T10:26:17.043Z",
   "extensions": {
     "outilo.cleaner": {
       "name": {
@@ -25,7 +25,11 @@
       },
       "categories": [
         "systeme"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.colors": {
       "name": {
@@ -51,7 +55,11 @@
       },
       "categories": [
         "design"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.cron": {
       "name": {
@@ -78,7 +86,11 @@
       "categories": [
         "code",
         "systeme"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.encoders": {
       "name": {
@@ -105,7 +117,11 @@
       "categories": [
         "code",
         "texte"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.fake-user": {
       "name": {
@@ -133,7 +149,11 @@
       "categories": [
         "donnees",
         "generateur"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.hash": {
       "name": {
@@ -159,7 +179,11 @@
       "categories": [
         "securite",
         "code"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.json": {
       "name": {
@@ -187,7 +211,11 @@
       "categories": [
         "code",
         "donnees"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.jwt": {
       "name": {
@@ -213,7 +241,11 @@
       "categories": [
         "code",
         "securite"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.lorem": {
       "name": {
@@ -240,7 +272,11 @@
         "design",
         "texte",
         "generateur"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.network": {
       "name": {
@@ -268,7 +304,11 @@
       "categories": [
         "reseau",
         "systeme"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.password": {
       "name": {
@@ -295,7 +335,11 @@
       "categories": [
         "securite",
         "generateur"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.ports": {
       "name": {
@@ -321,7 +365,11 @@
       "categories": [
         "systeme",
         "reseau"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.qr": {
       "name": {
@@ -348,7 +396,11 @@
       "categories": [
         "design",
         "generateur"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.regex": {
       "name": {
@@ -375,7 +427,11 @@
       "categories": [
         "code",
         "texte"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.sysinfo": {
       "name": {
@@ -402,7 +458,11 @@
       },
       "categories": [
         "systeme"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.timestamps": {
       "name": {
@@ -419,16 +479,30 @@
             "clipboard"
           ],
           "size": 5098
+        },
+        "1.1.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/timestamps-v1.1.0/outilo.timestamps-1.1.0.outilo",
+          "sha256": "b032eb001dc816a1d9fa68734afd0bd0e8e5796ae3c0cbde0109142f1baef096",
+          "signature": "VBwUQ+hbHMJnrxqmH/yvlvhakD60ExqodPUi+yfocIImAEve4qUtp4g4OOJQ9/tCbUu57xpYzNG5MxKOBwV1Cg==",
+          "permissions": [
+            "clipboard"
+          ],
+          "size": 6881
         }
       },
       "description": {
-        "fr": "Unix ⇄ date, ISO 8601, RFC 2822, semaine ISO, fuseaux horaires",
-        "en": "Unix ⇄ date, ISO 8601, RFC 2822, ISO week, time zones"
+        "fr": "Unix ⇄ date, ISO 8601, RFC 2822, fuseaux horaires, formatage et code JavaScript",
+        "en": "Unix ⇄ date, ISO 8601, RFC 2822, time zones, formatting and JavaScript code"
       },
       "categories": [
         "code",
         "donnees"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     },
     "outilo.uuid": {
       "name": {
@@ -454,7 +528,314 @@
       "categories": [
         "code",
         "generateur"
-      ]
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
+    },
+    "outilo.devdocs": {
+      "name": {
+        "fr": "Doc développeur",
+        "en": "Developer docs"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/devdocs-v1.0.0/outilo.devdocs-1.0.0.outilo",
+          "sha256": "d29f9344515bfadfb53b291352a58f44eaec83e59b2bb67ff0a7338e324fb729",
+          "signature": "UCWf0suEiqIidMS8NWJJFQnPcRfQKwektyhvfeJMOmnga6WSQ3Mue2LwlfNFVoyXfTcTwLEex7j+6l0T/HWqAA==",
+          "permissions": [
+            "clipboard"
+          ],
+          "size": 19269
+        }
+      },
+      "description": {
+        "fr": "Créer une extension : manifeste, permissions, SDK, bac à sable, serveur MCP pour votre IA, publication",
+        "en": "Build an extension: manifest, permissions, SDK, sandbox, MCP server for your AI, publishing"
+      },
+      "categories": [
+        "code"
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
+    },
+    "outilo.docker": {
+      "name": {
+        "fr": "Docker",
+        "en": "Docker"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/docker-v1.0.0/outilo.docker-1.0.0.outilo",
+          "sha256": "5bfe95f22b45b386c67f59c61b471db65be034689333b6b3ffabab6a1f9b8616",
+          "signature": "1B68zvpCUnXoPh2jyTxRhiYK/EO0kcRDcPYd2bQmRd8oL08wRSy7WmGEgr4H0cLO4OesWGm4ZvVfl6nVsToiCA==",
+          "permissions": [
+            "clipboard",
+            "files.save"
+          ],
+          "size": 19887
+        }
+      },
+      "description": {
+        "fr": "docker run ⇄ docker compose",
+        "en": "docker run ⇄ docker compose"
+      },
+      "categories": [
+        "code"
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
+    },
+    "outilo.image": {
+      "name": {
+        "fr": "Images",
+        "en": "Images"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/image-v1.0.0/outilo.image-1.0.0.outilo",
+          "sha256": "ff8fc1bc9c4706d30ab61a4c7f492a65e7de1a2a2502e7ccd77a294a4d7c6656",
+          "signature": "6ODlr228nqkr1a4vO1e92SHEdIB1Vnu5aTmR7f3IHxUBHwJIRroWe6+9kYECsueUw7pJohjCs0XDlaapmB7UBQ==",
+          "permissions": [
+            "clipboard",
+            "files.save"
+          ],
+          "size": 4998
+        }
+      },
+      "description": {
+        "fr": "Convertir en PNG, JPEG, WebP ; redimensionner, pivoter, data URL",
+        "en": "Convert to PNG, JPEG, WebP; resize, rotate, data URL"
+      },
+      "categories": [
+        "design"
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
+    },
+    "outilo.invoice": {
+      "name": {
+        "fr": "Factures",
+        "en": "Invoices"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/invoice-v1.0.0/outilo.invoice-1.0.0.outilo",
+          "sha256": "eeecfd890520fa3f0a223135219fc709d3c5e36eafa6d4fb5adab413e18cf73e",
+          "signature": "O2Kpq78j4yS0Cir58m9GwSnQLsW9ld2O3Pp81f8Bg4WNhZUMaEsM16yOeqQ9zqjrY2N+XVvipow6n52yNrYQDQ==",
+          "permissions": [
+            "files.save",
+            "storage"
+          ],
+          "size": 6872
+        }
+      },
+      "description": {
+        "fr": "Factures avec TVA par taux, numérotation, export HTML imprimable en PDF",
+        "en": "Invoices with per-rate VAT, numbering, printable HTML export"
+      },
+      "categories": [
+        "autres",
+        "generateur"
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
+    },
+    "outilo.jsrun": {
+      "name": {
+        "fr": "JavaScript",
+        "en": "JavaScript"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/jsrun-v1.0.0/outilo.jsrun-1.0.0.outilo",
+          "sha256": "887ac5c2f44d660209bc4901763df5c9cac8b554ce3537c19a0d773fa8de46e5",
+          "signature": "7szhKYeNbjjjOuB7Lxs9dbfxIlfZ1XN2yLFV3vRqZEiWfMleFIcMjSYVajR1S22bHMSpRENr7SPWRdT42msSCQ==",
+          "permissions": [
+            "storage"
+          ],
+          "size": 4995
+        }
+      },
+      "description": {
+        "fr": "Exécuter du JavaScript isolé avec console, await et exemples",
+        "en": "Run isolated JavaScript with console, await and examples"
+      },
+      "categories": [
+        "code"
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
+    },
+    "outilo.markdown": {
+      "name": {
+        "fr": "Markdown",
+        "en": "Markdown"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/markdown-v1.0.0/outilo.markdown-1.0.0.outilo",
+          "sha256": "fd70d49fef7ac5ca48c3e4a6bf6e9bef89e4d0d520322edcc90317de8b184601",
+          "signature": "pqWazTkEHU14xUVSuus6owwxUuAtVwWzcVvLLel5sTTFgDjg6rlzFrOQDjytYxp4jtq3FkUSf6GK9SuvA1utBA==",
+          "permissions": [
+            "clipboard",
+            "files.save",
+            "storage"
+          ],
+          "size": 22506
+        }
+      },
+      "description": {
+        "fr": "Markdown → HTML avec aperçu en direct, export en page HTML",
+        "en": "Markdown → HTML with live preview, HTML page export"
+      },
+      "categories": [
+        "texte",
+        "code"
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
+    },
+    "outilo.notes": {
+      "name": {
+        "fr": "Notes",
+        "en": "Notes"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/notes-v1.0.0/outilo.notes-1.0.0.outilo",
+          "sha256": "79039a9653e162aa085af982565bcd76a67f555992316e2839460a66e083df9b",
+          "signature": "mOmJhRyCJzjd2FO4QocEU9PsfL2n3GQjuWx4n86899H6oNfP0aALwxeV/+UJY9mnFgZSMrpLDAhkBR7GqUY2DA==",
+          "permissions": [
+            "clipboard",
+            "files.save",
+            "storage.sql"
+          ],
+          "size": 4615
+        }
+      },
+      "description": {
+        "fr": "Notes rapides enregistrées automatiquement, recherche, épingles, export Markdown",
+        "en": "Quick notes saved automatically, search, pins, Markdown export"
+      },
+      "categories": [
+        "texte",
+        "autres"
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
+    },
+    "outilo.sql": {
+      "name": {
+        "fr": "SQL",
+        "en": "SQL"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/sql-v1.0.0/outilo.sql-1.0.0.outilo",
+          "sha256": "4878fa578486a60ee66242b32890dccc7c51d04c57f17e3dae7f6e57e61843db",
+          "signature": "CYno4u/+RjiEosLU3xXz74T3iU9hiUQAdFDZrk1foYXvSgc3s0GE58VAgjGP3700k9DkZuUNRmaRl2XFNOPtCA==",
+          "permissions": [
+            "clipboard",
+            "files.save",
+            "storage",
+            "storage.sql"
+          ],
+          "size": 5479
+        }
+      },
+      "description": {
+        "fr": "Atelier SQLite : base privée, requêtes, tables, export CSV",
+        "en": "SQLite workbench: private database, queries, tables, CSV export"
+      },
+      "categories": [
+        "code",
+        "donnees"
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
+    },
+    "outilo.text": {
+      "name": {
+        "fr": "Texte",
+        "en": "Text"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/text-v1.0.0/outilo.text-1.0.0.outilo",
+          "sha256": "0f4d0f3ddcace39debbd971654ed5608afc185b0a7566ab59388c76facefc034",
+          "signature": "ztNjFvyHBTJtuPgMZZ6P0MxrFuZgE6EmweKEhmn9NrA2bFPiQN6QCQWOW4mAj5tBQ0O6nxZfWFkZS/7kWjW/Ag==",
+          "permissions": [
+            "clipboard",
+            "storage"
+          ],
+          "size": 4882
+        }
+      },
+      "description": {
+        "fr": "Casse, slug, tri, dédoublonnage, compteurs, rechercher / remplacer",
+        "en": "Case, slug, sort, dedupe, counters, find / replace"
+      },
+      "categories": [
+        "texte"
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
+    },
+    "outilo.timer": {
+      "name": {
+        "fr": "Minuteur",
+        "en": "Timer"
+      },
+      "versions": {
+        "1.0.0": {
+          "api": "1",
+          "url": "https://github.com/Outilo/outilo/releases/download/timer-v1.0.0/outilo.timer-1.0.0.outilo",
+          "sha256": "97deaa3b63a08c3d91cdef5f034d4b86aa3b7a0dec07b018afe00069869c4928",
+          "signature": "qubLpx0bwdMYFyurgWfdAtBdv053K7UYavL4bJWKalgqMR2NttooZrisEn9wAsZbr0OhZ6XTxdP3h0A2C2tFDw==",
+          "permissions": [],
+          "size": 5182
+        }
+      },
+      "description": {
+        "fr": "Compte à rebours, chronomètre avec tours, pomodoro",
+        "en": "Countdown, stopwatch with laps, pomodoro"
+      },
+      "categories": [
+        "autres"
+      ],
+      "authors": [
+        "Équipe Outilo"
+      ],
+      "verified": true
     }
   },
   "packs": {
@@ -468,14 +849,21 @@
       "outilo.uuid",
       "outilo.regex",
       "outilo.timestamps",
-      "outilo.ports"
+      "outilo.ports",
+      "outilo.text",
+      "outilo.markdown",
+      "outilo.sql",
+      "outilo.jsrun",
+      "outilo.docker"
     ],
     "design": [
       "outilo.colors",
       "outilo.qr",
       "outilo.lorem",
+      "outilo.image",
       "outilo.fake-user",
-      "outilo.password"
+      "outilo.text",
+      "outilo.markdown"
     ],
     "ops": [
       "outilo.ports",
@@ -483,13 +871,19 @@
       "outilo.hash",
       "outilo.cron",
       "outilo.sysinfo",
-      "outilo.cleaner"
+      "outilo.cleaner",
+      "outilo.docker",
+      "outilo.sql"
     ],
     "daily": [
       "outilo.cleaner",
       "outilo.password",
       "outilo.qr",
-      "outilo.sysinfo"
+      "outilo.sysinfo",
+      "outilo.notes",
+      "outilo.timer",
+      "outilo.invoice",
+      "outilo.image"
     ]
   }
 }
